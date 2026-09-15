@@ -24,14 +24,14 @@ import 'ui/tokens.dart';
 ///
 /// It is written here as well as in `pubspec.yaml` because reading it back at runtime would mean
 /// carrying a plugin to do it, for one line of text. A test holds the two together.
-const appVersion = '1.2.4';
+const appVersion = '1.2.5';
 
 /// The number the stores count with, which is the other half of `pubspec.yaml`'s `version:`.
 ///
 /// A copy handed out for testing keeps the same version for build after build, so the version
 /// alone cannot tell somebody which one they are holding — and a tester who cannot say that is a
 /// tester whose report cannot be placed. Held to the pubspec by the same test as [appVersion].
-const appBuild = '10';
+const appBuild = '11';
 
 /// The two together, the way both stores write them.
 const appVersionShown = '$appVersion ($appBuild)';
