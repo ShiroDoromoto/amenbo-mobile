@@ -47,7 +47,7 @@ Sin anuncios. Sin rastreo. Sin cuenta.
 
 ## release_notes
 
-La pantalla de conexión ya no nombra este teléfono.
+La guía de emparejamiento ya coincide con el Amenbo de hoy.
 
-- El emparejamiento ya no pide un nombre. El PC solo guarda un hash del código, así que nunca supo qué teléfono lo tenía: el nombre existía solo de este lado
-- Un código QR de un PC anterior sigue emparejando, y un teléfono ya emparejado sigue estándolo
+- El Viewer forma parte de Amenbo, así que no hay nada que instalar en el PC: abre Ajustes, entra en Viewer y ahí está el código
+- La ruta, la lectura y los datos siguen igual. Un teléfono ya emparejado sigue estándolo

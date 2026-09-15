@@ -47,7 +47,7 @@ Nessuna pubblicità. Nessun tracciamento. Nessun account.
 
 ## release_notes
 
-La schermata di connessione non dà più un nome a questo telefono.
+La guida all'associazione ora corrisponde ad Amenbo com'è oggi.
 
-- L'associazione non chiede più un nome. Il PC conserva solo un hash del codice, quindi non ha mai saputo quale telefono lo avesse: il nome esisteva solo da questa parte
-- Un codice QR di un PC più vecchio si associa ancora, e un telefono già associato resta tale
+- Il Viewer fa parte di Amenbo: sul PC non c'è più nulla da installare. Apri le impostazioni, vai su Viewer e lì c'è il codice
+- Il percorso, la lettura e i dati restano gli stessi. Un telefono già associato resta tale

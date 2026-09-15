@@ -47,7 +47,7 @@ Bez reklam. Bez śledzenia. Bez konta.
 
 ## release_notes
 
-Ekran połączenia nie nazywa już tego telefonu.
+Instrukcja parowania odpowiada teraz temu, czym Amenbo jest dzisiaj.
 
-- Parowanie nie pyta o nazwę. Komputer przechowuje tylko skrót kodu, więc nigdy nie wiedział, który telefon go ma — nazwa istniała wyłącznie po tej stronie
-- Kod QR ze starszego komputera nadal paruje, a już sparowany telefon pozostaje sparowany
+- Viewer jest już częścią Amenbo, więc na komputerze nie ma nic do zainstalowania. Otwórz ustawienia, przejdź do Viewera — tam jest kod
+- Droga, sposób czytania i dane pozostają bez zmian. Już sparowany telefon pozostaje sparowany

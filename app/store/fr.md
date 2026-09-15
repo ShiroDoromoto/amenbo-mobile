@@ -47,7 +47,7 @@ Pas de publicité. Pas de pistage. Pas de compte.
 
 ## release_notes
 
-L'écran de connexion ne nomme plus ce téléphone.
+Le guide d'appairage correspond maintenant à Amenbo tel qu'il est.
 
-- L'appairage ne demande plus de nom. Le PC ne conserve qu'une empreinte du code : il n'a jamais su quel téléphone le détenait, et le nom n'existait que de ce côté
-- Un QR code venu d'un PC plus ancien appaire toujours, et un téléphone déjà appairé le reste
+- Le Viewer fait partie d'Amenbo : plus rien à installer sur le PC. Ouvrez les réglages, allez jusqu'à Viewer, le code s'y trouve
+- Le chemin, la lecture et les données ne changent pas. Un téléphone déjà appairé le reste

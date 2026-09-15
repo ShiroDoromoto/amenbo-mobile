@@ -18,17 +18,17 @@ After scanning, the first sync runs and the app opens on the task list. The thre
 
 HOW A REAL USER SETS IT UP
 
-1. Install Amenbo on a computer, and its viewer plugin.
-2. Deploy the viewer Worker into their own Cloudflare account. The plugin does it; what the user supplies is one API token, once.
+1. Install Amenbo on a computer.
+2. Deploy the viewer Worker into their own Cloudflare account. Amenbo does it, from its own settings; what the user supplies is one API token, once.
 3. Scan the code the computer displays.
 
 What crosses the network is ciphertext. The key never travels over it, only optically in the QR code — that is why the camera is requested, and it is the only reason. There are no credentials to supply anywhere in this app.
 
-New in this version: nothing about the route, the permissions or the data handling changed. The connection screen no longer names the phone, and pairing no longer asks for a name — the computer keeps only a hash of the code, so it never knew which phone was holding one. A code from an older computer, the attached one included, pairs exactly as before.
+New in this version: nothing about the route, the permissions or the data handling changed. The viewer is now part of Amenbo on the computer instead of a plugin installed into it, so the app's pairing guide sends the reader to Amenbo's settings rather than telling them to install something first. The attached code pairs exactly as before.
 
 DEVICE MODELS AND OPERATING SYSTEMS TESTED
 
-- iPhone 12 mini (iPhone13,1), iOS 26.6 — physical device, full pairing and sync flow
+- iPhone 12 mini (iPhone13,1), iOS 26.6.2 — physical device
 - iPhone 17 Pro Max simulator, iOS 26.5
 - iPad Pro 13-inch (M5) simulator, iOS 26.5
 

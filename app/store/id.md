@@ -47,7 +47,7 @@ Tanpa iklan. Tanpa pelacakan. Tanpa akun.
 
 ## release_notes
 
-Layar koneksi tidak lagi menyebut nama ponsel ini.
+Panduan pemasangan kini sesuai dengan Amenbo yang sekarang.
 
-- Pemasangan tidak lagi meminta nama. PC hanya menyimpan hash dari kode, jadi ia tidak pernah tahu ponsel mana yang memegangnya — nama itu hanya ada di sisi ini
-- Kode QR dari PC versi lama tetap bisa dipasangkan, dan ponsel yang sudah terpasang tetap terpasang
+- Viewer sudah menjadi bagian dari Amenbo, jadi tidak ada yang perlu dipasang di PC. Buka Pengaturan, masuk ke Viewer, kodenya ada di sana
+- Jalur, cara membaca, dan datanya tidak berubah. Ponsel yang sudah terpasang tetap terpasang
