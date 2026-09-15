@@ -170,7 +170,7 @@
   "guideOneRoute": "Prepara questo sul PC dove gira Amenbo e le tue attività compariranno qui.",
   "guideCloudflareWho": "Qualsiasi PC e qualsiasi telefono.",
   "guideCloudflareCost": "Un account Cloudflare, gratuito.",
-  "guideCloudflareStepOne": "In Amenbo sul tuo PC, installa l'estensione viewer e attivala.",
+  "guideCloudflareStepOne": "In Amenbo sul tuo PC, apri le Impostazioni e vai su Viewer.",
   "guideCloudflareStepTwo": "Poi crea un server su Cloudflare. Il lavoro lo fa lui; tu premi e incolli.",
   "guideCloudflareStepThree": "Inquadra con questa app il codice QR che ti mostra.",
   "guideCloudflareAction": "Inquadra il codice QR",

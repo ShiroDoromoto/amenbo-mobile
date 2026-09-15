@@ -170,7 +170,7 @@
   "guideOneRoute": "जिस पीसी पर Amenbo चलता है, वहाँ यह बना दीजिए, और आपके काम यहाँ दिखने लगेंगे।",
   "guideCloudflareWho": "कोई भी पीसी और कोई भी फ़ोन।",
   "guideCloudflareCost": "एक Cloudflare खाता, मुफ़्त।",
-  "guideCloudflareStepOne": "अपने पीसी के Amenbo में viewer प्लगिन इंस्टॉल कीजिए और उसे चालू कीजिए।",
+  "guideCloudflareStepOne": "अपने पीसी के Amenbo में सेटिंग खोलिए और Viewer तक जाइए।",
   "guideCloudflareStepTwo": "फिर Cloudflare पर सर्वर बनाइए। काम वही करता है; आपको दबाना और चिपकाना है।",
   "guideCloudflareStepThree": "वह जो QR कोड दिखाए, उसे इस ऐप से स्कैन कीजिए।",
   "guideCloudflareAction": "QR कोड स्कैन करें",

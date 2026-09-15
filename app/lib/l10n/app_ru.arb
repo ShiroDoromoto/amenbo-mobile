@@ -170,7 +170,7 @@
   "guideOneRoute": "Настройте это на компьютере, где работает Amenbo, и ваши задачи появятся здесь.",
   "guideCloudflareWho": "Любой компьютер и любой телефон.",
   "guideCloudflareCost": "Учётная запись Cloudflare, бесплатно.",
-  "guideCloudflareStepOne": "В Amenbo на компьютере установите плагин viewer и включите его.",
+  "guideCloudflareStepOne": "В Amenbo на компьютере откройте Настройки и перейдите к Viewer.",
   "guideCloudflareStepTwo": "Затем создайте сервер в Cloudflare. Работу делает он; вы нажимаете и вставляете.",
   "guideCloudflareStepThree": "Отсканируйте этим приложением QR-код, который он покажет.",
   "guideCloudflareAction": "Отсканировать QR-код",

@@ -170,7 +170,7 @@
   "guideOneRoute": "Hãy dựng cái này trên máy tính đang chạy Amenbo, rồi công việc của bạn sẽ hiện ở đây.",
   "guideCloudflareWho": "Máy tính nào và điện thoại nào cũng được.",
   "guideCloudflareCost": "Một tài khoản Cloudflare, miễn phí.",
-  "guideCloudflareStepOne": "Trong Amenbo trên máy tính, hãy cài plugin viewer rồi bật nó lên.",
+  "guideCloudflareStepOne": "Trong Amenbo trên máy tính, hãy mở Cài đặt rồi vào Viewer.",
   "guideCloudflareStepTwo": "Sau đó hãy tạo một máy chủ trên Cloudflare. Việc là của nó; bạn chỉ bấm và dán.",
   "guideCloudflareStepThree": "Dùng ứng dụng này quét mã QR mà nó hiện ra.",
   "guideCloudflareAction": "Quét mã QR",

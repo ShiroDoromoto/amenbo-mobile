@@ -170,7 +170,7 @@
   "guideOneRoute": "Prepare isto no PC onde o Amenbo roda, e suas tarefas aparecem aqui.",
   "guideCloudflareWho": "Qualquer PC e qualquer telefone.",
   "guideCloudflareCost": "Uma conta Cloudflare, de graça.",
-  "guideCloudflareStepOne": "No Amenbo do seu PC, instale o plugin viewer e ative-o.",
+  "guideCloudflareStepOne": "No Amenbo do seu PC, abra as Configurações e vá até Viewer.",
   "guideCloudflareStepTwo": "Depois, crie um servidor na Cloudflare. Ele faz o trabalho; você aperta e cola.",
   "guideCloudflareStepThree": "Leia com este app o código QR que ele mostrar.",
   "guideCloudflareAction": "Ler o código QR",

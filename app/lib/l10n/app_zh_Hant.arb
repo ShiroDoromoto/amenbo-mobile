@@ -170,7 +170,7 @@
   "guideOneRoute": "在跑 Amenbo 的電腦上準備好這個，你的任務就會出現在這裡。",
   "guideCloudflareWho": "任何電腦與任何手機。",
   "guideCloudflareCost": "一個 Cloudflare 帳號，免費。",
-  "guideCloudflareStepOne": "在電腦的 Amenbo 裡，安裝 viewer 外掛並把它打開。",
+  "guideCloudflareStepOne": "在電腦的 Amenbo 裡，打開設定並進入 Viewer。",
   "guideCloudflareStepTwo": "接著在 Cloudflare 上建一個伺服器。事情由它來做，你只要按一下、貼上一下。",
   "guideCloudflareStepThree": "用這個 App 掃描它顯示的 QR 碼。",
   "guideCloudflareAction": "掃描 QR 碼",

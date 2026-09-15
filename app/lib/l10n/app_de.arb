@@ -170,7 +170,7 @@
   "guideOneRoute": "Richte das auf dem PC ein, auf dem Amenbo läuft, und deine Aufgaben tauchen hier auf.",
   "guideCloudflareWho": "Jeder PC und jedes Telefon.",
   "guideCloudflareCost": "Ein Cloudflare-Konto, kostenlos.",
-  "guideCloudflareStepOne": "Installiere in Amenbo auf deinem PC das Plug-in viewer und aktiviere es.",
+  "guideCloudflareStepOne": "Öffne in Amenbo auf deinem PC die Einstellungen und geh zu Viewer.",
   "guideCloudflareStepTwo": "Lege dann einen Server bei Cloudflare an. Die Arbeit macht er; du drückst und fügst ein.",
   "guideCloudflareStepThree": "Scanne den QR-Code, den er dir zeigt, mit dieser App.",
   "guideCloudflareAction": "QR-Code scannen",

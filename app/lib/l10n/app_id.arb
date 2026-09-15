@@ -170,7 +170,7 @@
   "guideOneRoute": "Siapkan ini di PC yang menjalankan Amenbo, dan tugasmu akan muncul di sini.",
   "guideCloudflareWho": "PC apa pun dan ponsel apa pun.",
   "guideCloudflareCost": "Sebuah akun Cloudflare, gratis.",
-  "guideCloudflareStepOne": "Di Amenbo pada PC-mu, pasang plugin viewer lalu aktifkan.",
+  "guideCloudflareStepOne": "Di Amenbo pada PC-mu, buka Pengaturan lalu masuk ke Viewer.",
   "guideCloudflareStepTwo": "Lalu buat server di Cloudflare. Dia yang bekerja; kamu tinggal menekan dan menempel.",
   "guideCloudflareStepThree": "Pindai kode QR yang ditunjukkannya dengan aplikasi ini.",
   "guideCloudflareAction": "Pindai kode QR",
