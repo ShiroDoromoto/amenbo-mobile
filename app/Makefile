@@ -1,7 +1,7 @@
 # The app's build is Flutter's; this only gives the root Makefile the three verbs it calls, so
-# `make build` at the top of the repository reaches every part the same way.
+# `make build` at the top of the repository reaches the app the same way it reaches the guards.
 #
-# `build` stops at what needs no platform SDK and no device — the same place the Worker's does.
+# `build` stops at what needs no platform SDK and no device.
 # The platform builds are named targets of their own, because each one needs a toolchain not
 # every machine has (the Android SDK; Xcode and a Mac), and `make build` failing on a machine
 # that simply is not set up for Android would say nothing about the code.
