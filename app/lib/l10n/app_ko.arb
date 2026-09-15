@@ -170,7 +170,7 @@
   "guideOneRoute": "Amenbo가 도는 PC에서 이것을 준비하면, 작업이 여기에 나옵니다.",
   "guideCloudflareWho": "어떤 PC와 어떤 휴대폰이든.",
   "guideCloudflareCost": "Cloudflare 계정 (무료).",
-  "guideCloudflareStepOne": "PC의 Amenbo에서 viewer 플러그인을 설치하고 켜세요.",
+  "guideCloudflareStepOne": "PC의 Amenbo에서 설정을 열고 Viewer로 가세요.",
   "guideCloudflareStepTwo": "이어서 Cloudflare에 서버를 만드세요. 일은 그쪽이 하고, 당신은 누르고 붙여넣기만 합니다.",
   "guideCloudflareStepThree": "거기 나온 QR 코드를 이 앱으로 읽으세요.",
   "guideCloudflareAction": "QR 코드 읽기",

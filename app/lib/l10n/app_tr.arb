@@ -170,7 +170,7 @@
   "guideOneRoute": "Amenbo'nun çalıştığı bilgisayarda bunu kur, görevlerin burada belirsin.",
   "guideCloudflareWho": "Her bilgisayar ve her telefon.",
   "guideCloudflareCost": "Ücretsiz bir Cloudflare hesabı.",
-  "guideCloudflareStepOne": "Bilgisayarındaki Amenbo'da viewer eklentisini kur ve etkinleştir.",
+  "guideCloudflareStepOne": "Bilgisayarındaki Amenbo'da Ayarlar'ı aç ve Viewer'a git.",
   "guideCloudflareStepTwo": "Sonra Cloudflare üzerinde bir sunucu oluştur. İşi o yapar; sen basar ve yapıştırırsın.",
   "guideCloudflareStepThree": "Sana gösterdiği QR kodunu bu uygulamayla okut.",
   "guideCloudflareAction": "QR kodunu okut",

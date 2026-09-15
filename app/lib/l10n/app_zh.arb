@@ -170,7 +170,7 @@
   "guideOneRoute": "在运行 Amenbo 的电脑上准备好这个，你的任务就会出现在这里。",
   "guideCloudflareWho": "任何电脑与任何手机。",
   "guideCloudflareCost": "一个 Cloudflare 账号，免费。",
-  "guideCloudflareStepOne": "在电脑的 Amenbo 里，安装 viewer 插件并把它打开。",
+  "guideCloudflareStepOne": "在电脑的 Amenbo 里，打开设置并进入 Viewer。",
   "guideCloudflareStepTwo": "接着在 Cloudflare 上建一个服务器。事情由它来做，你只要按一下、粘贴一下。",
   "guideCloudflareStepThree": "用这个应用扫描它显示的二维码。",
   "guideCloudflareAction": "扫描二维码",

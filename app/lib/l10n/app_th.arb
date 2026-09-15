@@ -170,7 +170,7 @@
   "guideOneRoute": "จัดสิ่งนี้ไว้บนคอมพิวเตอร์ที่รัน Amenbo แล้วงานของคุณจะโผล่มาตรงนี้",
   "guideCloudflareWho": "คอมพิวเตอร์เครื่องไหนกับโทรศัพท์เครื่องไหนก็ได้",
   "guideCloudflareCost": "บัญชี Cloudflare หนึ่งบัญชี ฟรี",
-  "guideCloudflareStepOne": "ใน Amenbo บนคอมพิวเตอร์ ให้ติดตั้งปลั๊กอิน viewer แล้วเปิดใช้งาน",
+  "guideCloudflareStepOne": "ใน Amenbo บนคอมพิวเตอร์ ให้เปิดตั้งค่าแล้วไปที่ Viewer",
   "guideCloudflareStepTwo": "จากนั้นให้สร้างเซิร์ฟเวอร์บน Cloudflare งานเป็นของมัน คุณแค่กดและวาง",
   "guideCloudflareStepThree": "ใช้แอปนี้สแกนรหัส QR ที่มันแสดงให้",
   "guideCloudflareAction": "สแกนรหัส QR",
