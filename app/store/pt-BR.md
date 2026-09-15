@@ -20,7 +20,7 @@ Amenbo,backlog,tarefas,decisões,registro,IA,agente,visualizador,offline,criptog
 
 O Amenbo Viewer coloca no seu bolso o backlog que você mantém no PC. Ele lê; nunca escreve de volta.
 
-É preciso ter o Amenbo rodando num Mac, Windows ou Linux, com o plugin viewer instalado. Sem essa máquina, este aplicativo não tem o que mostrar: ele é a outra metade de uma ferramenta, não uma ferramenta sozinha.
+É preciso ter o Amenbo rodando num Mac, Windows ou Linux. Sem essa máquina, este aplicativo não tem o que mostrar: ele é a outra metade de uma ferramenta, não uma ferramenta sozinha.
 
 COMO CHEGA ATÉ AQUI
 

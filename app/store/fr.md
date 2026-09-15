@@ -20,7 +20,7 @@ Amenbo,backlog,tâches,décisions,journal,IA,agent,lecteur,hors ligne,chiffremen
 
 Amenbo Viewer met dans votre poche le backlog que vous tenez sur votre PC. Il le lit ; il n'y écrit jamais.
 
-Il faut qu'Amenbo tourne sur un Mac, un Windows ou un Linux, avec le greffon viewer installé. Sans cette machine, cette application n'a rien à montrer : c'est l'autre moitié d'un outil, pas un outil à elle seule.
+Il faut qu'Amenbo tourne sur un Mac, un Windows ou un Linux. Sans cette machine, cette application n'a rien à montrer : c'est l'autre moitié d'un outil, pas un outil à elle seule.
 
 PAR OÙ ÇA ARRIVE
 

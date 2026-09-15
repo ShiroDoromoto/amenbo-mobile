@@ -20,7 +20,7 @@ Amenbo,sổ việc,công việc,quyết định,ghi chép,AI,tác nhân,trình �
 
 Amenbo Viewer mang sổ việc bạn giữ trên máy tính vào trong túi áo. Nó chỉ đọc; nó không bao giờ ghi ngược lại.
 
-Bạn cần có Amenbo đang chạy trên Mac, Windows hoặc Linux, với phần mở rộng viewer đã cài. Không có chiếc máy ấy thì ứng dụng này chẳng có gì để hiện — nó là một nửa của công cụ, không phải một công cụ tự đứng.
+Bạn cần có Amenbo đang chạy trên Mac, Windows hoặc Linux. Không có chiếc máy ấy thì ứng dụng này chẳng có gì để hiện — nó là một nửa của công cụ, không phải một công cụ tự đứng.
 
 NỘI DUNG ĐẾN BẰNG ĐƯỜNG NÀO
 

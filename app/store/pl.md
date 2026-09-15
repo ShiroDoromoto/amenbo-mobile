@@ -20,7 +20,7 @@ Amenbo,backlog,zadania,decyzje,zapisy,SI,agent,czytnik,offline,szyfrowanie,cloud
 
 Amenbo Viewer wkłada ci do kieszeni backlog, który trzymasz na komputerze. Czyta go i nigdy do niego nie pisze.
 
-Potrzebny jest działający Amenbo na Macu, Windowsie albo Linuksie, z wtyczką viewer. Bez tej maszyny ta aplikacja nie ma czego pokazać: to druga połowa narzędzia, a nie narzędzie samo w sobie.
+Potrzebny jest działający Amenbo na Macu, Windowsie albo Linuksie. Bez tej maszyny ta aplikacja nie ma czego pokazać: to druga połowa narzędzia, a nie narzędzie samo w sobie.
 
 JAK TO DOCIERA
 
