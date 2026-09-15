@@ -47,7 +47,7 @@ Không quảng cáo. Không theo dõi. Không tài khoản.
 
 ## release_notes
 
-Màn hình kết nối không còn đặt tên cho điện thoại này.
+Hướng dẫn ghép nối giờ khớp với Amenbo hiện tại.
 
-- Ghép nối không còn hỏi tên. Máy tính chỉ giữ một chuỗi băm của mã, nên chưa bao giờ biết điện thoại nào đang giữ mã — cái tên chỉ tồn tại ở phía này
-- Mã QR từ máy tính bản cũ vẫn ghép nối được, và điện thoại đã ghép nối thì vẫn giữ nguyên
+- Viewer đã nằm trong chính Amenbo, nên không phải cài gì trên máy tính. Mở cài đặt, vào Viewer, mã nằm ở đó
+- Đường đi, cách đọc và dữ liệu vẫn như cũ. Điện thoại đã ghép nối thì vẫn giữ nguyên

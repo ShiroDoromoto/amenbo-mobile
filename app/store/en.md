@@ -47,7 +47,7 @@ No ads. No tracking. No account.
 
 ## release_notes
 
-The connection screen no longer names this phone.
+The pairing guide now matches Amenbo as it stands.
 
-- Pairing no longer asks for a name. The PC keeps only a hash of the code, so it never knew which phone was holding one — the name existed on this side alone
-- A QR code from an older PC still pairs, and a phone that is already paired stays paired
+- The Viewer is part of Amenbo itself, so there is nothing to install on the PC. Open Settings, go to Viewer, and the code is there
+- The route, the reading and the data are unchanged. A phone that is already paired stays paired

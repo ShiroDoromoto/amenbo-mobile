@@ -47,7 +47,7 @@ Keine Werbung. Kein Tracking. Kein Konto.
 
 ## release_notes
 
-Der Verbindungsbildschirm benennt dieses Gerät nicht mehr.
+Die Kopplungsanleitung passt jetzt zu Amenbo, wie es heute ist.
 
-- Beim Koppeln wird kein Name mehr gefragt. Der PC speichert nur einen Hash des Codes und wusste nie, welches Gerät ihn hat — den Namen gab es nur auf dieser Seite
-- Ein QR-Code von einem älteren PC koppelt weiterhin, und ein bereits gekoppeltes Gerät bleibt gekoppelt
+- Der Viewer steckt in Amenbo selbst. Auf dem PC ist nichts mehr zu installieren: Einstellungen öffnen, zu Viewer gehen, dort steht der Code
+- Am Weg, am Lesen und an den Daten ändert sich nichts. Ein bereits gekoppeltes Gerät bleibt gekoppelt

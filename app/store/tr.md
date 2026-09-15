@@ -47,7 +47,7 @@ Reklam yok. Takip yok. Hesap yok.
 
 ## release_notes
 
-Bağlantı ekranı artık bu telefona ad vermiyor.
+Eşleştirme kılavuzu artık bugünkü Amenbo ile örtüşüyor.
 
-- Eşleştirme artık ad sormuyor. Bilgisayar yalnızca kodun özetini tutuyor, yani onu hangi telefonun taşıdığını hiç bilmedi; ad yalnızca bu tarafta vardı
-- Eski bir bilgisayarın verdiği QR kod hâlâ eşleşiyor, zaten eşleşmiş bir telefon da eşleşmiş kalıyor
+- Viewer artık Amenbo'nun içinde; bilgisayara kurulacak bir şey yok. Ayarları açın, Viewer'a gidin, kod orada
+- Yol da, okuma da, veriler de aynı. Zaten eşleşmiş bir telefon eşleşmiş kalıyor

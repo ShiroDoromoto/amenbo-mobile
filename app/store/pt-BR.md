@@ -47,7 +47,7 @@ Sem anúncios. Sem rastreamento. Sem conta.
 
 ## release_notes
 
-A tela de conexão não dá mais nome a este telefone.
+O guia de pareamento agora corresponde ao Amenbo de hoje.
 
-- O pareamento não pede mais um nome. O PC guarda só um hash do código, então nunca soube qual telefone o tinha: o nome existia apenas deste lado
-- Um QR code de um PC mais antigo ainda pareia, e um telefone já pareado continua pareado
+- O Viewer faz parte do próprio Amenbo, então não há nada a instalar no PC. Abra as configurações, vá até Viewer e o código está lá
+- O caminho, a leitura e os dados continuam os mesmos. Um telefone já pareado continua pareado

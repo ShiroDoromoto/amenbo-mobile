@@ -47,7 +47,7 @@ Geen advertenties. Geen tracking. Geen account.
 
 ## release_notes
 
-Het verbindingsscherm geeft deze telefoon geen naam meer.
+De koppelhandleiding klopt weer met Amenbo zoals het nu is.
 
-- Koppelen vraagt niet langer om een naam. De pc bewaart alleen een hash van de code en wist dus nooit welke telefoon hem had — de naam bestond alleen aan deze kant
-- Een QR-code van een oudere pc koppelt nog steeds, en een al gekoppelde telefoon blijft gekoppeld
+- De Viewer zit in Amenbo zelf, dus op de pc valt niets meer te installeren. Open de instellingen, ga naar Viewer, daar staat de code
+- Aan de route, het lezen en de gegevens verandert niets. Een al gekoppelde telefoon blijft gekoppeld
