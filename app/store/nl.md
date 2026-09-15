@@ -20,7 +20,7 @@ Amenbo,backlog,taken,besluiten,register,AI,agent,lezer,offline,versleuteling,clo
 
 Amenbo Viewer stopt de backlog die op je pc staat in je zak. Hij leest hem; hij schrijft er nooit in.
 
-Je hebt Amenbo nodig op een Mac, Windows of Linux, met de viewer-plug-in erbij. Zonder die machine heeft deze app niets te tonen: het is de andere helft van een gereedschap, geen gereedschap op zichzelf.
+Je hebt Amenbo nodig op een Mac, Windows of Linux. Zonder die machine heeft deze app niets te tonen: het is de andere helft van een gereedschap, geen gereedschap op zichzelf.
 
 HOE HET AANKOMT
 

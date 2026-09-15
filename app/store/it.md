@@ -20,7 +20,7 @@ Amenbo,backlog,attività,decisioni,registro,IA,agente,lettore,offline,cifratura,
 
 Amenbo Viewer ti mette in tasca il backlog che tieni sul PC. Lo legge; non ci scrive mai.
 
-Serve Amenbo in funzione su un Mac, su Windows o su Linux, con il plugin viewer installato. Senza quella macchina questa app non ha nulla da mostrare: è l'altra metà di uno strumento, non uno strumento a sé.
+Serve Amenbo in funzione su un Mac, su Windows o su Linux. Senza quella macchina questa app non ha nulla da mostrare: è l'altra metà di uno strumento, non uno strumento a sé.
 
 COME ARRIVA
 

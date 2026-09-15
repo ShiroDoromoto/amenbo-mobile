@@ -20,7 +20,7 @@ Amenbo,backlog,tareas,decisiones,registro,IA,agente,visor,sin conexión,cifrado,
 
 Amenbo Viewer te deja leer en el móvil el backlog que guardas en tu PC. Lo lee; nunca escribe en él.
 
-Hace falta Amenbo funcionando en un Mac, un Windows o un Linux, con el complemento viewer instalado. Sin ese ordenador esta aplicación no tiene nada que mostrar: es la otra mitad de una herramienta, no una herramienta por su cuenta.
+Hace falta Amenbo funcionando en un Mac, un Windows o un Linux. Sin ese ordenador esta aplicación no tiene nada que mostrar: es la otra mitad de una herramienta, no una herramienta por su cuenta.
 
 CÓMO LLEGA
 

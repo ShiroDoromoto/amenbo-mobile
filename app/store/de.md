@@ -20,7 +20,7 @@ Amenbo,Backlog,Aufgaben,Entscheidungen,KI,Agent,Betrachter,offline,Verschlüssel
 
 Amenbo Viewer bringt das Backlog, das auf deinem PC liegt, in deine Tasche. Es liest; es schreibt nie zurück.
 
-Dafür muss Amenbo auf einem Mac, unter Windows oder unter Linux laufen, mit installiertem viewer-Plugin. Ohne diesen Rechner hat die App nichts zu zeigen: Sie ist die andere Hälfte eines Werkzeugs, kein Werkzeug für sich.
+Dafür muss Amenbo auf einem Mac, unter Windows oder unter Linux laufen. Ohne diesen Rechner hat die App nichts zu zeigen: Sie ist die andere Hälfte eines Werkzeugs, kein Werkzeug für sich.
 
 WIE ES ANKOMMT
 

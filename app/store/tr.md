@@ -20,7 +20,7 @@ Amenbo,backlog,işler,kararlar,kayıt,yapay zeka,ajan,okuyucu,çevrimdışı,şi
 
 Amenbo Viewer, bilgisayarında tuttuğun backlog'u cebine koyar. Onu okur; ona asla yazmaz.
 
-Bunun için Mac, Windows ya da Linux'ta çalışan bir Amenbo ve kurulu viewer eklentisi gerekir. O makine olmadan bu uygulamanın gösterecek bir şeyi yoktur: o, bir aracın diğer yarısıdır, kendi başına bir araç değil.
+Bunun için Mac, Windows ya da Linux'ta çalışan bir Amenbo gerekir. O makine olmadan bu uygulamanın gösterecek bir şeyi yoktur: o, bir aracın diğer yarısıdır, kendi başına bir araç değil.
 
 NASIL GELİYOR
 

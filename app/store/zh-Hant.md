@@ -20,7 +20,7 @@ Amenbo,待辦,任務,決策紀錄,AI,代理,檢視器,離線,同步,加密,cloud
 
 Amenbo Viewer 讓你在手機上讀電腦裡的 Amenbo 待辦。它只讀，不回寫。
 
-前提是電腦（Mac、Windows 或 Linux）上跑著 Amenbo，並啟用了 viewer 外掛。沒有那台電腦，這個 App 沒有可顯示的內容——它是一件工具的另一半，不是一件獨立的工具。
+前提是電腦（Mac、Windows 或 Linux）上跑著 Amenbo。沒有那台電腦，這個 App 沒有可顯示的內容——它是一件工具的另一半，不是一件獨立的工具。
 
 內容怎麼過來
 
