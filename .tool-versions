@@ -1,12 +1,8 @@
 # 手元で使うツールの版。asdf / mise がこのファイルを読む。
 #
-# 部品ごとにツールチェーンが違うので、宣言が無いと「素のシェルでは `make test` が落ちる」に
-# なる。ここに書いてあるものは `mise install` で揃う。
+# 宣言が無いと「素のシェルでは `make test` が落ちる」になる。ここに書いてあるものは
+# `mise install` で揃う。
 #
-# **flutter はアプリの CI（.github/workflows/app.yml の FLUTTER_VERSION）と同じ版にする。**
-# 片方だけ上げると、手元が緑でも push した瞬間に落ちる——あるいはその逆で、落ちた理由が
-# こちらの変更なのか Flutter の更新なのか読めなくなる。
-#
-# go は書かない。CI は plugin/go.mod から読み、手元は版管理の外に入っている。
-node 24.18.0
+# **flutter は CI（.github/workflows/ci.yml の versions ジョブ）が同じ行を読む。**
+# ここが唯一の持ち主なので、上げれば手元と CI が同時に動く。
 flutter 3.44.9

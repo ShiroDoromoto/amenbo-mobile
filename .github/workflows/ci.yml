@@ -42,14 +42,12 @@ jobs:
       contents: read
       pull-requests: read
     #
-    # **手で回したときは3層とも立てる。** そこには比べる差分が無い（PR でも push でもないので
+    # **手で回したときは層を立てる。** そこには比べる差分が無い（PR でも push でもないので
     # 基準になるコミットが無い）ので、差分を訊けば「何も動いていない」が返り、下のジョブは全部
     # skip される——`all green` は skip を通すので、**何も検証しないまま緑を名乗る run** ができる。
-    # 訊いているのは「いまの main が丸ごと組めるか」なので、全部立てるのが答えになる。
+    # 訊いているのは「いまの main が丸ごと組めるか」なので、立てるのが答えになる。
     outputs:
       app: ${{ github.event_name == 'workflow_dispatch' || steps.filter.outputs.app == 'true' }}
-      plugin: ${{ github.event_name == 'workflow_dispatch' || steps.filter.outputs.plugin == 'true' }}
-      worker: ${{ github.event_name == 'workflow_dispatch' || steps.filter.outputs.worker == 'true' }}
     steps:
       - uses: actions/checkout@v7
       - uses: dorny/paths-filter@v4
@@ -63,24 +61,20 @@ jobs:
   # ファイルを読むかぎり2つは離れない。**ここに数字を書かない**——片方だけ上げたとき、落ちた理由が
   # 自分の変更なのか版の更新なのか読めなくなる。
   #
-  # setup-node / flutter-action のファイル読み取り機能には渡せない。setup-node の
-  # `node-version-file` は `nodejs <版>` の行しか読まず、先に当たったコメント行を版と読んでしまう。
-  # 引けなければ落とす：無言で既定の版に落ちると、手元と CI が黙って離れる。
+  # 読むのはここだけで、flutter-action のファイル読み取り機能には渡さない。引けなければ落とす：
+  # 無言で既定の版に落ちると、手元と CI が黙って離れる。
   versions:
-    name: read the declared tool versions
+    name: read the declared tool version
     runs-on: ubuntu-latest
     outputs:
-      node: ${{ steps.read.outputs.node }}
       flutter: ${{ steps.read.outputs.flutter }}
     steps:
       - uses: actions/checkout@v7
       - id: read
         run: |
-          for tool in node flutter; do
-            version=$(awk -v t="$tool" '$1 == t { print $2 }' .tool-versions)
-            test -n "$version" || { echo ".tool-versions declares no $tool version"; exit 1; }
-            echo "$tool=$version" >> "$GITHUB_OUTPUT"
-          done
+          version=$(awk '$1 == "flutter" { print $2 }' .tool-versions)
+          test -n "$version" || { echo ".tool-versions declares no flutter version"; exit 1; }
+          echo "flutter=$version" >> "$GITHUB_OUTPUT"
 
   # 静的解析とテスト。プラットフォームの SDK が要らないので、いちばん安い runner で回る。
   app-check:
@@ -203,42 +197,6 @@ jobs:
       # 署名しない。証明書はリリースの持ち物で、組めるかどうかとは別の話。
       - run: flutter build ios --no-codesign --flavor store
 
-  # プラグインと Worker が回すのは**手元のゲートと同じ2行だけ**。段を CI 側にだけ足すと、
-  # 手元が全部緑でも push した瞬間に赤くなる形ができる。
-  plugin:
-    name: plugin — build and test
-    runs-on: ubuntu-latest
-    needs: changes
-    if: ${{ needs.changes.outputs.plugin == 'true' }}
-    steps:
-      - uses: actions/checkout@v7
-      # 版は plugin/go.mod が唯一の持ち主。
-      - uses: actions/setup-go@v7
-        with:
-          go-version-file: plugin/go.mod
-      - run: make -C plugin build
-      # マニフェスト検査は amenbo が PATH に在るときだけ走る（plugin/Makefile が自分で分岐する）。
-      # CI に amenbo は入れない——このリポの持ち物ではないし、配布の入口で同じ規則がもう一度見る。
-      - run: make -C plugin test
-
-  worker:
-    name: worker — build and test
-    runs-on: ubuntu-latest
-    needs: [changes, versions]
-    if: ${{ needs.changes.outputs.worker == 'true' }}
-    steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v6
-        with:
-          node-version: ${{ needs.versions.outputs.node }}
-          cache: npm
-          cache-dependency-path: worker/package-lock.json
-      - run: make -C worker install
-      # build の中の `wrangler deploy --dry-run` は組めるかを見るだけ。Worker が立つ先は利用者自身の
-      # Cloudflare だから、ここに資格情報は要らないし置いていない。
-      - run: make -C worker build
-      - run: make -C worker test
-
   # 層で絞らない。見ているのはツリーの形で、どのファイルの変更でも崩れうるうえ、数秒で終わる。
   guards:
     name: guards
@@ -265,8 +223,6 @@ jobs:
       - app-check
       - app-android
       - app-ios
-      - plugin
-      - worker
       - guards
     steps:
       - name: Fold every job's result

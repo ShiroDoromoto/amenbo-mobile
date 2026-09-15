@@ -1,5 +1,4 @@
-# 部品ごとにツールチェーンが違うので、生成物も部品ごとに分けて書く。
-# どの部品のどのツールが作るものかが読めるようにしておく。
+# 生成物は、どのツールが作るものかが読めるように分けて書く。
 
 # --- 手元の持ち物（リポジトリの物ではない）
 .amenbo
@@ -13,29 +12,6 @@ docs/wip/
 .DS_Store
 Thumbs.db
 *.swp
-
-# --- プラグイン（Go）
-/plugin/viewer
-/plugin/viewer.exe
-/plugin/dist/
-*.test
-# プラグインが自分のディレクトリに残す覚え。手元で直接動かすとここに出る
-/plugin/sync-state.json
-/plugin/paired-phones.json
-# 送信の錠。中身は無く、あるだけで送信中を意味しもしない（意味を持つのはカーネルの保持のほう）
-/plugin/sending.lock
-
-# --- Worker（Node / wrangler）
-node_modules/
-/worker/dist/
-/worker/.wrangler/
-/worker/.dev.vars
-/worker/.dev.vars.*
-!/worker/.dev.vars.example
-# wrangler.jsonc から生成される。1万行を超えるうえ導出できるので追跡しない
-/worker/worker-configuration.d.ts
-npm-debug.log*
-yarn-error.log*
 
 # --- アプリ（Flutter / iOS / Android）
 #
