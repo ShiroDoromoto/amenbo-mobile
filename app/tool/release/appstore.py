@@ -21,6 +21,7 @@ loses the place in the review queue, and no amount of care afterwards buys it ba
     uv run app/tool/release/appstore.py whatsnew 1.1.0 <this version's text>.txt
     uv run app/tool/release/appstore.py bind 1.0.0 2
     uv run app/tool/release/appstore.py submit 1.0.0
+    uv run app/tool/release/appstore.py release 1.0.0
 
 A release whose name stays put starts at `bind`: the version record is already there. A release
 whose name moves starts at `version`, because the one the store is holding has been released and
@@ -54,6 +55,10 @@ PENDING = {"READY_FOR_REVIEW", "WAITING_FOR_REVIEW", "IN_REVIEW", "UNRESOLVED_IS
 # What the notes field holds. Checked here because the API refuses the whole PATCH over it, and a
 # rejection at that point costs a round trip to find out which of the two fields was too long.
 NOTES_LIMIT = 4000
+
+# Where an approved version waits while the release is MANUAL. The one state `release` acts on:
+# every other one has either not been through review yet or is already out.
+RELEASABLE = "PENDING_DEVELOPER_RELEASE"
 
 # What the store shows a user who is deciding whether to update. Same reason as NOTES_LIMIT: the
 # API refuses the PATCH rather than trimming, and finding that out costs a round trip.
@@ -422,6 +427,39 @@ def submit(args):
     print(f"submitted {sub_id}")
 
 
+def release(args):
+    """Throws the switch that puts an approved version in front of people.
+
+    Every version this road opens is MANUAL, so review passing and the app appearing are two
+    separate moments — this is the second one, and it is the only step here that reaches users
+    directly. The state is read first because the store answers a request against any other one
+    with a 409 that never says which side was wrong, the version's or the caller's idea of it.
+    """
+    for held in versions():
+        if held["attributes"]["versionString"] != args.version:
+            continue
+        standing = held["attributes"]["appStoreState"]
+        if standing != RELEASABLE:
+            sys.exit(f"version {args.version} is {standing}, not {RELEASABLE} — nothing to release")
+        call(
+            "POST",
+            "/v1/appStoreVersionReleaseRequests",
+            {
+                "data": {
+                    "type": "appStoreVersionReleaseRequests",
+                    "relationships": {
+                        "appStoreVersion": {
+                            "data": {"type": "appStoreVersions", "id": held["id"]}
+                        }
+                    },
+                }
+            },
+        )
+        print(f"released {args.version} — the store rolls it out from here")
+        return
+    sys.exit(f"no version {args.version} on this app")
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     steps = parser.add_subparsers(required=True)
@@ -462,6 +500,10 @@ if __name__ == "__main__":
     one = steps.add_parser("submit", help="send a version for review")
     one.add_argument("version")
     one.set_defaults(run=submit)
+
+    one = steps.add_parser("release", help="put an approved version in front of people")
+    one.add_argument("version")
+    one.set_defaults(run=release)
 
     args = parser.parse_args()
     args.run(args)
