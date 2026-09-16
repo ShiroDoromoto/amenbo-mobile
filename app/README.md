@@ -528,8 +528,8 @@ gradle 側に分岐は無い。
 焼いたものをそのまま Actions の artifact に載せる。メンバーは `gh` で取る:
 
 ```sh
-gh run list -R ShiroDoromoto/amenbo-plugin-viewer -w ci.yml -b main -L 5
-gh run download -R ShiroDoromoto/amenbo-plugin-viewer <run-id> -n viewer-dev-apk
+gh run list -R ShiroDoromoto/amenbo-mobile -w ci.yml -b main -L 5
+gh run download -R ShiroDoromoto/amenbo-mobile <run-id> -n viewer-dev-apk
 ```
 
 - **`-R` は省けない。** メンバーは clone を持たないので、無いと `not a git repository` で落ちる

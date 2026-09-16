@@ -313,10 +313,7 @@ void main() {
       expect(store.tasks(const TaskQuery(projectId: 42)).map((row) => row.id), [
         9,
       ]);
-      expect(store.projects().map((row) => row.name), [
-        'amenbo-plugin-viewer',
-        'nsys',
-      ]);
+      expect(store.projects().map((row) => row.name), ['amenbo', 'nsys']);
     });
   });
 

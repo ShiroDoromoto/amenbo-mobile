@@ -214,7 +214,7 @@ Map<String, Object?> taskCommit({
 
 Map<String, Object?> project({
   required int id,
-  String name = 'amenbo-plugin-viewer',
+  String name = 'amenbo',
   int archived = 0,
 }) => {
   'id': id,
