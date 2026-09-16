@@ -314,7 +314,7 @@ void main() {
         9,
       ]);
       expect(store.projects().map((row) => row.name), [
-        'amenbo-plugin-viewer',
+        'amenbo',
         'nsys',
       ]);
     });

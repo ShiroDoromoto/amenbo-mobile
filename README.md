@@ -1,4 +1,4 @@
-# amenbo-plugin-viewer
+# amenbo-mobile
 
 PC から離れているあいだも、スマートフォンから [**Amenbo**](https://github.com/ShiroDoromoto/amenbo)
 のタスクの進み具合を見る。**Amenbo Viewer** のアプリ（iOS / Android）。
@@ -59,9 +59,13 @@ PC が送るのは動いた行だけになる。
 
 | | 名前 |
 |---|---|
-| リポジトリ | `amenbo-plugin-viewer` |
+| リポジトリ | `amenbo-mobile` |
 | アプリ名（ストア表示） | **Amenbo Viewer** |
 | バンドル ID / パッケージ名 | `work.amenbo.viewer`（ストアのもの。手元は `.local`、配って試すものは `.dev` が付く→ [app/README.md](app/README.md)） |
+
+**リポジトリ名は用途ではなく、動く機械のほうで張ってある。** 「見る」はいまの姿にすぎないので、
+スマートフォンで動くものがこの先で増えても、名前は据え置ける。アプリ名のほうは、いまの姿どおり
+`Amenbo Viewer` と名乗る。
 
 大小は、その文字列が**実体か呼び名か**で決まる。機械がその綴りのまま解決するもの——打つコマンド、PATH に載る名前、リポジトリ名、URL、バンドル ID——は小文字の `amenbo`。文章の中で製品を指すときは `Amenbo` / `Amenbo Viewer`。迷ったら「`Amenbo` へ書き換えたら何かが動かなくなるか」を問う。なるなら小文字側で書く。
 
