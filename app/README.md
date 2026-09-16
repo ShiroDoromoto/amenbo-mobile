@@ -573,7 +573,7 @@ uv run app/tool/release/play.py state
 
 | ストア | 打つもの |
 |---|---|
-| App Store | `appstore.py upload <ipa>` → 版が審査に居るなら `withdraw` → `bind <版> <番号>` → `submit <版>` |
+| App Store | `appstore.py upload <ipa>` → 版が審査に居るなら `withdraw` → `bind <版> <番号>` → `submit <版>` → 通ったら `release <版>` |
 | Play | `play.py upload <aab> --track alpha` → 通ったら `play.py promote --from alpha --to production` |
 
 - **版名が動くときは `bind` の前に2つ挟まる。** 出し終えた版には二度と紐づけられないので、
@@ -588,6 +588,9 @@ uv run app/tool/release/play.py state
 - **鍵は手元の置き場から読む。** App Store は `~/.appstoreconnect/private_keys/` の `.p8` と
   `~/.config/amenbo-release/asc.env` の2つの ID、Play は同じ場所のサービスアカウントの JSON。
   **リポジトリには鍵も ID も書かない**
+- **審査を通っても、まだ配信は始まっていない。** 版レコードはどれも `MANUAL` なので、通った版は
+  `PENDING_DEVELOPER_RELEASE` で止まる。世に出すのは `appstore.py release <版>` で、打つと
+  `READY_FOR_SALE` に変わる。ここが利用者に届く唯一の一押しで、`state` で状態を見てから打つ
 - **`withdraw` は列の順番を失う。** 審査に入る前なら失うのは並んだぶんだけだが、入った後は最初からになる
 - **Play の編集はコミットするまで何も届かない。** 途中で落ちたら、その編集は捨てて構わない
 - **コミットは、そのまま審査へ送る。** `edits:commit` は既定が `changesNotSentForReview=false` なので、
