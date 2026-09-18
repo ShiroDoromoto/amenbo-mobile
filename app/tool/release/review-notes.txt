@@ -1,6 +1,6 @@
 WHAT THE APP IS, AND WHO IT IS FOR
 
-Amenbo Viewer is the phone half of Amenbo, a local-first task manager that runs on the user's own computer (macOS, Windows or Linux). Amenbo keeps a backlog there — tasks, decision records and the comments on both. This app reads it on the phone, and never writes to it.
+Amenbo Viewer is the phone half of Amenbo, a local-first task manager that runs on the user's own computer (macOS, Windows or Linux). Amenbo keeps a backlog there — tasks, decisions and the comments on both. This app reads it on the phone, and never writes to it.
 
 It is for people who already run Amenbo on their own machine — mostly developers who track work alongside AI coding agents — and want to read that backlog away from the desk. It otherwise lives on one computer and is reachable nowhere else.
 
@@ -14,7 +14,7 @@ Attached is a pairing code (pairing-appreview.png), so you can walk the whole fl
 
 The app does not read codes out of the photo library, deliberately: the key would then sit there and in every backup it reaches. A code on a screen read by the camera is the only path, and it is the path a real user takes.
 
-After scanning, the first sync runs and the app opens on the task list. The three tabs are tasks, decision records and search. The task screen switches between four states (to do, in progress, blocked, done). Tapping a row opens its detail and comments. Turn the network off and it all still reads: the phone works from its own copy.
+After scanning, the first sync runs and the app opens on the task list. The three tabs are tasks, decisions and search. The task screen switches between four states (to do, in progress, blocked, done). Tapping a row opens its detail and comments. Turn the network off and it all still reads: the phone works from its own copy.
 
 HOW A REAL USER SETS IT UP
 
@@ -24,7 +24,7 @@ HOW A REAL USER SETS IT UP
 
 What crosses the network is ciphertext. The key never travels over it, only optically in the QR code — that is why the camera is requested, and it is the only reason. There are no credentials to supply anywhere in this app.
 
-New in this version: nothing about the route, the permissions or the data handling changed. The viewer is now part of Amenbo on the computer instead of a plugin installed into it, so the app's pairing guide sends the reader to Amenbo's settings rather than telling them to install something first. The attached code pairs exactly as before.
+New in this version: nothing about the route, the permissions or the data handling changed. A decision is decided from the moment it is saved, so the app no longer draws a separate accepted state; one still being written is drawn as a draft, and that is when it holds a task back. The attached code pairs exactly as before.
 
 DEVICE MODELS AND OPERATING SYSTEMS TESTED
 
