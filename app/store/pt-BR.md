@@ -47,7 +47,8 @@ Sem anúncios. Sem rastreamento. Sem conta.
 
 ## release_notes
 
-O guia de pareamento agora corresponde ao Amenbo de hoje.
+As decisões agora aparecem como no próprio Amenbo.
 
-- O Viewer faz parte do próprio Amenbo, então não há nada a instalar no PC. Abra as configurações, vá até Viewer e o código está lá
-- O caminho, a leitura e os dados continuam os mesmos. Um telefone já pareado continua pareado
+- Uma decisão está decidida assim que é salva. O segundo passo, aceitá-la, não existe mais
+- O que ainda está sendo escrito aparece como rascunho, e só então segura uma tarefa
+- As telas as chamam de Decisões em todo lugar

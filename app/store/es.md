@@ -47,7 +47,8 @@ Sin anuncios. Sin rastreo. Sin cuenta.
 
 ## release_notes
 
-La guía de emparejamiento ya coincide con el Amenbo de hoy.
+Las decisiones se ven ahora como en Amenbo.
 
-- El Viewer forma parte de Amenbo, así que no hay nada que instalar en el PC: abre Ajustes, entra en Viewer y ahí está el código
-- La ruta, la lectura y los datos siguen igual. Un teléfono ya emparejado sigue estándolo
+- Una decisión queda decidida en cuanto se guarda. El segundo paso, aceptarla, ya no existe
+- Lo que aún no está escrito del todo aparece como borrador, y solo entonces retiene una tarea
+- Las pantallas las llaman Decisiones en todas partes

@@ -47,7 +47,8 @@ Không quảng cáo. Không theo dõi. Không tài khoản.
 
 ## release_notes
 
-Hướng dẫn ghép nối giờ khớp với Amenbo hiện tại.
+Quyết định giờ hiển thị giống như trong chính Amenbo.
 
-- Viewer đã nằm trong chính Amenbo, nên không phải cài gì trên máy tính. Mở cài đặt, vào Viewer, mã nằm ở đó
-- Đường đi, cách đọc và dữ liệu vẫn như cũ. Điện thoại đã ghép nối thì vẫn giữ nguyên
+- Một quyết định đã được quyết ngay khi lưu. Bước thứ hai, chấp nhận nó, không còn nữa
+- Cái vẫn đang viết hiện là bản nháp, và chỉ khi đó nó mới giữ một công việc lại
+- Các màn hình đều gọi chúng là Quyết định

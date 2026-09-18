@@ -47,7 +47,8 @@ Nessuna pubblicità. Nessun tracciamento. Nessun account.
 
 ## release_notes
 
-La guida all'associazione ora corrisponde ad Amenbo com'è oggi.
+Le decisioni ora si leggono come in Amenbo.
 
-- Il Viewer fa parte di Amenbo: sul PC non c'è più nulla da installare. Apri le impostazioni, vai su Viewer e lì c'è il codice
-- Il percorso, la lettura e i dati restano gli stessi. Un telefono già associato resta tale
+- Una decisione è decisa dal momento in cui viene salvata. Il secondo passaggio, accettarla, non c'è più
+- Quella ancora da scrivere appare come bozza, ed è l'unico momento in cui trattiene un'attività
+- Le schermate le chiamano Decisioni ovunque
