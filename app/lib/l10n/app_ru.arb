@@ -41,8 +41,8 @@
   "statusRejected": "Отклонено",
   "statusBlocked": "Заблокировано",
 
-  "decisionProposed": "Предложено",
-  "decisionAccepted": "Принято",
+  "decisionDraft": "Черновик",
+  "decisionDecided": "Решено",
   "decisionRejected": "Отклонено",
 
   "dueOverdue": "Просрочено {day}",
@@ -93,7 +93,6 @@
   "share": "Поделиться",
   "chipLabel": "{dimension}={value}",
 
-  "decisionWaiting": "Ждёт вашего ответа",
   "decisionHeld": "{count, plural, one{Из-за него стоит 1 задача} few{Из-за него стоят {count} задачи} many{Из-за него стоят {count} задач} other{Из-за него стоят {count} задачи}}",
   "edgeBuildsOn": "Опирается на",
   "edgeSupersedes": "Заменяет",

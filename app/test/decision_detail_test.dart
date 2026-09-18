@@ -63,8 +63,8 @@ void main() {
     expect(openedTasks, [16]);
   });
 
-  group('the undecided one is why this screen exists', () {
-    testWidgets('it says it is waiting, and how much is held by it', (
+  group('the half-written one is why this screen exists', () {
+    testWidgets('it says it is unfinished, and how much is held by it', (
       tester,
     ) async {
       store.applyPage([
@@ -85,28 +85,27 @@ void main() {
 
       await tester.pumpWidget(face());
 
-      // One of the two: work already finished was not waiting on the answer.
+      // One of the two: work already finished was not held up by it.
+      expect(find.textContaining(words.stallDraft), findsOneWidget);
       expect(find.textContaining(words.decisionHeld(1)), findsOneWidget);
     });
 
-    testWidgets('a settled one says nothing about waiting', (tester) async {
+    testWidgets('a settled one says nothing about being unfinished', (
+      tester,
+    ) async {
       store.applyPage([
         BacklogChange.put(
           'decision',
           31,
-          decision(
-            id: 31,
-            status: 'accepted',
-            decidedAt: '2026-08-02T00:00:00Z',
-          ),
+          decision(id: 31, draft: false, decidedAt: '2026-08-02T00:00:00Z'),
         ),
       ]);
 
       await tester.pumpWidget(face());
 
-      expect(find.text(words.decisionWaiting), findsNothing);
+      expect(find.text(words.stallDraft), findsNothing);
       expect(
-        find.textContaining(decisionStatusWords(words, 'accepted')),
+        find.textContaining(decisionStatusWords(words, 'decided')),
         findsWidgets,
       );
     });
@@ -185,7 +184,7 @@ void main() {
     await tester.pumpWidget(face());
     await tester.tap(find.byTooltip(words.share));
 
-    expect(shared, ['${decisionRef(31)}\nきめた\nProposed']);
+    expect(shared, ['${decisionRef(31)}\nきめた\nDraft']);
   });
 
   testWidgets(

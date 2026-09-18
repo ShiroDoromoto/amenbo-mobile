@@ -90,7 +90,7 @@ void main() {
             1,
             dependency(id: 1, taskId: 5, blockedById: 1),
           ),
-          BacklogChange.put('decision', 7, decision(id: 7, status: 'accepted')),
+          BacklogChange.put('decision', 7, decision(id: 7, draft: false)),
           BacklogChange.put(
             'decision_task_link',
             1,

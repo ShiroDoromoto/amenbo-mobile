@@ -41,8 +41,8 @@
   "statusRejected": "अस्वीकृत",
   "statusBlocked": "रुका हुआ",
 
-  "decisionProposed": "प्रस्तावित",
-  "decisionAccepted": "स्वीकृत",
+  "decisionDraft": "मसौदा",
+  "decisionDecided": "तय",
   "decisionRejected": "अस्वीकृत",
 
   "dueOverdue": "समय बीत चुका {day}",
@@ -93,7 +93,6 @@
   "share": "साझा करें",
   "chipLabel": "{dimension}={value}",
 
-  "decisionWaiting": "आपके जवाब का इंतज़ार है",
   "decisionHeld": "{count, plural, one{इसकी वजह से 1 काम रुका है} other{इसकी वजह से {count} काम रुके हैं}}",
   "edgeBuildsOn": "इस पर टिका है",
   "edgeSupersedes": "इसकी जगह लेता है",

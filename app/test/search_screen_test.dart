@@ -79,7 +79,7 @@ void main() {
         BacklogChange.put(
           'decision',
           7,
-          decision(id: 7, title: 'QR に何を載せるか', status: 'accepted'),
+          decision(id: 7, title: 'QR に何を載せるか', draft: false),
         ),
       ]),
     );

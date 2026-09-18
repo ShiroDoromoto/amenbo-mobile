@@ -122,38 +122,38 @@ String statusWords(Words words, String status) => switch (status) {
   _ => status,
 };
 
-/// A decision's own three states.
+/// A decision's own three states, as `decisionState` reads them off the record.
 ///
-/// `proposed` is the one that carries weight: it is the thing the person has to answer when they
-/// get back to the PC, and everything linked to it is waiting on that answer. So it is the only
-/// one drawn in the accent colour, while the two that are settled stay quiet.
+/// `draft` is the one that carries weight: the writing is unfinished, so nothing linked to it can
+/// be started until the person goes back to the PC and finishes it. So it is the only one drawn
+/// in the accent colour, while the two that are settled stay quiet.
 class DecisionStatusMark extends StatelessWidget {
-  const DecisionStatusMark(this.status, {super.key});
+  const DecisionStatusMark(this.state, {super.key});
 
-  final String status;
+  final String state;
 
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
-    final (icon, colour) = switch (status) {
-      'proposed' => (Icons.help_outline, scheme.primary),
-      'accepted' => (Icons.check, scheme.onSurfaceVariant),
+    final (icon, colour) = switch (state) {
+      'draft' => (Icons.edit_outlined, scheme.primary),
+      'decided' => (Icons.check, scheme.onSurfaceVariant),
       'rejected' => (Icons.close, scheme.onSurfaceVariant),
       _ => (Icons.remove, scheme.onSurfaceVariant),
     };
     return _Mark(
       icon: icon,
       colour: colour,
-      text: decisionStatusWords(Words.of(context), status),
+      text: decisionStatusWords(Words.of(context), state),
     );
   }
 }
 
-String decisionStatusWords(Words words, String status) => switch (status) {
-  'proposed' => words.decisionProposed,
-  'accepted' => words.decisionAccepted,
+String decisionStatusWords(Words words, String state) => switch (state) {
+  'draft' => words.decisionDraft,
+  'decided' => words.decisionDecided,
   'rejected' => words.decisionRejected,
-  _ => status,
+  _ => state,
 };
 
 /// A due day, saying in words when it has passed.

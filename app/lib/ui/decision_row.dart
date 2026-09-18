@@ -3,7 +3,7 @@
 /// It is built to sit in the same list as a task row, which is why it keeps the same two-line
 /// shape: title, then the little that says whether it is worth opening. What differs is what goes
 /// on the second line — a decision has no priority, no due day and nothing blocking it, and the
-/// one thing it does have is whether anybody has ruled on it yet.
+/// one thing it does have is whether the writing is finished.
 library;
 
 import 'package:flutter/material.dart';
@@ -46,8 +46,8 @@ class DecisionRow extends StatelessWidget {
       fontWeight: Lettering.normal,
     );
     final excerpt = line.matchLine?.trim();
-    // When it was decided if it was, when it was raised if it was not — either way, the date the
-    // list is sorted by is the date the row shows.
+    // When the writing was finished if it has been, when it was raised if it has not — either way,
+    // the date the list is sorted by is the date the row shows.
     final when = DateTime.tryParse(line.decidedAt ?? line.createdAt);
 
     return SpokenAsOne(
@@ -55,7 +55,7 @@ class DecisionRow extends StatelessWidget {
         decisionRef(line.id),
         line.title,
         ?projectName,
-        decisionStatusWords(words, line.status),
+        decisionStatusWords(words, line.state),
         if (when != null) relativeTime(face, when, now: today),
         ?excerpt,
       ].join(', '),
@@ -66,7 +66,7 @@ class DecisionRow extends StatelessWidget {
         lead: const RowLead(),
         title: line.title,
         second: [
-          DecisionStatusMark(line.status),
+          DecisionStatusMark(line.state),
           if (projectName != null)
             Text(
               projectName!,

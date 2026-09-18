@@ -41,8 +41,8 @@
   "statusRejected": "Écarté",
   "statusBlocked": "Bloqué",
 
-  "decisionProposed": "Proposée",
-  "decisionAccepted": "Acceptée",
+  "decisionDraft": "Brouillon",
+  "decisionDecided": "Décidée",
   "decisionRejected": "Refusée",
 
   "dueOverdue": "En retard {day}",
@@ -93,7 +93,6 @@
   "share": "Partager",
   "chipLabel": "{dimension}={value}",
 
-  "decisionWaiting": "Attend votre réponse",
   "decisionHeld": "{count, plural, one{1 tâche en dépend} other{{count} tâches en dépendent}}",
   "edgeBuildsOn": "S'appuie sur",
   "edgeSupersedes": "Remplace",

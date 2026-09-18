@@ -144,7 +144,7 @@ void main() {
       BacklogChange.put(
         'decision',
         1,
-        decision(id: 1, title: 'きめた', body: 'りゆう', status: 'proposed'),
+        decision(id: 1, title: 'きめた', body: 'りゆう'),
       ),
       BacklogChange.put(
         'decision_comment',

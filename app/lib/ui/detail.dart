@@ -233,7 +233,7 @@ class DetailHead extends StatelessWidget {
   }
 }
 
-/// The app saying something about the record — that it cannot start, that nobody has ruled on it.
+/// The app saying something about the record — that it cannot start, that it is still unfinished.
 ///
 /// Outlined, and in the colour of what it is saying. The body's own quotes and code fences are
 /// filled blocks, and a notice drawn as one of those is read as a line somebody wrote into the

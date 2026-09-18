@@ -107,7 +107,8 @@ class TaskLine {
   /// that says what to go and do.
   final int? blockedBy;
 
-  /// The first linked decision nobody has ruled on, if any.
+  /// The first linked decision still being written, if any. Until the writing is finished the
+  /// premise is not settled, and the task waiting on it cannot be started.
   final int? undecided;
 
   /// The stretch of text a search matched, when the line came out of a search.
@@ -131,6 +132,7 @@ class DecisionLine {
     required this.projectId,
     required this.title,
     required this.status,
+    required this.draft,
     required this.createdAt,
     required this.decidedAt,
     required this.excerpt,
@@ -141,14 +143,21 @@ class DecisionLine {
   final int projectId;
   final String title;
 
-  /// `proposed` / `accepted` / `rejected`.
+  /// `decided` / `rejected`.
   final String status;
+
+  /// Still being written. A flag of its own rather than a status, because a decision is decided
+  /// from the moment it is saved and what is unfinished is the writing.
+  final bool draft;
   final String createdAt;
   final String? decidedAt;
   final String? excerpt;
 
   /// Where a search matched — see [TaskLine.matchedIn].
   final String? matchedIn;
+
+  /// The one word a screen draws — see [decisionState].
+  String get state => decisionState(status: status, draft: draft);
 
   String? get matchLine =>
       matchedIn == null || matchedIn == 'title' ? null : excerpt;
@@ -206,6 +215,7 @@ class DecisionEdgeLine {
     required this.kind,
     required this.title,
     required this.status,
+    required this.draft,
   });
 
   final int targetId;
@@ -214,7 +224,20 @@ class DecisionEdgeLine {
   final String kind;
   final String title;
   final String status;
+  final bool draft;
+
+  /// The one word a screen draws — see [decisionState].
+  String get state => decisionState(status: status, draft: draft);
 }
+
+/// A decision's status and its draft flag, read as the one thing a screen shows.
+///
+/// The two are separate on the record: a decision is `decided` from the moment it is saved, and
+/// what is unfinished is the writing, which is a flag beside the status. A screen has one slot
+/// for the pair, and the flag takes it — a decision still being written has settled nothing,
+/// whatever its status says.
+String decisionState({required String status, required bool draft}) =>
+    draft ? 'draft' : status;
 
 /// What a list face was asked for. All four inputs are optional and they combine.
 ///
@@ -314,7 +337,7 @@ extension BacklogQueries on BacklogStore {
       args.add(projectId);
     }
     final rows = db.select(
-      'SELECT d.id, d.project_id, d.title, d.status, d.created_at, d.decided_at'
+      'SELECT d.id, d.project_id, d.title, d.status, d.draft, d.created_at, d.decided_at'
       '${search == null ? '' : ', h.excerpt AS excerpt, h.source AS matched_in'} '
       'FROM decision d ${search?.sql.replaceAll('t.id', 'd.id') ?? ''} '
       'WHERE ${clauses.join(' AND ')} '
@@ -328,6 +351,7 @@ extension BacklogQueries on BacklogStore {
             projectId: row['project_id'] as int,
             title: row['title'] as String,
             status: row['status'] as String,
+            draft: row['draft'] == 1,
             createdAt: row['created_at'] as String,
             decidedAt: row['decided_at'] as String?,
             excerpt: search == null ? null : row['excerpt'] as String?,
@@ -367,7 +391,7 @@ extension BacklogQueries on BacklogStore {
   /// One decision, for the places that hold its number and nothing else.
   DecisionLine? decision(int id) {
     final rows = db.select(
-      'SELECT d.id, d.project_id, d.title, d.status, d.created_at, d.decided_at '
+      'SELECT d.id, d.project_id, d.title, d.status, d.draft, d.created_at, d.decided_at '
       'FROM decision d WHERE d.id = ?',
       [id],
     );
@@ -378,6 +402,7 @@ extension BacklogQueries on BacklogStore {
       projectId: row['project_id'] as int,
       title: row['title'] as String,
       status: row['status'] as String,
+      draft: row['draft'] == 1,
       createdAt: row['created_at'] as String,
       decidedAt: row['decided_at'] as String?,
       excerpt: null,
@@ -447,7 +472,7 @@ extension BacklogQueries on BacklogStore {
 
   List<DecisionLine> decisionsFor(int taskId) {
     final rows = db.select(
-      'SELECT d.id, d.project_id, d.title, d.status, d.created_at, d.decided_at '
+      'SELECT d.id, d.project_id, d.title, d.status, d.draft, d.created_at, d.decided_at '
       'FROM decision d JOIN decision_task_link l ON l.decision_id = d.id '
       'WHERE l.task_id = ? ORDER BY d.id',
       [taskId],
@@ -459,6 +484,7 @@ extension BacklogQueries on BacklogStore {
             projectId: row['project_id'] as int,
             title: row['title'] as String,
             status: row['status'] as String,
+            draft: row['draft'] == 1,
             createdAt: row['created_at'] as String,
             decidedAt: row['decided_at'] as String?,
             excerpt: null,
@@ -474,7 +500,7 @@ extension BacklogQueries on BacklogStore {
 
   List<DecisionEdgeLine> edgesFor(int decisionId) {
     final rows = db.select(
-      'SELECT e.target_decision_id, e.kind, d.title, d.status '
+      'SELECT e.target_decision_id, e.kind, d.title, d.status, d.draft '
       'FROM decision_edge e JOIN decision d ON d.id = e.target_decision_id '
       'WHERE e.decision_id = ? ORDER BY e.id',
       [decisionId],
@@ -486,6 +512,7 @@ extension BacklogQueries on BacklogStore {
             kind: row['kind'] as String,
             title: row['title'] as String,
             status: row['status'] as String,
+            draft: row['draft'] == 1,
           ),
         )
         .toList(growable: false);
@@ -640,8 +667,8 @@ extension BacklogQueries on BacklogStore {
 }
 
 /// What holds a task back travels on the row, not in the where-clause: the blocker it names, the
-/// decision nobody has ruled on, the day it does not start until, and whether it is still being
-/// written. No list is divided by them — the row says which one it is waiting on.
+/// premise still being written, the day it does not start until, and whether the task itself is
+/// still being written. No list is divided by them — the row says which one it is waiting on.
 String _taskColumns({bool excerpt = false}) =>
     't.id, t.project_id, t.title, t.status, t.priority, t.assignee_kind, t.draft, '
     't.due_on, t.start_on, t.updated_at, '
@@ -651,7 +678,7 @@ String _taskColumns({bool excerpt = false}) =>
     "WHERE d.task_id = t.id AND b.status NOT IN ('done', 'rejected') "
     'ORDER BY d.blocked_by_id LIMIT 1) AS blocked_by, '
     '(SELECT l.decision_id FROM decision_task_link l JOIN decision c ON c.id = l.decision_id '
-    "WHERE l.task_id = t.id AND c.status = 'proposed' "
+    'WHERE l.task_id = t.id AND c.draft = 1 '
     'ORDER BY l.decision_id LIMIT 1) AS undecided'
     '${excerpt ? ', h.excerpt AS excerpt, h.source AS matched_in' : ''}';
 

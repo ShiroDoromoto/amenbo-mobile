@@ -41,8 +41,8 @@
   "statusRejected": "Odrzucone",
   "statusBlocked": "Zablokowane",
 
-  "decisionProposed": "Zaproponowana",
-  "decisionAccepted": "Przyjęta",
+  "decisionDraft": "Szkic",
+  "decisionDecided": "Zdecydowana",
   "decisionRejected": "Odrzucona",
 
   "dueOverdue": "Po terminie {day}",
@@ -93,7 +93,6 @@
   "share": "Udostępnij",
   "chipLabel": "{dimension}={value}",
 
-  "decisionWaiting": "Czeka na twoją odpowiedź",
   "decisionHeld": "{count, plural, one{Przez nią stoi 1 zadanie} few{Przez nią stoją {count} zadania} many{Przez nią stoi {count} zadań} other{Przez nią stoi {count} zadania}}",
   "edgeBuildsOn": "Opiera się na",
   "edgeSupersedes": "Zastępuje",

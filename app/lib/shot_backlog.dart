@@ -310,7 +310,6 @@ List<BacklogChange> sampleBacklog(DateTime now) {
             '## Why\n'
             '\n'
             'Two writers over a place that is one file per record is a merge nobody asked for.\n',
-        status: 'accepted',
         createdAt: at(const Duration(days: 21)),
         decidedAt: at(const Duration(days: 20)),
       ),
@@ -323,7 +322,6 @@ List<BacklogChange> sampleBacklog(DateTime now) {
         projectId: 4,
         title: 'One key per person, one token per device',
         body: 'Losing a phone costs that phone its way in, and nothing else.\n',
-        status: 'accepted',
         createdAt: at(const Duration(days: 24)),
         decidedAt: at(const Duration(days: 23)),
       ),
@@ -338,6 +336,7 @@ List<BacklogChange> sampleBacklog(DateTime now) {
         body:
             'No sign-up, no server of ours. The place the rows come from is the '
             'owner\'s own.\n',
+        draft: true,
         createdAt: at(const Duration(days: 3)),
       ),
     ),
@@ -349,7 +348,6 @@ List<BacklogChange> sampleBacklog(DateTime now) {
         projectId: 4,
         title: 'Keep the search index on the device',
         body: 'Searching offline is most of what this app is for.\n',
-        status: 'accepted',
         createdAt: at(const Duration(days: 30)),
         decidedAt: at(const Duration(days: 29)),
       ),
@@ -362,7 +360,6 @@ List<BacklogChange> sampleBacklog(DateTime now) {
         projectId: 7,
         title: 'Two routes in, one shape out',
         body: 'A folder and a worker land the same rows in the same store.\n',
-        status: 'accepted',
         createdAt: at(const Duration(days: 34)),
         decidedAt: at(const Duration(days: 33)),
       ),
@@ -477,14 +474,15 @@ Map<String, Object?> _decision({
   required String title,
   required String body,
   required String createdAt,
-  String status = 'proposed',
+  bool draft = false,
   String? decidedAt,
 }) => {
   'id': id,
   'project_id': projectId,
   'title': title,
   'body': body,
-  'status': status,
+  'status': 'decided',
+  'draft': draft ? 1 : 0,
   'created_at': createdAt,
   'updated_at': decidedAt ?? createdAt,
   'status_changed_at': decidedAt ?? createdAt,

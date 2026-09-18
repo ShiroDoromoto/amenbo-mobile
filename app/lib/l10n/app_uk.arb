@@ -41,8 +41,8 @@
   "statusRejected": "Відхилено",
   "statusBlocked": "Заблоковано",
 
-  "decisionProposed": "Запропоновано",
-  "decisionAccepted": "Ухвалено",
+  "decisionDraft": "Чернетка",
+  "decisionDecided": "Вирішено",
   "decisionRejected": "Відхилено",
 
   "dueOverdue": "Прострочено {day}",
@@ -93,7 +93,6 @@
   "share": "Поділитися",
   "chipLabel": "{dimension}={value}",
 
-  "decisionWaiting": "Чекає на вашу відповідь",
   "decisionHeld": "{count, plural, one{Через нього стоїть 1 задача} few{Через нього стоять {count} задачі} many{Через нього стоять {count} задач} other{Через нього стоять {count} задачі}}",
   "edgeBuildsOn": "Спирається на",
   "edgeSupersedes": "Замінює",
