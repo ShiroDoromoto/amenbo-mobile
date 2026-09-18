@@ -41,8 +41,8 @@
   "statusRejected": "Elendi",
   "statusBlocked": "Engellendi",
 
-  "decisionProposed": "Önerildi",
-  "decisionAccepted": "Kabul edildi",
+  "decisionDraft": "Taslak",
+  "decisionDecided": "Karara bağlanmış",
   "decisionRejected": "Reddedildi",
 
   "dueOverdue": "Gecikti {day}",
@@ -93,7 +93,6 @@
   "share": "Paylaş",
   "chipLabel": "{dimension}={value}",
 
-  "decisionWaiting": "Senin cevabını bekliyor",
   "decisionHeld": "{count, plural, other{{count} görev buna takılı}}",
   "edgeBuildsOn": "Şunun üstüne kuruluyor",
   "edgeSupersedes": "Şunun yerine geçiyor",

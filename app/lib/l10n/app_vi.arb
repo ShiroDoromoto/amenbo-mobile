@@ -41,8 +41,8 @@
   "statusRejected": "Đã bỏ",
   "statusBlocked": "Bị chặn",
 
-  "decisionProposed": "Đang đề xuất",
-  "decisionAccepted": "Đã chấp nhận",
+  "decisionDraft": "Bản nháp",
+  "decisionDecided": "Đã quyết",
   "decisionRejected": "Đã bác",
 
   "dueOverdue": "Trễ hạn {day}",
@@ -93,7 +93,6 @@
   "share": "Chia sẻ",
   "chipLabel": "{dimension}={value}",
 
-  "decisionWaiting": "Đang chờ câu trả lời của bạn",
   "decisionHeld": "{count, plural, other{{count} công việc đang kẹt vì nó}}",
   "edgeBuildsOn": "Dựa trên",
   "edgeSupersedes": "Thay cho",

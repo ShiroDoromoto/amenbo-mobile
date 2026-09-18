@@ -3,12 +3,13 @@
 /// The same skeleton as a task's detail — number, project, title, state, body, ties, comments —
 /// because the two are read the same way and a second layout would only be a second thing to
 /// learn. It is literally the same pieces: the frame and the head come from `ui/detail.dart`, and
-/// what differs is what a decision has instead of a deadline — whether anybody has ruled on it,
-/// and what is not moving until somebody does.
+/// what differs is what a decision has instead of a deadline — whether the writing is finished,
+/// and what is not moving until it is.
 ///
-/// **An undecided one is the whole point of this screen.** A decision nobody has answered is work
-/// the person owes their own backlog, and everything linked to it reads `ready:no` until they do,
-/// so it says so at the top rather than leaving the state to a word beside the title.
+/// **A half-written one is the whole point of this screen.** A decision the person has not
+/// finished writing is work they owe their own backlog, and everything linked to it reads
+/// `ready:no` until they do, so it says so at the top rather than leaving the state to a word
+/// beside the title.
 library;
 
 import 'package:flutter/material.dart';
@@ -124,14 +125,14 @@ class _DecisionDetailScreenState extends State<DecisionDetailScreen> {
               handoffText(
                 ref: decisionRef(decision.id),
                 title: decision.title,
-                state: decisionStatusWords(words, decision.status),
+                state: decisionStatusWords(words, decision.state),
               ),
             ),
       head: decision == null ? null : _head(context, words, decision, today),
       children: decision == null
           ? const []
           : [
-              ..._undecided(context, words, decision),
+              ..._unfinished(context, words, decision),
               if (_body.trim().isNotEmpty)
                 MarkdownSections(source: _body, onLink: widget.onLink),
               ..._tiesSection(context, words),
@@ -149,8 +150,8 @@ class _DecisionDetailScreenState extends State<DecisionDetailScreen> {
     DateTime today,
   ) {
     final theme = Theme.of(context);
-    // Decided when it was ruled on, raised when nobody has — either way the date on the screen is
-    // the date the person would remember it by.
+    // Decided when the writing was finished, raised when it has not been — either way the date on
+    // the screen is the date the person would remember it by.
     final when = DateTime.tryParse(decision.decidedAt ?? decision.createdAt);
     return DetailHead(
       title: decision.title,
@@ -159,7 +160,7 @@ class _DecisionDetailScreenState extends State<DecisionDetailScreen> {
           ? null
           : () => widget.onProject!(decision.projectId),
       marks: [
-        DecisionStatusMark(decision.status),
+        DecisionStatusMark(decision.state),
         if (when != null)
           TimeOnHold(
             when: when,
@@ -174,23 +175,23 @@ class _DecisionDetailScreenState extends State<DecisionDetailScreen> {
     );
   }
 
-  /// The line that says this one is the person's to answer.
+  /// The line that says this one is still the person's to finish.
   ///
   /// It stands where a task's reason for being stuck stands, and for the same reason: finding out
   /// at the bottom of the body that nothing can move is finding out too late.
-  List<Widget> _undecided(
+  List<Widget> _unfinished(
     BuildContext context,
     Words words,
     DecisionLine decision,
   ) {
-    if (decision.status != 'proposed') return const [];
+    if (!decision.draft) return const [];
     final held = _heldTasks;
     final line = held == 0
-        ? words.decisionWaiting
-        : '${words.decisionWaiting} · ${words.decisionHeld(held)}';
+        ? words.stallDraft
+        : '${words.stallDraft} · ${words.decisionHeld(held)}';
     return [
       NoticePanel(
-        icon: Icons.help_outline,
+        icon: Icons.edit_outlined,
         colour: Theme.of(context).colorScheme.primary,
         text: line,
       ),
@@ -207,7 +208,7 @@ class _DecisionDetailScreenState extends State<DecisionDetailScreen> {
           lead: edgeWords(words, edge.kind),
           ref: decisionRef(edge.targetId),
           title: edge.title,
-          state: decisionStatusWords(words, edge.status),
+          state: decisionStatusWords(words, edge.state),
           onTap: () => widget.onOpenDecision(edge.targetId),
         ),
     ];

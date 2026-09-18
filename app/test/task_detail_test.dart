@@ -178,7 +178,7 @@ void main() {
     // Whether the other one is finished is the whole of what waiting means.
     expect(find.textContaining('Done'), findsOneWidget);
     expect(
-      find.textContaining(decisionStatusWords(words, 'proposed')),
+      find.textContaining(decisionStatusWords(words, 'draft')),
       findsWidgets,
     );
 

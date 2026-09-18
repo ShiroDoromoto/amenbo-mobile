@@ -60,7 +60,8 @@ Map<String, Object?> decision({
   int projectId = 16,
   String title = '決定',
   String body = '',
-  String status = 'proposed',
+  String status = 'decided',
+  bool draft = true,
   String createdAt = '2026-08-01T00:00:00Z',
   String? decidedAt,
 }) => {
@@ -68,7 +69,10 @@ Map<String, Object?> decision({
   'project_id': projectId,
   'title': title,
   'body': body,
+  // Decided from the moment it is saved, so the default is the one that varies: the writing,
+  // which starts unfinished and is lowered by finishing it.
   'status': status,
+  'draft': draft ? 1 : 0,
   'created_at': createdAt,
   'updated_at': createdAt,
   'status_changed_at': createdAt,

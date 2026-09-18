@@ -41,8 +41,8 @@
   "statusRejected": "Ditolak",
   "statusBlocked": "Diblokir",
 
-  "decisionProposed": "Diusulkan",
-  "decisionAccepted": "Diterima",
+  "decisionDraft": "Draf",
+  "decisionDecided": "Diputuskan",
   "decisionRejected": "Ditolak",
 
   "dueOverdue": "Lewat tenggat {day}",
@@ -93,7 +93,6 @@
   "share": "Bagikan",
   "chipLabel": "{dimension}={value}",
 
-  "decisionWaiting": "Menunggu jawabanmu",
   "decisionHeld": "{count, plural, other{{count} tugas tertahan karenanya}}",
   "edgeBuildsOn": "Berpijak pada",
   "edgeSupersedes": "Menggantikan",

@@ -85,10 +85,10 @@
   "statusBlocked": "Blocked",
   "@statusBlocked": { "description": "Amenbo's blocked — a physical stall nobody can move past." },
 
-  "decisionProposed": "Proposed",
-  "@decisionProposed": { "description": "A decision nobody has ruled on. The one the person owes an answer to." },
-  "decisionAccepted": "Accepted",
-  "@decisionAccepted": { "description": "A decision that was agreed." },
+  "decisionDraft": "Draft",
+  "@decisionDraft": { "description": "A decision whose writing is unfinished. The one the person owes their own backlog." },
+  "decisionDecided": "Decided",
+  "@decisionDecided": { "description": "A decision that was written through to the end." },
   "decisionRejected": "Rejected",
   "@decisionRejected": { "description": "A decision that was turned down." },
 
@@ -129,7 +129,7 @@
   },
   "stallUndecided": "{ref} is undecided",
   "@stallUndecided": {
-    "description": "Why a task cannot start: a decision it rests on has not been ruled on.",
+    "description": "Why a task cannot start: a decision it rests on is still being written.",
     "placeholders": { "ref": { "type": "String" } }
   },
   "stallDraft": "Still being written",
@@ -209,11 +209,9 @@
     "placeholders": { "dimension": { "type": "String" }, "value": { "type": "String" } }
   },
 
-  "decisionWaiting": "Waiting on your answer",
-  "@decisionWaiting": { "description": "A decision nobody has ruled on. The one thing on the screen that is asking for something." },
   "decisionHeld": "{count, plural, one{1 task is held by it} other{{count} tasks are held by it}}",
   "@decisionHeld": {
-    "description": "How much is not moving until the decision is ruled on.",
+    "description": "How much is not moving until the decision is written through to the end.",
     "placeholders": { "count": { "type": "int" } }
   },
   "edgeBuildsOn": "Builds on",

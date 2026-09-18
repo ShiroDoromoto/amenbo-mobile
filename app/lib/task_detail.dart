@@ -250,7 +250,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
           lead: words.decisionsSection,
           ref: decisionRef(one.id),
           title: one.title,
-          state: decisionStatusWords(words, one.status),
+          state: decisionStatusWords(words, one.state),
           onTap: () => widget.onOpenDecision(one.id),
         ),
     ];

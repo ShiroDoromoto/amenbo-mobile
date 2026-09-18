@@ -57,11 +57,11 @@ void main() {
     expect(rows.map((row) => row.line.title), ['あとできめた', 'さきにきめた']);
   });
 
-  testWidgets('nothing is left out for not having been ruled on', (
+  testWidgets('nothing is left out for being unfinished or turned down', (
     tester,
   ) async {
     store.applyPage([
-      BacklogChange.put('decision', 1, decision(id: 1, title: 'まだこたえていない')),
+      BacklogChange.put('decision', 1, decision(id: 1, title: 'まだかきかけ')),
       BacklogChange.put(
         'decision',
         2,
@@ -69,6 +69,7 @@ void main() {
           id: 2,
           title: 'ことわった',
           status: 'rejected',
+          draft: false,
           decidedAt: '2026-08-02T00:00:00Z',
         ),
       ),
@@ -77,9 +78,9 @@ void main() {
     await tester.pumpWidget(screen());
     await tester.pumpAndSettle();
 
-    // The one nobody has answered is the one most worth reading, and a rejected one is why
-    // something is not the way somebody remembers proposing.
-    expect(find.text('まだこたえていない'), findsOneWidget);
+    // The half-written one is the one most worth reading, and a rejected one is why something is
+    // not the way somebody remembers arguing for.
+    expect(find.text('まだかきかけ'), findsOneWidget);
     expect(find.text('ことわった'), findsOneWidget);
   });
 

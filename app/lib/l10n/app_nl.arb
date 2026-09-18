@@ -41,8 +41,8 @@
   "statusRejected": "Afgewezen",
   "statusBlocked": "Geblokkeerd",
 
-  "decisionProposed": "Voorgesteld",
-  "decisionAccepted": "Aangenomen",
+  "decisionDraft": "Concept",
+  "decisionDecided": "Besloten",
   "decisionRejected": "Afgewezen",
 
   "dueOverdue": "Te laat {day}",
@@ -93,7 +93,6 @@
   "share": "Delen",
   "chipLabel": "{dimension}={value}",
 
-  "decisionWaiting": "Wacht op jouw antwoord",
   "decisionHeld": "{count, plural, one{1 taak hangt hiervan af} other{{count} taken hangen hiervan af}}",
   "edgeBuildsOn": "Bouwt voort op",
   "edgeSupersedes": "Vervangt",

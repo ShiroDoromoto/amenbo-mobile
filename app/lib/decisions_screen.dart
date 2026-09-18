@@ -10,7 +10,7 @@
 ///
 /// Two things it deliberately does not do.
 ///
-/// * **Nothing is excluded by state.** One nobody has ruled on yet is the one most worth reading,
+/// * **Nothing is excluded by state.** One still being written is the one most worth reading,
 ///   and the row says which it is.
 /// * **It is never ordered by anything but when.** The list is what memory reaches into, and
 ///   memory reaches by date.
