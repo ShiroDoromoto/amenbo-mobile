@@ -47,7 +47,8 @@ Keine Werbung. Kein Tracking. Kein Konto.
 
 ## release_notes
 
-Die Kopplungsanleitung passt jetzt zu Amenbo, wie es heute ist.
+Entscheidungen werden jetzt so dargestellt wie in Amenbo selbst.
 
-- Der Viewer steckt in Amenbo selbst. Auf dem PC ist nichts mehr zu installieren: Einstellungen öffnen, zu Viewer gehen, dort steht der Code
-- Am Weg, am Lesen und an den Daten ändert sich nichts. Ein bereits gekoppeltes Gerät bleibt gekoppelt
+- Eine Entscheidung steht fest, sobald sie gespeichert ist. Den zweiten Schritt, das Annehmen, gibt es nicht mehr
+- Was noch nicht fertig geschrieben ist, erscheint als Entwurf. Nur so lange hält es eine Aufgabe auf
+- Die Bildschirme nennen sie durchgehend Entscheidungen

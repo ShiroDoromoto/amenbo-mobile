@@ -47,7 +47,8 @@ Bez reklam. Bez śledzenia. Bez konta.
 
 ## release_notes
 
-Instrukcja parowania odpowiada teraz temu, czym Amenbo jest dzisiaj.
+Decyzje wyglądają teraz tak jak w samym Amenbo.
 
-- Viewer jest już częścią Amenbo, więc na komputerze nie ma nic do zainstalowania. Otwórz ustawienia, przejdź do Viewera — tam jest kod
-- Droga, sposób czytania i dane pozostają bez zmian. Już sparowany telefon pozostaje sparowany
+- Decyzja jest podjęta od chwili zapisania. Drugiego kroku, przyjęcia jej, już nie ma
+- To, co wciąż powstaje, widnieje jako szkic — i tylko wtedy wstrzymuje zadanie
+- Na wszystkich ekranach nazywają się Decyzje

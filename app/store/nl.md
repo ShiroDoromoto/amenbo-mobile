@@ -47,7 +47,8 @@ Geen advertenties. Geen tracking. Geen account.
 
 ## release_notes
 
-De koppelhandleiding klopt weer met Amenbo zoals het nu is.
+Besluiten zien er nu uit zoals in Amenbo zelf.
 
-- De Viewer zit in Amenbo zelf, dus op de pc valt niets meer te installeren. Open de instellingen, ga naar Viewer, daar staat de code
-- Aan de route, het lezen en de gegevens verandert niets. Een al gekoppelde telefoon blijft gekoppeld
+- Een besluit staat vast zodra het is opgeslagen. De tweede stap, het aannemen, is verdwenen
+- Wat nog wordt geschreven, verschijnt als concept, en alleen dan houdt het een taak tegen
+- De schermen noemen ze overal Besluiten

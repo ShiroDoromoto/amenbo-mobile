@@ -47,7 +47,8 @@ Reklam yok. Takip yok. Hesap yok.
 
 ## release_notes
 
-Eşleştirme kılavuzu artık bugünkü Amenbo ile örtüşüyor.
+Kararlar artık Amenbo'nun kendisindeki gibi görünüyor.
 
-- Viewer artık Amenbo'nun içinde; bilgisayara kurulacak bir şey yok. Ayarları açın, Viewer'a gidin, kod orada
-- Yol da, okuma da, veriler de aynı. Zaten eşleşmiş bir telefon eşleşmiş kalıyor
+- Bir karar kaydedildiği anda karara bağlanmış olur. İkinci adım, onu kabul etmek, kalktı
+- Henüz yazılmakta olan taslak olarak görünür; bir görevi yalnızca o sırada bekletir
+- Ekranlarda her yerde Kararlar deniyor

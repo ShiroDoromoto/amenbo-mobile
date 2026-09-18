@@ -47,7 +47,8 @@ Tanpa iklan. Tanpa pelacakan. Tanpa akun.
 
 ## release_notes
 
-Panduan pemasangan kini sesuai dengan Amenbo yang sekarang.
+Keputusan kini tampil seperti di Amenbo sendiri.
 
-- Viewer sudah menjadi bagian dari Amenbo, jadi tidak ada yang perlu dipasang di PC. Buka Pengaturan, masuk ke Viewer, kodenya ada di sana
-- Jalur, cara membaca, dan datanya tidak berubah. Ponsel yang sudah terpasang tetap terpasang
+- Sebuah keputusan sudah diputuskan begitu disimpan. Langkah kedua, menerimanya, sudah tidak ada
+- Yang masih ditulis tampil sebagai draf, dan hanya selama itu ia menahan sebuah tugas
+- Di semua layar namanya Keputusan

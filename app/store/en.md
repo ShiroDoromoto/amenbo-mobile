@@ -47,7 +47,8 @@ No ads. No tracking. No account.
 
 ## release_notes
 
-The pairing guide now matches Amenbo as it stands.
+Decisions now read the way they do in Amenbo itself.
 
-- The Viewer is part of Amenbo itself, so there is nothing to install on the PC. Open Settings, go to Viewer, and the code is there
-- The route, the reading and the data are unchanged. A phone that is already paired stays paired
+- A decision is decided from the moment it is saved. The second step, accepting it, is gone
+- One that is still being written shows as a draft, and that is the only time it holds a task back
+- The screens call them Decisions throughout
