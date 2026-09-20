@@ -7,11 +7,16 @@
 /// The read token rides along with it. A pairing is one act and one thing to revoke: the URL to
 /// read from, the token that gets in, and the key that opens what comes back. Splitting the three
 /// across two homes would only invent a way for a phone to hold half a pairing.
+///
+/// Neither place is emptied by deleting the app on iOS, so the pairing is tied to the app's
+/// container by hand — [PairingStore.forgetIfReinstalled].
 library;
 
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'record_envelope.dart';
 
@@ -71,6 +76,12 @@ class PairingStore {
   /// One entry, written and dropped whole, because a pairing is all three fields or none.
   static const _entry = 'pairing';
 
+  /// The file in application support that says the entry belongs to this container.
+  ///
+  /// Application support is wiped when the app is deleted; the keychain is not. The mark is how
+  /// the two are told apart — see [forgetIfReinstalled].
+  static const markName = 'pairing.mark';
+
   /// `first_unlock_this_device` on the Apple side: after-first-unlock so a refresh that runs
   /// while the phone is in a pocket can still reach the key, and this-device-only so a backup
   /// restored onto a new phone arrives unpaired rather than quietly carrying the old phone's
@@ -103,4 +114,28 @@ class PairingStore {
 
   /// Unpairs this device. What was already decrypted is not this store's to remove.
   Future<void> forget() => _storage.delete(key: _entry);
+
+  /// Unpairs a phone whose app was deleted and installed again.
+  ///
+  /// Deleting the app takes its container with it and leaves the keychain alone, so on iOS the
+  /// next install comes up still paired — holding the token and the key the person meant to
+  /// remove. Android's keystore entry goes with the app's data, so that half already behaves this
+  /// way; running on both keeps one path rather than two, and makes "delete it and start over"
+  /// mean the same thing on each. It is the first repair anyone tries, and the last one a person
+  /// handing the phone on relies upon.
+  ///
+  /// Called before the first read, from `openViewer`.
+  Future<void> forgetIfReinstalled() async =>
+      forgetIfReinstalledAt((await getApplicationSupportDirectory()).path);
+
+  /// [forgetIfReinstalled] against a named directory, for tests and for anything that wants a
+  /// container it can throw away.
+  Future<void> forgetIfReinstalledAt(String container) async {
+    final mark = File('$container/$markName');
+    if (mark.existsSync()) return;
+    // Forget first: a mark written before the entry is gone would call the next launch settled
+    // and leave the old pairing standing for good.
+    await forget();
+    mark.createSync(recursive: true);
+  }
 }

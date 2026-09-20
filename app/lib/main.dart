@@ -17,6 +17,7 @@ import 'package:flutter/material.dart';
 import 'home.dart';
 import 'l10n/language.dart';
 import 'l10n/words.dart';
+import 'pairing_store.dart';
 import 'settings.dart';
 import 'store/backlog_store.dart';
 import 'ui/theme.dart';
@@ -31,6 +32,9 @@ Future<void> main() async {
 /// The probe build starts from here too, so what it dumps on a real phone is this app rather than
 /// a second assembly of it that could drift.
 Future<AmenboViewerApp> openViewer() async {
+  // Before anything reads a pairing: one that outlived the container it was made in belongs to
+  // an app the person deleted, and this is the launch that notices.
+  await const PairingStore().forgetIfReinstalled();
   final store = await BacklogStore.open();
   return AmenboViewerApp(
     store: store,
