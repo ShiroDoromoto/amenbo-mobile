@@ -3,6 +3,8 @@
 // and that an unpaired phone reads as unpaired rather than as a failure. Whether the entry is
 // actually in the keychain is the platform's half and only a device can say.
 
+import 'dart:io';
+
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -78,5 +80,51 @@ void main() {
     FlutterSecureStorage.setMockInitialValues({'pairing': 'not json'});
 
     expect(await const PairingStore().read(), isNull);
+  });
+
+  group('a pairing does not outlive the app it was made in', () {
+    late Directory container;
+
+    setUp(() => container = Directory.systemTemp.createTempSync('container'));
+    tearDown(() => container.deleteSync(recursive: true));
+
+    test('a container with no mark in it unpairs the phone', () async {
+      // Deleting the app on iOS empties the container and leaves the keychain alone, so this is
+      // what the first launch after a reinstall sees: an entry, and nothing that claims it.
+      const store = PairingStore();
+      await store.save(pairing);
+
+      await store.forgetIfReinstalledAt(container.path);
+
+      expect(await store.read(), isNull);
+      expect(
+        File('${container.path}/${PairingStore.markName}').existsSync(),
+        isTrue,
+      );
+    });
+
+    test(
+      'a later launch in the same container leaves the pairing alone',
+      () async {
+        // The mark is written once. Every launch after it has to be an ordinary one, or the app
+        // would unpair itself on the way in.
+        const store = PairingStore();
+        await store.forgetIfReinstalledAt(container.path);
+        await store.save(pairing);
+
+        await store.forgetIfReinstalledAt(container.path);
+
+        expect((await store.read())?.readToken, pairing.readToken);
+      },
+    );
+
+    test('a phone that was never paired comes out of it unpaired', () async {
+      // The first launch of a first install runs this too, and has to be harmless.
+      const store = PairingStore();
+
+      await store.forgetIfReinstalledAt(container.path);
+
+      expect(await store.read(), isNull);
+    });
   });
 }
