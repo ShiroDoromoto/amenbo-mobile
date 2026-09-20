@@ -47,8 +47,6 @@ Pas de publicité. Pas de pistage. Pas de compte.
 
 ## release_notes
 
-Les décisions s'affichent désormais comme dans Amenbo.
+L'onglet Décisions porte désormais le même maillet qu'Amenbo sur l'ordinateur.
 
-- Une décision est décidée dès son enregistrement. La deuxième étape, l'accepter, n'existe plus
-- Ce qui n'est pas encore rédigé apparaît comme brouillon, et c'est le seul moment où une tâche est retenue
-- Les écrans parlent partout de Décisions
+- Seule l'icône change. La lecture et la synchronisation des décisions restent les mêmes

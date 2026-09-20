@@ -47,8 +47,6 @@ Không quảng cáo. Không theo dõi. Không tài khoản.
 
 ## release_notes
 
-Quyết định giờ hiển thị giống như trong chính Amenbo.
+Thẻ Quyết định giờ mang cùng chiếc búa mà Amenbo dùng trên máy tính.
 
-- Một quyết định đã được quyết ngay khi lưu. Bước thứ hai, chấp nhận nó, không còn nữa
-- Cái vẫn đang viết hiện là bản nháp, và chỉ khi đó nó mới giữ một công việc lại
-- Các màn hình đều gọi chúng là Quyết định
+- Chỉ biểu tượng thay đổi. Cách đọc và đồng bộ quyết định vẫn như cũ

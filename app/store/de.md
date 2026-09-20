@@ -47,8 +47,6 @@ Keine Werbung. Kein Tracking. Kein Konto.
 
 ## release_notes
 
-Entscheidungen werden jetzt so dargestellt wie in Amenbo selbst.
+Der Reiter Entscheidungen trägt jetzt denselben Richterhammer wie Amenbo auf dem Rechner.
 
-- Eine Entscheidung steht fest, sobald sie gespeichert ist. Den zweiten Schritt, das Annehmen, gibt es nicht mehr
-- Was noch nicht fertig geschrieben ist, erscheint als Entwurf. Nur so lange hält es eine Aufgabe auf
-- Die Bildschirme nennen sie durchgehend Entscheidungen
+- Geändert hat sich nur das Symbol. Am Lesen und am Abgleich der Entscheidungen ändert sich nichts

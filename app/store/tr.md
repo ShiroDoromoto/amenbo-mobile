@@ -47,8 +47,6 @@ Reklam yok. Takip yok. Hesap yok.
 
 ## release_notes
 
-Kararlar artık Amenbo'nun kendisindeki gibi görünüyor.
+Kararlar sekmesi artık Amenbo'nun bilgisayardaki tokmağını taşıyor.
 
-- Bir karar kaydedildiği anda karara bağlanmış olur. İkinci adım, onu kabul etmek, kalktı
-- Henüz yazılmakta olan taslak olarak görünür; bir görevi yalnızca o sırada bekletir
-- Ekranlarda her yerde Kararlar deniyor
+- Yalnızca simge değişti. Kararların okunması ve eşitlenmesi aynı kaldı

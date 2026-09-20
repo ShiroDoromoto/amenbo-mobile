@@ -47,8 +47,6 @@ Sin anuncios. Sin rastreo. Sin cuenta.
 
 ## release_notes
 
-Las decisiones se ven ahora como en Amenbo.
+La pestaña Decisiones ahora lleva el mismo mazo que Amenbo usa en el ordenador.
 
-- Una decisión queda decidida en cuanto se guarda. El segundo paso, aceptarla, ya no existe
-- Lo que aún no está escrito del todo aparece como borrador, y solo entonces retiene una tarea
-- Las pantallas las llaman Decisiones en todas partes
+- Solo cambió el icono. La forma de leer y sincronizar las decisiones sigue igual

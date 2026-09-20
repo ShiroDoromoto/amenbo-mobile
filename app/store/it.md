@@ -47,8 +47,6 @@ Nessuna pubblicità. Nessun tracciamento. Nessun account.
 
 ## release_notes
 
-Le decisioni ora si leggono come in Amenbo.
+La scheda Decisioni ora porta lo stesso martelletto che Amenbo usa sul computer.
 
-- Una decisione è decisa dal momento in cui viene salvata. Il secondo passaggio, accettarla, non c'è più
-- Quella ancora da scrivere appare come bozza, ed è l'unico momento in cui trattiene un'attività
-- Le schermate le chiamano Decisioni ovunque
+- È cambiata solo l'icona. Il modo di leggere e sincronizzare le decisioni resta lo stesso

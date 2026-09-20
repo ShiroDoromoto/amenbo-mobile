@@ -47,8 +47,6 @@ Geen advertenties. Geen tracking. Geen account.
 
 ## release_notes
 
-Besluiten zien er nu uit zoals in Amenbo zelf.
+Het tabblad Besluiten draagt nu dezelfde voorzittershamer als Amenbo op de computer.
 
-- Een besluit staat vast zodra het is opgeslagen. De tweede stap, het aannemen, is verdwenen
-- Wat nog wordt geschreven, verschijnt als concept, en alleen dan houdt het een taak tegen
-- De schermen noemen ze overal Besluiten
+- Alleen het pictogram is veranderd. Lezen en synchroniseren van besluiten blijft hetzelfde

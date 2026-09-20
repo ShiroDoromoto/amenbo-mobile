@@ -47,8 +47,6 @@ No ads. No tracking. No account.
 
 ## release_notes
 
-Decisions now read the way they do in Amenbo itself.
+The decisions tab now carries the same gavel Amenbo uses on the computer.
 
-- A decision is decided from the moment it is saved. The second step, accepting it, is gone
-- One that is still being written shows as a draft, and that is the only time it holds a task back
-- The screens call them Decisions throughout
+- Only the icon changed. How decisions are read and synced is the same as before
