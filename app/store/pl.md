@@ -47,8 +47,6 @@ Bez reklam. Bez śledzenia. Bez konta.
 
 ## release_notes
 
-Decyzje wyglądają teraz tak jak w samym Amenbo.
+Karta Decyzje ma teraz ten sam młotek, którego Amenbo używa na komputerze.
 
-- Decyzja jest podjęta od chwili zapisania. Drugiego kroku, przyjęcia jej, już nie ma
-- To, co wciąż powstaje, widnieje jako szkic — i tylko wtedy wstrzymuje zadanie
-- Na wszystkich ekranach nazywają się Decyzje
+- Zmieniła się tylko ikona. Sposób czytania i synchronizacji decyzji pozostaje ten sam

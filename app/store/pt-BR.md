@@ -47,8 +47,6 @@ Sem anúncios. Sem rastreamento. Sem conta.
 
 ## release_notes
 
-As decisões agora aparecem como no próprio Amenbo.
+A aba Decisões agora traz o mesmo martelo que o Amenbo usa no computador.
 
-- Uma decisão está decidida assim que é salva. O segundo passo, aceitá-la, não existe mais
-- O que ainda está sendo escrito aparece como rascunho, e só então segura uma tarefa
-- As telas as chamam de Decisões em todo lugar
+- Só o ícone mudou. A forma de ler e sincronizar as decisões continua a mesma

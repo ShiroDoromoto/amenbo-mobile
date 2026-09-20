@@ -24,7 +24,7 @@ HOW A REAL USER SETS IT UP
 
 What crosses the network is ciphertext. The key never travels over it, only optically in the QR code — that is why the camera is requested, and it is the only reason. There are no credentials to supply anywhere in this app.
 
-New in this version: nothing about the route, the permissions or the data handling changed. A decision is decided from the moment it is saved, so the app no longer draws a separate accepted state; one still being written is drawn as a draft, and that is when it holds a task back. The attached code pairs exactly as before.
+New in this version: nothing about the route, the permissions or the data handling changed. The decisions tab carries a gavel where it used to carry a scale, so the icon matches the one Amenbo draws on the computer. That is the whole of it. The attached code pairs exactly as before.
 
 DEVICE MODELS AND OPERATING SYSTEMS TESTED
 

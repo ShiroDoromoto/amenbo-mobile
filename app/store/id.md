@@ -47,8 +47,6 @@ Tanpa iklan. Tanpa pelacakan. Tanpa akun.
 
 ## release_notes
 
-Keputusan kini tampil seperti di Amenbo sendiri.
+Tab Keputusan kini memakai palu sidang yang sama seperti Amenbo di komputer.
 
-- Sebuah keputusan sudah diputuskan begitu disimpan. Langkah kedua, menerimanya, sudah tidak ada
-- Yang masih ditulis tampil sebagai draf, dan hanya selama itu ia menahan sebuah tugas
-- Di semua layar namanya Keputusan
+- Hanya ikonnya yang berubah. Cara membaca dan menyinkronkan keputusan tetap sama
