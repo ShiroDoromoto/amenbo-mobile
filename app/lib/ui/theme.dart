@@ -227,8 +227,9 @@ class RowTitle extends StatelessWidget {
   );
 }
 
-/// The shape every row in every list has: a fixed column of marks, a title, the little under it,
-/// and a rule where the next row begins.
+/// The shape every row in every list has: a fixed column of marks, a first line that opens with
+/// the row's number and runs on into its title, the little under it, and a rule where the next
+/// row begins.
 ///
 /// The rule is the row's own rather than something the lists put between them. Rows are two and
 /// three lines tall and of differing heights, and without a line drawn across them a long title
@@ -245,6 +246,7 @@ class RowSurface extends StatelessWidget {
     super.key,
     required this.onOpen,
     required this.lead,
+    required this.ref,
     required this.title,
     required this.second,
     this.excerpt,
@@ -254,6 +256,14 @@ class RowSurface extends StatelessWidget {
 
   /// The fixed-width column — `RowLead` in `marks.dart`.
   final Widget lead;
+
+  /// The number this row is called by on the PC, namespaced the way `refs.dart` writes it.
+  ///
+  /// It runs in the same text as the title rather than in a column of its own, so a title that
+  /// wraps comes back to the left edge every other title starts at. It is plain text: the row
+  /// opens on a tap, and a second thing to tap inside it would have to be aimed at. The number
+  /// that copies itself is `RefChip`, on the detail.
+  final String ref;
 
   final String title;
 
@@ -292,7 +302,7 @@ class RowSurface extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      RowTitle(title),
+                      RowTitle('$ref $title'),
                       if (second.isNotEmpty)
                         Padding(
                           padding: const EdgeInsets.only(top: Space.hair),

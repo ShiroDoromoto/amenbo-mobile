@@ -46,13 +46,14 @@ class DecisionRow extends StatelessWidget {
       fontWeight: Lettering.normal,
     );
     final excerpt = line.matchLine?.trim();
+    final ref = decisionRef(line.id);
     // When the writing was finished if it has been, when it was raised if it has not — either way,
     // the date the list is sorted by is the date the row shows.
     final when = DateTime.tryParse(line.decidedAt ?? line.createdAt);
 
     return SpokenAsOne(
       label: [
-        decisionRef(line.id),
+        ref,
         line.title,
         ?projectName,
         decisionStatusWords(words, line.state),
@@ -64,6 +65,7 @@ class DecisionRow extends StatelessWidget {
         // Empty, and still there: a decision has neither of the two marks, and a list that mixes
         // the two kinds would step its titles in and out without it.
         lead: const RowLead(),
+        ref: ref,
         title: line.title,
         second: [
           DecisionStatusMark(line.state),

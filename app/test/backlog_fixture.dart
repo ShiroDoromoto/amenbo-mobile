@@ -4,6 +4,19 @@
 // freshly filed task looks like. Tests override only the column they are about, so what a test is
 // checking stays legible next to what it merely needs to exist.
 
+import 'package:amenbo_viewer/ui/refs.dart';
+import 'package:flutter_test/flutter_test.dart';
+
+/// A row in a list, found by the whole of the first line it is drawn with.
+///
+/// Every list puts the number in front of the title, in the same text, so a title on its own
+/// matches nothing — see `RowSurface`.
+Finder taskRowTitled(int id, String title, {bool skipOffstage = true}) =>
+    find.text('${taskRef(id)} $title', skipOffstage: skipOffstage);
+
+Finder decisionRowTitled(int id, String title) =>
+    find.text('${decisionRef(id)} $title');
+
 Map<String, Object?> task({
   required int id,
   int projectId = 16,

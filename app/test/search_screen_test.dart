@@ -90,8 +90,8 @@ void main() {
       await tester.pumpWidget(screen());
       await type(tester, 'QR');
 
-      expect(find.text('QR に載せるものを決める'), findsOneWidget);
-      expect(find.text('ペアリングの案内を書く'), findsOneWidget);
+      expect(taskRowTitled(1, 'QR に載せるものを決める'), findsOneWidget);
+      expect(taskRowTitled(2, 'ペアリングの案内を書く'), findsOneWidget);
       // Nothing was filtered out for being closed — the state is written on the row instead.
       expect(find.text(statusWords(words, 'done')), findsOneWidget);
     });
@@ -107,7 +107,7 @@ void main() {
       // Matched in the title: the row is already the line, and printing it twice would say only
       // that the search worked.
       expect(hit.matchLine, isNull);
-      expect(find.text('ペアリングの案内を書く'), findsOneWidget);
+      expect(taskRowTitled(2, 'ペアリングの案内を書く'), findsOneWidget);
 
       await type(tester, 'QR を読んで');
       final body = store
@@ -143,7 +143,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(DecisionRow), findsOneWidget);
-      await tester.tap(find.text('QR に何を載せるか'));
+      await tester.tap(decisionRowTitled(7, 'QR に何を載せるか'));
       expect(decisionsOpened, [7]);
     });
 
@@ -226,7 +226,7 @@ void main() {
       await tester.tap(find.text(words.showEverything));
       await tester.pumpAndSettle();
 
-      expect(find.text('ペアリングの案内を書く'), findsOneWidget);
+      expect(taskRowTitled(1, 'ペアリングの案内を書く'), findsOneWidget);
     });
 
     testWidgets('it drops the narrowing too, not only the words', (
@@ -243,7 +243,7 @@ void main() {
       await tester.tap(find.text(words.showEverything));
       await tester.pumpAndSettle();
 
-      expect(find.text('つぎのしごと'), findsOneWidget);
+      expect(taskRowTitled(1, 'つぎのしごと'), findsOneWidget);
       // The chip went with it: what is on the screen and what is being searched agree.
       expect(find.byType(InputChip), findsNothing);
     });
@@ -317,7 +317,7 @@ void main() {
     ) async {
       await tester.pumpWidget(screen());
 
-      expect(find.text('アーカイブのしごと'), findsOneWidget);
+      expect(taskRowTitled(2, 'アーカイブのしごと'), findsOneWidget);
       // And it can be picked out, which is the whole reason it is kept.
       await tester.tap(find.byTooltip(words.chooseProject));
       await tester.pumpAndSettle();
@@ -408,7 +408,7 @@ void main() {
     ) async {
       await tester.pumpWidget(screen());
       await type(tester, 'おぼえられる');
-      await tester.tap(find.text('おぼえられるしごと'));
+      await tester.tap(taskRowTitled(1, 'おぼえられるしごと'));
       expect(tasksOpened, [1]);
 
       // Coming back to it another time, on an empty field: both shortcuts are standing there.
@@ -443,11 +443,11 @@ void main() {
     await tester.pumpWidget(screen());
     // One window is what the screen asked for; the tail of the backlog is not there yet.
     expect(store.tasks(const TaskQuery()), hasLength(Windows.list));
-    expect(find.text('しごと 1', skipOffstage: false), findsNothing);
+    expect(taskRowTitled(1, 'しごと 1', skipOffstage: false), findsNothing);
 
     // Reaching the end of the window asks for the next one, and the oldest row turns up.
     await tester.scrollUntilVisible(
-      find.text('しごと 1'),
+      taskRowTitled(1, 'しごと 1'),
       300,
       scrollable: find
           .descendant(
@@ -456,7 +456,7 @@ void main() {
           )
           .first,
     );
-    expect(find.text('しごと 1'), findsOneWidget);
+    expect(taskRowTitled(1, 'しごと 1'), findsOneWidget);
   });
 
   testWidgets('nothing overflows at the largest text a phone offers', (

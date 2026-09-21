@@ -80,8 +80,8 @@ void main() {
 
     // The half-written one is the one most worth reading, and a rejected one is why something is
     // not the way somebody remembers arguing for.
-    expect(find.text('まだかきかけ'), findsOneWidget);
-    expect(find.text('ことわった'), findsOneWidget);
+    expect(decisionRowTitled(1, 'まだかきかけ'), findsOneWidget);
+    expect(decisionRowTitled(2, 'ことわった'), findsOneWidget);
   });
 
   testWidgets('a row opens the decision it names', (tester) async {
@@ -91,7 +91,7 @@ void main() {
 
     await tester.pumpWidget(screen());
     await tester.pumpAndSettle();
-    await tester.tap(find.text('ひらくもの'));
+    await tester.tap(decisionRowTitled(7, 'ひらくもの'));
 
     expect(opened, [7]);
   });
@@ -115,10 +115,10 @@ void main() {
     await tester.pumpAndSettle();
 
     // The oldest three are behind the first window, and reaching the end of it is what asks.
-    expect(find.text('きめた 1'), findsNothing);
-    await tester.scrollUntilVisible(find.text('きめた 1'), 400);
+    expect(decisionRowTitled(1, 'きめた 1'), findsNothing);
+    await tester.scrollUntilVisible(decisionRowTitled(1, 'きめた 1'), 400);
     await tester.pumpAndSettle();
-    expect(find.text('きめた 1'), findsOneWidget);
+    expect(decisionRowTitled(1, 'きめた 1'), findsOneWidget);
   });
 
   testWidgets('a phone that has none is told where they come from', (
@@ -158,7 +158,7 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
-    expect(find.text('とどいたもの'), findsNothing);
+    expect(decisionRowTitled(2, 'とどいたもの'), findsNothing);
 
     await tester.fling(
       find.byType(DecisionRow).first,
@@ -169,6 +169,6 @@ void main() {
 
     expect(rounds, 1);
     // The person asked for it, so it goes in where they are looking.
-    expect(find.text('とどいたもの'), findsOneWidget);
+    expect(decisionRowTitled(2, 'とどいたもの'), findsOneWidget);
   });
 }

@@ -177,7 +177,7 @@ void main() {
 
       expect(find.text(standingWords(words, Standing.offline)), findsOneWidget);
       // The whole promise: what is on the device stays readable whatever the network did.
-      expect(find.text('よめる'), findsOneWidget);
+      expect(taskRowTitled(1, 'よめる'), findsOneWidget);
     });
 
     testWidgets('a device that never got anything is told which of the two', (
@@ -244,8 +244,8 @@ void main() {
       ]);
 
       await tester.pumpWidget(screen());
-      expect(find.text('これから'), findsOneWidget);
-      expect(find.text('いま動いている'), findsNothing);
+      expect(taskRowTitled(1, 'これから'), findsOneWidget);
+      expect(taskRowTitled(2, 'いま動いている'), findsNothing);
 
       await tester.tap(
         find.text(
@@ -253,8 +253,8 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
-      expect(find.text('いま動いている'), findsOneWidget);
-      expect(find.text('これから'), findsNothing);
+      expect(taskRowTitled(2, 'いま動いている'), findsOneWidget);
+      expect(taskRowTitled(1, 'これから'), findsNothing);
     });
 
     testWidgets('a row waiting on something stays in todo and says so', (
@@ -343,7 +343,7 @@ void main() {
 
       // The device holds the whole copy, so nothing is behind a cut-off to go and fetch — and a
       // row that is old is still a row the person finished.
-      expect(find.text('きょねん終わった'), findsOneWidget);
+      expect(taskRowTitled(1, 'きょねん終わった'), findsOneWidget);
     });
 
     testWidgets('the date is written in wherever it changes', (tester) async {
@@ -388,12 +388,15 @@ void main() {
 
       await tester.pumpWidget(screen());
       await tester.pumpAndSettle();
-      expect(find.text('しごと ${Windows.list + 3}'), findsNothing);
+      expect(
+        taskRowTitled(Windows.list + 3, 'しごと ${Windows.list + 3}'),
+        findsNothing,
+      );
 
       // Reaching the bottom is the whole of asking for more. The list being read is named, or
       // the switch and the row of states are scrollables too.
       await tester.scrollUntilVisible(
-        find.text('しごと ${Windows.list + 3}'),
+        taskRowTitled(Windows.list + 3, 'しごと ${Windows.list + 3}'),
         400,
         scrollable: find
             .descendant(
@@ -403,7 +406,10 @@ void main() {
             .last,
       );
       await tester.pumpAndSettle();
-      expect(find.text('しごと ${Windows.list + 3}'), findsOneWidget);
+      expect(
+        taskRowTitled(Windows.list + 3, 'しごと ${Windows.list + 3}'),
+        findsOneWidget,
+      );
     });
 
     testWidgets('a state with nothing in it says so, quietly', (tester) async {
@@ -426,7 +432,7 @@ void main() {
       ]);
 
       await tester.pumpWidget(screen());
-      await tester.tap(find.text('ひらく'));
+      await tester.tap(taskRowTitled(42, 'ひらく'));
       expect(opened, [42]);
     });
   });
@@ -529,7 +535,7 @@ void main() {
       arrivals.tick();
       await tester.pumpAndSettle();
 
-      expect(find.text('あとから'), findsNothing);
+      expect(taskRowTitled(2, 'あとから'), findsNothing);
       expect(
         find.text(NowScreen.arrived(words, const Counted(1, false))),
         findsOneWidget,
@@ -539,7 +545,7 @@ void main() {
         find.text(NowScreen.arrived(words, const Counted(1, false))),
       );
       await tester.pumpAndSettle();
-      expect(find.text('あとから'), findsOneWidget);
+      expect(taskRowTitled(2, 'あとから'), findsOneWidget);
       expect(find.textContaining('New activity'), findsNothing);
     });
 
@@ -626,7 +632,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Nobody is mid-read, and a first sync is meant to be watched arriving.
-      expect(find.text('とどいた'), findsOneWidget);
+      expect(taskRowTitled(1, 'とどいた'), findsOneWidget);
       expect(find.textContaining('New activity'), findsNothing);
     });
 
@@ -647,7 +653,7 @@ void main() {
       arrivals.tick(watched: true);
       await tester.pumpAndSettle();
 
-      expect(find.text('みていた'), findsOneWidget);
+      expect(taskRowTitled(2, 'みていた'), findsOneWidget);
       expect(find.textContaining('New activity'), findsNothing);
     });
 
@@ -668,7 +674,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(takes, 1);
-      expect(find.text('ひっぱった'), findsOneWidget);
+      expect(taskRowTitled(1, 'ひっぱった'), findsOneWidget);
       expect(find.textContaining('New activity'), findsNothing);
     });
 
@@ -683,7 +689,7 @@ void main() {
       await tester.tap(find.byTooltip(words.refresh).first);
       await tester.pumpAndSettle();
 
-      expect(find.text('のこる'), findsOneWidget);
+      expect(taskRowTitled(1, 'のこる'), findsOneWidget);
       expect(tester.takeException(), isNull);
     });
   });
