@@ -3,10 +3,16 @@
 /// A decision is not looked for, it is read: the person knows one was made and wants to see what
 /// it said, and what they reach for it by is when it happened. That is a list in date order, and a
 /// short one — a backlog holds thousands of tasks and tens of decisions — so the whole face is one
-/// scroll with no question above it to answer first.
+/// scroll, and nothing above it has to be answered before the first row can be read.
 ///
 /// It sat behind the second tab of the search face until now, which put a search in front of the
 /// one thing on this phone nobody searches for.
+///
+/// What is above the list is one menu, and it is not a question either: the face opens on every
+/// project stacked together, and the menu is there for somebody who already knows which project
+/// they mean. It is the same menu the other two faces carry, in the same corner, and with one
+/// project it is not drawn at all. The choice is this face's own — arriving here is what clears
+/// it, as it is on the search face.
 ///
 /// Two things it deliberately does not do.
 ///
@@ -27,6 +33,7 @@ import 'store/backlog_store.dart';
 import 'ui/decision_row.dart';
 import 'ui/empty.dart';
 import 'ui/measure.dart';
+import 'ui/project_choice.dart';
 import 'ui/tokens.dart';
 import 'ui/touch.dart';
 
@@ -57,6 +64,9 @@ class DecisionsScreen extends StatefulWidget {
 }
 
 class _DecisionsScreenState extends State<DecisionsScreen> {
+  /// The project the list is narrowed to, or null for every project at once.
+  int? _projectId;
+
   var _projects = const <({int id, String name})>[];
   var _names = const <int, String>{};
   var _decisions = const <DecisionLine>[];
@@ -78,7 +88,7 @@ class _DecisionsScreenState extends State<DecisionsScreen> {
     // decisions still explain the thing that outlived it.
     _projects = widget.store.projects(includeArchived: true);
     _names = {for (final project in _projects) project.id: project.name};
-    _decisions = widget.store.decisions();
+    _decisions = widget.store.decisions(projectId: _projectId);
     _more = _decisions.length == Windows.list;
   }
 
@@ -111,7 +121,10 @@ class _DecisionsScreenState extends State<DecisionsScreen> {
         return;
       }
       setState(() {
-        final next = widget.store.decisions(offset: _decisions.length);
+        final next = widget.store.decisions(
+          projectId: _projectId,
+          offset: _decisions.length,
+        );
         _decisions = [..._decisions, ...next];
         _more = next.length == Windows.list;
       });
@@ -126,6 +139,31 @@ class _DecisionsScreenState extends State<DecisionsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(words.tabDecisions),
+        actions: [
+          // The same mouth as the other two faces, and for the same reason: with one project
+          // there is nothing to choose between.
+          if (_projects.length > 1)
+            PopupMenuButton<ProjectChoice>(
+              icon: const Icon(Icons.folder_outlined),
+              tooltip: words.chooseProject,
+              initialValue: ProjectChoice(_projectId),
+              onSelected: (chosen) => setState(() {
+                _projectId = chosen.id;
+                _load();
+              }),
+              itemBuilder: (context) => [
+                PopupMenuItem(
+                  value: ProjectChoice.all,
+                  child: Text(words.allProjects),
+                ),
+                for (final project in _projects)
+                  PopupMenuItem(
+                    value: ProjectChoice(project.id),
+                    child: Text(project.name),
+                  ),
+              ],
+            ),
+        ],
         // While a fetch runs, a line and nothing else — the old picture is the correct thing to
         // be reading until a newer one exists.
         bottom: _taking
@@ -170,9 +208,11 @@ class _DecisionsScreenState extends State<DecisionsScreen> {
       return DecisionRow(
         line: line,
         today: today,
-        // The list is every project at once, so a row says which one it came out of — and with
-        // one project there is nothing to tell apart.
-        projectName: _projects.length > 1 ? _names[line.projectId] : null,
+        // Only while the list is every project at once: narrowed to one, the same name down
+        // every row takes width off the titles and tells the person nothing they did not choose.
+        projectName: _projectId == null && _projects.length > 1
+            ? _names[line.projectId]
+            : null,
         onOpen: () => widget.onOpen(line),
       );
     },

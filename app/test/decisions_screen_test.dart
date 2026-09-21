@@ -96,6 +96,83 @@ void main() {
     expect(opened, [7]);
   });
 
+  group('every project, unless one is picked', () {
+    setUp(
+      () => store.applyPage([
+        BacklogChange.put('project', 16, project(id: 16, name: 'viewer')),
+        BacklogChange.put('project', 20, project(id: 20, name: 'nsys')),
+        BacklogChange.put(
+          'decision',
+          1,
+          decision(id: 1, projectId: 16, title: 'こちらのきめごと'),
+        ),
+        BacklogChange.put(
+          'decision',
+          2,
+          decision(id: 2, projectId: 20, title: 'むこうのきめごと'),
+        ),
+      ]),
+    );
+
+    testWidgets('it opens on every project stacked together', (tester) async {
+      await tester.pumpWidget(screen());
+      await tester.pumpAndSettle();
+
+      // Nothing has been asked of the person before the first row can be read.
+      expect(find.byType(DecisionRow), findsNWidgets(2));
+      expect(find.text('viewer'), findsOneWidget);
+      expect(find.text('nsys'), findsOneWidget);
+    });
+
+    testWidgets('picking one leaves that project on the list', (tester) async {
+      await tester.pumpWidget(screen());
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byTooltip(words.chooseProject));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('viewer').last);
+      await tester.pumpAndSettle();
+
+      expect(decisionRowTitled(1, 'こちらのきめごと'), findsOneWidget);
+      expect(decisionRowTitled(2, 'むこうのきめごと'), findsNothing);
+      // And the name comes off the rows: the person picked it, and repeating it down every row
+      // takes width off the titles.
+      expect(find.text('viewer'), findsNothing);
+    });
+
+    testWidgets('and every project can be picked back', (tester) async {
+      await tester.pumpWidget(screen());
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byTooltip(words.chooseProject));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('viewer').last);
+      await tester.pumpAndSettle();
+      expect(find.byType(DecisionRow), findsOneWidget);
+
+      await tester.tap(find.byTooltip(words.chooseProject));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text(words.allProjects).last);
+      await tester.pumpAndSettle();
+
+      expect(find.byType(DecisionRow), findsNWidgets(2));
+    });
+  });
+
+  testWidgets('with one project there is nothing to choose between', (
+    tester,
+  ) async {
+    store.applyPage([
+      BacklogChange.put('project', 16, project(id: 16, name: 'viewer')),
+      BacklogChange.put('decision', 1, decision(id: 1, projectId: 16)),
+    ]);
+
+    await tester.pumpWidget(screen());
+    await tester.pumpAndSettle();
+
+    expect(find.byTooltip(words.chooseProject), findsNothing);
+  });
+
   testWidgets('the end of a window asks for the next one', (tester) async {
     store.applyPage([
       for (var id = 1; id <= Windows.list + 3; id++)
