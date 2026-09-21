@@ -204,7 +204,7 @@ void main() {
 
       // Not "nothing has arrived yet", and not behind a pill either: this is the backlog the
       // person just watched arrive.
-      expect(find.text('はじめてとどいた'), findsOneWidget);
+      expect(taskRowTitled(1, 'はじめてとどいた'), findsOneWidget);
       expect(find.textContaining('New activity'), findsNothing);
     });
   });
@@ -257,7 +257,7 @@ void main() {
       await tester.tap(find.text(words.tabDecisions));
       await tester.pumpAndSettle();
 
-      expect(find.text('あとからきめた'), findsOneWidget);
+      expect(decisionRowTitled(1, 'あとからきめた'), findsOneWidget);
     });
 
     testWidgets('a decision opens on top, whatever the width', (tester) async {
@@ -271,7 +271,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.text(words.tabDecisions));
       await tester.pumpAndSettle();
-      await tester.tap(find.text('ひらくきめごと'));
+      await tester.tap(decisionRowTitled(1, 'ひらくきめごと'));
       await tester.pumpAndSettle();
 
       // Pushed rather than swapped in beside the list: what a decision is opened from is a detail
@@ -376,7 +376,7 @@ void main() {
       await tester.pumpWidget(home());
       await tester.pumpAndSettle();
 
-      await tester.tap(find.text('しごと 1'));
+      await tester.tap(taskRowTitled(1, 'しごと 1'));
       await tester.pumpAndSettle();
 
       expect(find.byType(TaskDetailScreen), findsOneWidget);
@@ -391,7 +391,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(TwoPane), findsWidgets);
-      await tester.tap(find.text('しごと 1'));
+      await tester.tap(taskRowTitled(1, 'しごと 1'));
       await tester.pumpAndSettle();
 
       // Beside it, not on top of it: the list is still there to go on reading.
@@ -488,18 +488,18 @@ void main() {
       );
       await tester.pumpAndSettle();
       // The launch round landed before there was anything to interrupt.
-      expect(find.text('とどいた 3'), findsOneWidget);
+      expect(taskRowTitled(3, 'とどいた 3'), findsOneWidget);
 
       tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
       await tester.pumpAndSettle();
 
       // This one arrived under someone already reading, so it is counted, not applied.
-      expect(find.text('とどいた 4'), findsNothing);
+      expect(taskRowTitled(4, 'とどいた 4'), findsNothing);
       expect(find.textContaining('New activity'), findsOneWidget);
 
       await tester.tap(find.textContaining('New activity'));
       await tester.pumpAndSettle();
-      expect(find.text('とどいた 4'), findsOneWidget);
+      expect(taskRowTitled(4, 'とどいた 4'), findsOneWidget);
     });
   });
 

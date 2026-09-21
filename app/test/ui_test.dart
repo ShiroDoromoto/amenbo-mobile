@@ -507,6 +507,7 @@ void main() {
           RowSurface(
             onOpen: () {},
             lead: const RowLead(),
+            ref: taskRef(2833),
             title: 'a task',
             second: const [],
           ),
@@ -523,6 +524,29 @@ void main() {
       final border = (decorated.decoration as BoxDecoration).border as Border;
       expect(border.bottom.width, Stroke.rule);
       expect(border.bottom.color, lightPalette.border);
+    });
+
+    testWidgets('a row opens with the number it is called by on the PC', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        _wrap(
+          SizedBox(
+            width: 320,
+            child: TaskRow(
+              line: _line(title: 'wire the store up'),
+              today: now,
+              onOpen: () {},
+            ),
+          ),
+        ),
+      );
+
+      // One text rather than two, so a title that wraps comes back to the edge the number
+      // started at, and every other title in the list starts there too.
+      expect(find.text('${taskRef(1)} wire the store up'), findsOneWidget);
+      // And nothing in the row to aim at: what a tap on it opens is the row.
+      expect(find.byType(RefChip), findsNothing);
     });
 
     testWidgets('what is under a title is ranked, not enumerated', (
@@ -614,6 +638,7 @@ void main() {
             child: RowSurface(
               onOpen: () {},
               lead: const RowLead(),
+              ref: taskRef(2833),
               title: 'a task',
               second: const [],
             ),

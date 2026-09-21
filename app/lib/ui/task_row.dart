@@ -102,6 +102,7 @@ class TaskRow extends StatelessWidget {
     final moved = movedAt;
 
     final excerpt = line.matchLine?.trim();
+    final ref = taskRef(line.id);
 
     final second = <Widget>[
       if (showStatus) StatusMark(line.status),
@@ -129,7 +130,7 @@ class TaskRow extends StatelessWidget {
     return SpokenAsOne(
       label: rowLabel(
         words,
-        ref: taskRef(line.id),
+        ref: ref,
         title: line.title,
         status: line.status,
         priority: line.priority,
@@ -146,6 +147,7 @@ class TaskRow extends StatelessWidget {
       child: RowSurface(
         onOpen: onOpen,
         lead: RowLead(priority: line.priority),
+        ref: ref,
         title: line.title,
         second: second,
         excerpt: excerpt,

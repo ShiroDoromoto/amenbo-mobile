@@ -143,7 +143,7 @@ void main() {
     await tester.pumpWidget(face());
 
     expect(find.byType(TaskRow), findsOneWidget);
-    await tester.tap(find.text('つくる'));
+    await tester.tap(taskRowTitled(7, 'つくる'));
     expect(openedTasks, [7]);
   });
 
