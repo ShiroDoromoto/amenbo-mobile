@@ -109,8 +109,8 @@
   "refreshAutomatic": "自動",
   "refreshManualOnly": "頼んだときだけ",
   "appearanceSystem": "端末に合わせる",
-  "appearanceLight": "明るい",
-  "appearanceDark": "暗い",
+  "appearanceLight": "ライト",
+  "appearanceDark": "ダーク",
 
   "connectionTitle": "接続",
   "routeCloudflare": "自分の Cloudflare",
@@ -131,7 +131,7 @@
   "keepIt": "消さない",
   "eraseConfirm": "消す",
 
-  "aboutTitle": "これは何か",
+  "aboutTitle": "Amenbo Viewer について",
   "privacyPolicy": "プライバシーポリシー",
   "privacyPolicyUnopened": "ブラウザを開けませんでした。プライバシーポリシーは {url} にあります",
   "licences": "ライセンス",
