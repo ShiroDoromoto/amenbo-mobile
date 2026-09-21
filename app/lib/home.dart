@@ -360,9 +360,9 @@ class _HomeShellState extends State<HomeShell> {
     MaterialPageRoute(builder: (_) => _searchFace(narrowing, opens: _push)),
   );
 
-  /// The settings, from the top of the front screen. Pushed like everything else that is opened
-  /// from a tab rather than being one — and what comes back happened two screens in, on the
-  /// connection: the copy erased, or a fresh code read. Both are the root's news, not this
+  /// The settings, from the top of whichever tab is being read. Pushed like everything else that
+  /// is opened from a tab rather than being one — and what comes back happened two screens in, on
+  /// the connection: the copy erased, or a fresh code read. Both are the root's news, not this
   /// shell's, so both are handed straight on.
   Future<void> _openSettings() async {
     final outcome = await Navigator.of(context).push<ConnectionOutcome>(
@@ -422,12 +422,14 @@ class _HomeShellState extends State<HomeShell> {
   Widget _searchFace(
     TaskQuery narrowing, {
     required void Function(int taskId) opens,
+    VoidCallback? onOpenSettings,
   }) => SearchScreen(
     store: widget.store,
     narrowing: narrowing,
     clock: widget.clock,
     onOpenTask: (line) => opens(line.id),
     onOpenDecision: (line) => _openDecision(line.id),
+    onOpenSettings: onOpenSettings,
   );
 
   /// A tab's list, with what it opened beside it once there is width for two.
@@ -502,11 +504,18 @@ class _HomeShellState extends State<HomeShell> {
             clock: widget.clock,
             take: widget.take,
             onOpen: (line) => _openDecision(line.id),
+            onOpenSettings: _openSettings,
           ),
         ),
         KeyedSubtree(
           key: ValueKey(('search', _visits)),
-          child: _pane(_searchFace(const TaskQuery(), opens: _open)),
+          child: _pane(
+            _searchFace(
+              const TaskQuery(),
+              opens: _open,
+              onOpenSettings: _openSettings,
+            ),
+          ),
         ),
       ],
     );

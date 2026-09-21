@@ -24,7 +24,10 @@ void main() {
   });
   tearDown(() => store.close());
 
-  Widget screen({Future<void> Function()? take}) => MaterialApp(
+  Widget screen({
+    Future<void> Function()? take,
+    VoidCallback? onOpenSettings,
+  }) => MaterialApp(
     localizationsDelegates: Words.localizationsDelegates,
     supportedLocales: Words.supportedLocales,
     theme: viewerTheme(Brightness.light),
@@ -33,6 +36,7 @@ void main() {
       clock: () => today,
       take: take,
       onOpen: (line) => opened.add(line.id),
+      onOpenSettings: onOpenSettings,
     ),
   );
 
@@ -171,6 +175,26 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byTooltip(words.chooseProject), findsNothing);
+  });
+
+  testWidgets('the settings are opened from this corner too', (tester) async {
+    store.applyPage([BacklogChange.put('decision', 1, decision(id: 1))]);
+    var opened = 0;
+
+    await tester.pumpWidget(screen(onOpenSettings: () => opened += 1));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byTooltip(words.settingsTitle));
+    expect(opened, 1);
+  });
+
+  testWidgets('with nowhere to open them, no gear is drawn', (tester) async {
+    store.applyPage([BacklogChange.put('decision', 1, decision(id: 1))]);
+
+    await tester.pumpWidget(screen());
+    await tester.pumpAndSettle();
+
+    expect(find.byTooltip(words.settingsTitle), findsNothing);
   });
 
   testWidgets('the end of a window asks for the next one', (tester) async {

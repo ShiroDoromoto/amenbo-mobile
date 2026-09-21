@@ -8,11 +8,11 @@
 /// It sat behind the second tab of the search face until now, which put a search in front of the
 /// one thing on this phone nobody searches for.
 ///
-/// What is above the list is one menu, and it is not a question either: the face opens on every
-/// project stacked together, and the menu is there for somebody who already knows which project
-/// they mean. It is the same menu the other two faces carry, in the same corner, and with one
-/// project it is not drawn at all. The choice is this face's own — arriving here is what clears
-/// it, as it is on the search face.
+/// What is above the list is the corner the other two tabs have: the project menu, then the way
+/// into the settings. Neither is a question — the face opens on every project stacked together,
+/// and the menu is there for somebody who already knows which project they mean. With one project
+/// it is not drawn at all. The choice is this face's own, and arriving here is what clears it, as
+/// it is on the search face.
 ///
 /// Two things it deliberately does not do.
 ///
@@ -42,6 +42,7 @@ class DecisionsScreen extends StatefulWidget {
     super.key,
     required this.store,
     required this.onOpen,
+    this.onOpenSettings,
     this.take,
     this.clock = DateTime.now,
   });
@@ -51,6 +52,9 @@ class DecisionsScreen extends StatefulWidget {
   /// Opening a row. Always pushed by the shell, whatever the width — a decision is opened from a
   /// detail as often as from a list.
   final void Function(DecisionLine line) onOpen;
+
+  /// Opening the settings from this corner, the same as the other two tabs.
+  final VoidCallback? onOpenSettings;
 
   /// Goes and fetches, on whichever route this phone is on. Null where it has no route to take:
   /// the list is still drawn, off the copy the device already holds.
@@ -162,6 +166,14 @@ class _DecisionsScreenState extends State<DecisionsScreen> {
                     child: Text(project.name),
                   ),
               ],
+            ),
+          // After the folder, and in the corner every tab keeps it in: the settings are looked
+          // for in one place, not in whichever place the tab happens to put them.
+          if (widget.onOpenSettings != null)
+            IconButton(
+              icon: const Icon(Icons.settings_outlined),
+              tooltip: words.settingsTitle,
+              onPressed: widget.onOpenSettings,
             ),
         ],
         // While a fetch runs, a line and nothing else — the old picture is the correct thing to

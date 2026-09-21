@@ -38,6 +38,7 @@ class SearchScreen extends StatefulWidget {
     required this.store,
     required this.onOpenTask,
     required this.onOpenDecision,
+    this.onOpenSettings,
     this.narrowing = const TaskQuery(),
     this.clock = DateTime.now,
     this.settle = const Duration(milliseconds: 300),
@@ -47,6 +48,10 @@ class SearchScreen extends StatefulWidget {
 
   final void Function(TaskLine line) onOpenTask;
   final void Function(DecisionLine line) onOpenDecision;
+
+  /// Opening the settings from this corner. Null where this face was pushed rather than being a
+  /// tab — the way out of a pushed screen is the arrow it already carries.
+  final VoidCallback? onOpenSettings;
 
   /// What the person arrived holding — a chip from a detail, the project the front screen was
   /// narrowed to. Empty when they came here to type.
@@ -314,6 +319,14 @@ class _SearchScreenState extends State<SearchScreen>
                     child: Text(project.name),
                   ),
               ],
+            ),
+          // After the folder, and in the corner every tab keeps it in: the settings are looked
+          // for in one place, not in whichever place the tab happens to put them.
+          if (widget.onOpenSettings != null)
+            IconButton(
+              icon: const Icon(Icons.settings_outlined),
+              tooltip: words.settingsTitle,
+              onPressed: widget.onOpenSettings,
             ),
         ],
         bottom: TabBar(
