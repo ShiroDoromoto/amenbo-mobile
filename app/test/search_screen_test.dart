@@ -33,7 +33,10 @@ void main() {
   });
   tearDown(() => store.close());
 
-  Widget screen({TaskQuery narrowing = const TaskQuery()}) => MaterialApp(
+  Widget screen({
+    TaskQuery narrowing = const TaskQuery(),
+    VoidCallback? onOpenSettings,
+  }) => MaterialApp(
     localizationsDelegates: Words.localizationsDelegates,
     supportedLocales: Words.supportedLocales,
     theme: viewerTheme(Brightness.light),
@@ -44,6 +47,7 @@ void main() {
       settle: settle,
       onOpenTask: (line) => tasksOpened.add(line.id),
       onOpenDecision: (line) => decisionsOpened.add(line.id),
+      onOpenSettings: onOpenSettings,
     ),
   );
 
@@ -429,6 +433,44 @@ void main() {
       store.wipe();
 
       expect(store.recentTerms(), ['のこるはず']);
+    });
+  });
+
+  group('the corner carries both, in one order', () {
+    setUp(
+      () => store.applyPage([
+        BacklogChange.put('project', 16, project(id: 16, name: 'viewer')),
+        BacklogChange.put('project', 20, project(id: 20, name: 'nsys')),
+      ]),
+    );
+
+    testWidgets('the folder comes first and the gear after it', (tester) async {
+      await tester.pumpWidget(screen(onOpenSettings: () {}));
+      await tester.pumpAndSettle();
+
+      // What this face narrows is nearer the list than the way out of it.
+      expect(
+        tester.getCenter(find.byTooltip(words.chooseProject)).dx,
+        lessThan(tester.getCenter(find.byTooltip(words.settingsTitle)).dx),
+      );
+    });
+
+    testWidgets('the gear opens them', (tester) async {
+      var opened = 0;
+      await tester.pumpWidget(screen(onOpenSettings: () => opened += 1));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byTooltip(words.settingsTitle));
+      expect(opened, 1);
+    });
+
+    testWidgets('a face that was pushed has no gear', (tester) async {
+      // Pushed from a chip on a detail rather than arrived at as a tab: the way out it already
+      // carries is the arrow, and a second one would not be the same corner on every tab.
+      await tester.pumpWidget(screen());
+      await tester.pumpAndSettle();
+
+      expect(find.byTooltip(words.settingsTitle), findsNothing);
     });
   });
 

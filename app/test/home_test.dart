@@ -326,20 +326,29 @@ void main() {
       expect(find.byType(NavigationRail), findsNothing);
     });
 
-    testWidgets('the settings are opened from the front screen, not a tab', (
+    testWidgets('the settings are opened from any of the three, not a tab', (
       tester,
     ) async {
       await tester.pumpWidget(home());
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byTooltip(words.settingsTitle));
-      await tester.pumpAndSettle();
+      // The same corner on all three, so reading a decision and wanting the settings is not a
+      // reason to go back to the front screen first.
+      for (final tab in [words.tabTasks, words.tabDecisions, words.tabSearch]) {
+        await tester.tap(find.text(tab));
+        await tester.pumpAndSettle();
 
-      // Pushed, so the way back is the one every other pushed screen has.
-      expect(find.byType(SettingsScreen), findsOneWidget);
-      await tester.pageBack();
-      await tester.pumpAndSettle();
-      expect(find.byType(NowScreen), findsOneWidget);
+        await tester.tap(find.byTooltip(words.settingsTitle));
+        await tester.pumpAndSettle();
+
+        // Pushed, so the way back is the one every other pushed screen has.
+        expect(find.byType(SettingsScreen), findsOneWidget);
+        await tester.pageBack();
+        await tester.pumpAndSettle();
+      }
+
+      // And it came back to the tab it was opened from, not to the front screen.
+      expect(find.byType(SearchScreen), findsOneWidget);
     });
 
     testWidgets('search starts from everything, every time it is arrived at', (

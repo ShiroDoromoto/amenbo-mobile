@@ -301,9 +301,10 @@ class _NowScreenState extends State<NowScreen>
       appBar: AppBar(
         title: _title(),
         actions: [
-          // The whole way to the settings: three choices opened a handful of times a year, which
-          // is not what a third of the bottom bar is for. The corner where a screen's way out to
-          // what is behind it is looked for.
+          // The way to the settings: three choices opened a handful of times a year, which is
+          // not what a third of the bottom bar is for. The corner where a screen's way out to
+          // what is behind it is looked for — and the same corner on all three tabs, so it is
+          // not a thing to come back here for.
           if (widget.onOpenSettings != null)
             IconButton(
               icon: const Icon(Icons.settings_outlined),
