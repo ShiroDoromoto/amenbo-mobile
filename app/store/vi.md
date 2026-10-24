@@ -47,6 +47,10 @@ Không quảng cáo. Không theo dõi. Không tài khoản.
 
 ## release_notes
 
-Thẻ Quyết định giờ mang cùng chiếc búa mà Amenbo dùng trên máy tính.
+Mỗi dòng giờ bắt đầu bằng số của nó, và ngày bắt đầu, hạn chót có thể kèm giờ.
 
-- Chỉ biểu tượng thay đổi. Cách đọc và đồng bộ quyết định vẫn như cũ
+- Công việc và quyết định trong danh sách bắt đầu bằng số của chúng
+- Ngày bắt đầu hoặc hạn chót đặt kèm giờ trên máy tính giờ hiện đúng giờ đó theo đồng hồ điện thoại. Trước đây chúng hiện như không có ngày
+- Có thể lọc quyết định theo dự án từ menu ở góc trên bên phải
+- Cài đặt mở được từ góc trên bên phải ở mọi thẻ
+- Trên iPhone, xóa ứng dụng cũng xóa luôn ghép nối

@@ -47,6 +47,10 @@ Geen advertenties. Geen tracking. Geen account.
 
 ## release_notes
 
-Het tabblad Besluiten draagt nu dezelfde voorzittershamer als Amenbo op de computer.
+Rijen beginnen nu met hun nummer, en een begin of deadline kan een tijd dragen.
 
-- Alleen het pictogram is veranderd. Lezen en synchroniseren van besluiten blijft hetzelfde
+- Taken en besluiten in de lijsten beginnen met hun nummer
+- Een begin of deadline met een tijd van de computer toont die tijd op de klok van de telefoon. Eerder leek er geen datum te staan
+- Besluiten zijn via het menu rechtsboven tot één project te beperken
+- Instellingen opent rechtsboven op elk tabblad
+- Op de iPhone verdwijnt met de app ook de koppeling

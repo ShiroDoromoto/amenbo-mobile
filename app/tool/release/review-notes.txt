@@ -24,7 +24,7 @@ HOW A REAL USER SETS IT UP
 
 What crosses the network is ciphertext. The key never travels over it, only optically in the QR code — that is why the camera is requested, and it is the only reason. There are no credentials to supply anywhere in this app.
 
-New in this version: nothing about the route, the permissions or the data handling changed. The decisions tab carries a gavel where it used to carry a scale, so the icon matches the one Amenbo draws on the computer. That is the whole of it. The attached code pairs exactly as before.
+New in this version: route, permissions and data handling are unchanged, and the attached code pairs as before. List rows begin with their number. A start or due can carry a time, shown on the phone's clock. Decisions narrow to one project, and settings opens from the top right of all three tabs. On iPhone, deleting the app now removes the pairing: reinstall it and it opens on the pairing guide.
 
 DEVICE MODELS AND OPERATING SYSTEMS TESTED
 

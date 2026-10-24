@@ -47,6 +47,10 @@ Reklam yok. Takip yok. Hesap yok.
 
 ## release_notes
 
-Kararlar sekmesi artık Amenbo'nun bilgisayardaki tokmağını taşıyor.
+Satırlar artık numarasıyla başlıyor; başlangıç ve son tarih saat de taşıyabiliyor.
 
-- Yalnızca simge değişti. Kararların okunması ve eşitlenmesi aynı kaldı
+- Listelerdeki görevler ve kararlar numarasıyla başlıyor
+- Bilgisayarda saatiyle belirlenen başlangıç ya da son tarih, o saati telefonun saatine göre gösteriyor. Önceden tarihsiz görünüyordu
+- Kararlar sağ üstteki menüden projeye göre süzülebiliyor
+- Ayarlar her sekmede sağ üstten açılıyor
+- iPhone'da uygulamayı silmek eşleştirmeyi de siliyor

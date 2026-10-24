@@ -47,6 +47,10 @@ Sin anuncios. Sin rastreo. Sin cuenta.
 
 ## release_notes
 
-La pestaña Decisiones ahora lleva el mismo mazo que Amenbo usa en el ordenador.
+Las filas empiezan ahora por su número, y el inicio y el vencimiento pueden llevar hora.
 
-- Solo cambió el icono. La forma de leer y sincronizar las decisiones sigue igual
+- Tareas y decisiones de las listas empiezan por su número
+- Un inicio o vencimiento con hora fijado en el ordenador muestra esa hora según el reloj del teléfono. Antes aparecía sin fecha
+- Las decisiones se filtran por proyecto desde el menú de arriba a la derecha
+- Los ajustes se abren arriba a la derecha en todas las pestañas
+- En iPhone, borrar la app borra también el emparejamiento
