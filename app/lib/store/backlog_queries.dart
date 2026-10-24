@@ -75,8 +75,8 @@ class TaskLine {
     required this.priority,
     required this.assigneeKind,
     required this.draft,
-    required this.dueOn,
-    required this.startOn,
+    required this.due,
+    required this.start,
     required this.updatedAt,
     required this.closedAt,
     required this.comments,
@@ -95,8 +95,8 @@ class TaskLine {
 
   /// The task is still being written on the PC — one of the reasons it is stalled.
   final bool draft;
-  final String? dueOn;
-  final String? startOn;
+  final Schedule? due;
+  final Schedule? start;
   final String updatedAt;
 
   /// When it was closed, for the finished state.
@@ -123,6 +123,37 @@ class TaskLine {
   /// that the search worked.
   String? get matchLine =>
       matchedIn == null || matchedIn == 'title' ? null : excerpt;
+}
+
+/// A start or a due, as one of the two things Amenbo lets it be.
+///
+/// A task carries either a day (`start_on` / `due_on`, the person's own calendar day) or an
+/// instant (`start_at` / `due_at`, in UTC), never both. The screens take this one type rather than
+/// the two columns, so no screen can read one of them and miss the other.
+sealed class Schedule {
+  const Schedule();
+
+  /// Null when neither column holds a value. The instant wins if a row somehow carries both.
+  static Schedule? of({String? on, String? at}) {
+    final instant = at == null ? null : DateTime.tryParse(at);
+    if (instant != null) return ScheduleAt(instant);
+    if (on != null) return ScheduleDay(on);
+    return null;
+  }
+}
+
+/// A calendar day, `YYYY-MM-DD`. As a start it begins the day; as a due it ends it.
+final class ScheduleDay extends Schedule {
+  const ScheduleDay(this.day);
+
+  final String day;
+}
+
+/// An instant, shown on this phone's own clock.
+final class ScheduleAt extends Schedule {
+  const ScheduleAt(this.at);
+
+  final DateTime at;
 }
 
 /// One decision as a list shows it.
@@ -671,7 +702,7 @@ extension BacklogQueries on BacklogStore {
 /// still being written. No list is divided by them — the row says which one it is waiting on.
 String _taskColumns({bool excerpt = false}) =>
     't.id, t.project_id, t.title, t.status, t.priority, t.assignee_kind, t.draft, '
-    't.due_on, t.start_on, t.updated_at, '
+    't.due_on, t.start_on, t.due_at, t.start_at, t.updated_at, '
     'COALESCE(t.completed_at, t.status_changed_at) AS closed_at, '
     '(SELECT COUNT(*) FROM task_comment c WHERE c.task_id = t.id) AS comments, '
     '(SELECT d.blocked_by_id FROM task_dependency d JOIN task b ON b.id = d.blocked_by_id '
@@ -690,8 +721,11 @@ TaskLine _taskLine(Row row) => TaskLine(
   priority: row['priority'] as String?,
   assigneeKind: row['assignee_kind'] as String?,
   draft: row['draft'] == 1,
-  dueOn: row['due_on'] as String?,
-  startOn: row['start_on'] as String?,
+  due: Schedule.of(on: row['due_on'] as String?, at: row['due_at'] as String?),
+  start: Schedule.of(
+    on: row['start_on'] as String?,
+    at: row['start_at'] as String?,
+  ),
   updatedAt: row['updated_at'] as String,
   closedAt: row['closed_at'] as String?,
   comments: row['comments'] as int,
@@ -743,9 +777,15 @@ String _stateOrder(TaskState state, DateTime today) => switch (state) {
   // Overdue first, then today, then priority — a deadline is not a state of its own, it is a
   // reason to be at the top of the one it is already in. What is waiting on something is not
   // pushed down: the person reads from the top and takes the first row with no waiting mark on it.
+  // A due instant is late once it has passed and due today while it falls before tomorrow begins
+  // here; within today the instants come first, by the clock, and a bare day after them, because
+  // a day is due at its end.
   TaskState.todo =>
-    'CASE WHEN t.due_on IS NOT NULL AND t.due_on < ? THEN 0 '
-        'WHEN t.due_on = ? THEN 1 ELSE 2 END, t.priority_rank, t.id',
+    'CASE WHEN t.due_on < ? OR t.due_at < ? THEN 0 '
+        'WHEN t.due_at < ? THEN 1 '
+        'WHEN t.due_on = ? THEN 2 ELSE 3 END, '
+        'CASE WHEN t.due_at >= ? AND t.due_at < ? THEN t.due_at END, '
+        't.priority_rank, t.id',
   // Movement is the subject here, so freshness outranks everything but priority.
   TaskState.inProgress => 't.priority_rank, t.updated_at DESC, t.id',
   TaskState.blocked => 't.priority_rank, t.id',
@@ -753,8 +793,15 @@ String _stateOrder(TaskState state, DateTime today) => switch (state) {
     'COALESCE(t.completed_at, t.status_changed_at, t.updated_at) DESC, t.id DESC',
 };
 
-List<Object?> _orderArgs(TaskState state, DateTime today) =>
-    state == TaskState.todo ? [_day(today), _day(today)] : const [];
+List<Object?> _orderArgs(TaskState state, DateTime today) {
+  if (state != TaskState.todo) return const [];
+  final local = today.toLocal();
+  final now = amenboStamp(today);
+  final tomorrow = amenboStamp(
+    DateTime(local.year, local.month, local.day + 1),
+  );
+  return [_day(today), now, tomorrow, _day(today), now, tomorrow];
+}
 
 ({String sql, List<Object?> args}) _listWhere(TaskQuery query) {
   final clauses = <String>[];
@@ -823,7 +870,8 @@ List<Object?> _orderArgs(TaskState state, DateTime today) =>
 }
 
 /// Amenbo writes days as `YYYY-MM-DD` and instants as ISO-8601 in UTC. Comparisons here are
-/// string comparisons on those, which is why both formats are produced in one place.
+/// string comparisons on those, which is why both formats are produced in one place. A day is only
+/// ever compared with a day and an instant with an instant.
 String _day(DateTime when) {
   final local = when.toLocal();
   return '${local.year.toString().padLeft(4, '0')}-'

@@ -2,9 +2,12 @@
 // here runs Amenbo or reaches a Worker: the app has to be verifiable on its own,
 // and a test that needed a snapshot from somewhere would end that.
 
+import 'dart:io';
+
 import 'package:amenbo_viewer/store/backlog_queries.dart';
 import 'package:amenbo_viewer/store/backlog_store.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sqlite3/sqlite3.dart';
 
 import 'backlog_fixture.dart';
 
@@ -121,5 +124,59 @@ void main() {
       // The place being replaced says nothing about how the person wants the app to look.
       expect(store.meta(MetaKey.appearance), 'dark');
     });
+  });
+
+  group('a new shape of the tables', () {
+    test(
+      'an older store is rebuilt from the rows it kept, with no download',
+      () async {
+        final dir = await Directory.systemTemp.createTemp('backlog');
+        addTearDown(() => dir.delete(recursive: true));
+        final path = '${dir.path}/backlog.sqlite';
+
+        final before = await BacklogStore.openAt(path);
+        // A row from before the PC wrote instants carries neither key at all.
+        final older = task(id: 1, dueOn: '2026-08-09')
+          ..remove('due_at')
+          ..remove('start_at');
+        before.applyPage([
+          BacklogChange.put('task', 1, older),
+          BacklogChange.put(
+            'task',
+            2,
+            task(
+              id: 2,
+              dueAt: '2026-08-09T06:00:00Z',
+              startAt: '2026-08-08T00:00:00Z',
+            ),
+          ),
+        ]);
+        before.close();
+
+        final raw = sqlite3.open(path);
+        raw.execute('PRAGMA user_version = 2');
+        raw.close();
+
+        final after = await BacklogStore.openAt(path);
+        addTearDown(after.close);
+        expect(
+          after.task(1)!.due,
+          isA<ScheduleDay>().having((s) => s.day, 'day', '2026-08-09'),
+        );
+        expect(after.task(1)!.start, isNull);
+        expect(
+          after.task(2)!.due,
+          isA<ScheduleAt>().having(
+            (s) => s.at,
+            'at',
+            DateTime.utc(2026, 8, 9, 6),
+          ),
+        );
+        expect(
+          after.task(2)!.start,
+          isA<ScheduleAt>().having((s) => s.at, 'at', DateTime.utc(2026, 8, 8)),
+        );
+      },
+    );
   });
 }

@@ -12,6 +12,7 @@ library;
 import 'package:flutter/material.dart';
 
 import '../l10n/words.dart';
+import '../store/backlog_queries.dart';
 import 'theme.dart';
 import 'time.dart';
 import 'tokens.dart';
@@ -156,22 +157,22 @@ String decisionStatusWords(Words words, String state) => switch (state) {
   _ => state,
 };
 
-/// A due day, saying in words when it has passed.
+/// A due day or a due instant, saying in words when it has passed.
 ///
 /// Lateness is not a state of its own — it lifts a task to the top of the one it is already in —
 /// so this is where a person finds out, and "Overdue" has to be written rather than implied by
 /// the date turning red.
 class DueMark extends StatelessWidget {
-  const DueMark(this.dueOn, {super.key, required this.today});
+  const DueMark(this.due, {super.key, required this.today});
 
-  final String dueOn;
+  final Schedule due;
   final DateTime today;
 
   @override
   Widget build(BuildContext context) {
     final colours = palette(context);
-    final label = dueLabel(TimeFace.of(context), dueOn, today: today);
-    final late = isOverdue(dueOn, today: today);
+    final label = dueLabel(TimeFace.of(context), due, today: today);
+    final late = isOverdue(due, today: today);
     return _Mark(
       icon: late ? Icons.priority_high : Icons.event_outlined,
       colour: late ? colours.dueOverdue : colours.dueFuture,
@@ -223,18 +224,33 @@ class StallMark extends StatelessWidget {
   }
 }
 
-bool isOverdue(String dueOn, {required DateTime today}) =>
-    dueOn.compareTo(isoDay(today)) < 0;
+/// A day is late once it is over; an instant, once it has passed.
+bool isOverdue(Schedule due, {required DateTime today}) => switch (due) {
+  ScheduleDay(:final day) => day.compareTo(isoDay(today)) < 0,
+  ScheduleAt(:final at) => at.isBefore(today),
+};
 
-String dueLabel(TimeFace face, String dueOn, {required DateTime today}) {
+String dueLabel(TimeFace face, Schedule due, {required DateTime today}) {
   final words = face.words;
-  final day = isoDay(today);
-  if (dueOn.compareTo(day) < 0) {
-    return words.dueOverdue(dayLabel(face, dueOn, now: today));
-  }
-  if (dueOn == day) return words.dueToday;
-  return words.dueOn(dayLabel(face, dueOn, now: today));
+  final label = scheduleLabel(face, due, now: today);
+  if (isOverdue(due, today: today)) return words.dueOverdue(label);
+  // Only a bare day is said as "today": an instant names its hour, which is the part that matters.
+  if (due is ScheduleDay && due.day == isoDay(today)) return words.dueToday;
+  return words.dueOn(label);
 }
+
+/// Whether a start is still ahead. A day starts when it begins; an instant, when it arrives.
+bool startsLater(Schedule start, {required DateTime today}) => switch (start) {
+  ScheduleDay(:final day) => day.compareTo(isoDay(today)) > 0,
+  ScheduleAt(:final at) => at.isAfter(today),
+};
+
+/// A start or a due as words: the day alone, or the clock with its day in front of it.
+String scheduleLabel(TimeFace face, Schedule when, {required DateTime now}) =>
+    switch (when) {
+      ScheduleDay(:final day) => dayLabel(face, day, now: now),
+      ScheduleAt(:final at) => clockOnDay(face, at, now: now),
+    };
 
 /// One line of text and its glyph.
 class _Mark extends StatelessWidget {

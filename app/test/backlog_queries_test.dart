@@ -76,7 +76,10 @@ void main() {
       );
       expect(byId[6]!.undecided, 7);
       expect(byId[3]!.draft, isTrue);
-      expect(byId[4]!.startOn, '2026-09-01');
+      expect(
+        byId[4]!.start,
+        isA<ScheduleDay>().having((s) => s.day, 'day', '2026-09-01'),
+      );
     });
 
     test(
@@ -130,6 +133,64 @@ void main() {
         5,
         4,
       ]);
+    });
+
+    test('a due instant is late once passed, and leads today by the clock', () {
+      final noon = DateTime(2026, 8, 9, 12);
+      String at(int day, int hour) => amenboStamp(DateTime(2026, 8, day, hour));
+      store.applyPage([
+        BacklogChange.put(
+          'task',
+          1,
+          task(id: 1, priority: 'low', dueAt: at(9, 10)),
+        ),
+        BacklogChange.put(
+          'task',
+          2,
+          task(id: 2, priority: 'high', dueOn: '2026-08-08'),
+        ),
+        BacklogChange.put(
+          'task',
+          3,
+          task(id: 3, priority: 'low', dueAt: at(9, 18)),
+        ),
+        BacklogChange.put(
+          'task',
+          4,
+          task(id: 4, priority: 'low', dueAt: at(9, 15)),
+        ),
+        BacklogChange.put(
+          'task',
+          5,
+          task(id: 5, priority: 'high', dueOn: '2026-08-09'),
+        ),
+        BacklogChange.put(
+          'task',
+          6,
+          task(id: 6, priority: 'high', dueAt: at(10, 9)),
+        ),
+        BacklogChange.put('task', 7, task(id: 7, priority: 'medium')),
+      ]);
+
+      // Late by priority; then today's instants by the clock, then today's bare day, which is
+      // due at its end; then the rest by priority.
+      expect(store.inState(TaskState.todo, today: noon).map((row) => row.id), [
+        2,
+        1,
+        4,
+        3,
+        5,
+        6,
+        7,
+      ]);
+      expect(
+        store.task(1)!.due,
+        isA<ScheduleAt>().having(
+          (s) => s.at,
+          'at',
+          DateTime(2026, 8, 9, 10).toUtc(),
+        ),
+      );
     });
 
     test('finished is all of it, newest first', () {

@@ -187,11 +187,11 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
             ),
           ),
         ),
-        if (task.dueOn != null) DueMark(task.dueOn!, today: today),
-        if (task.startOn != null)
+        if (task.due != null) DueMark(task.due!, today: today),
+        if (task.start != null)
           Text(
             words.stallStarts(
-              dayLabel(TimeFace.of(context), task.startOn!, now: today),
+              scheduleLabel(TimeFace.of(context), task.start!, now: today),
             ),
             style: theme.textTheme.labelMedium?.copyWith(
               color: theme.colorScheme.onSurfaceVariant,

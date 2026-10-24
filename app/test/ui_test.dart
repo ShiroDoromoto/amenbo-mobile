@@ -138,11 +138,33 @@ void main() {
     });
 
     testWidgets('a late task says it is late, in words', (tester) async {
-      await tester.pumpWidget(_wrap(DueMark('2026-08-07', today: now)));
+      await tester.pumpWidget(
+        _wrap(DueMark(const ScheduleDay('2026-08-07'), today: now)),
+      );
       expect(find.textContaining('Overdue'), findsOneWidget);
 
-      await tester.pumpWidget(_wrap(DueMark('2026-08-09', today: now)));
+      await tester.pumpWidget(
+        _wrap(DueMark(const ScheduleDay('2026-08-09'), today: now)),
+      );
       expect(find.text('Due today'), findsOneWidget);
+
+      await tester.pumpWidget(
+        _wrap(DueMark(ScheduleAt(DateTime(2026, 8, 9, 11)), today: now)),
+      );
+      expect(find.textContaining('Overdue'), findsOneWidget);
+    });
+
+    test('a due instant names its hour, today included', () {
+      final at = ScheduleAt(DateTime(2026, 8, 9, 15).toUtc());
+      expect(dueLabel(face, at, today: now), 'Due 15:00');
+      expect(
+        dueLabel(face12, ScheduleAt(DateTime(2026, 8, 12, 9)), today: now),
+        startsWith('Due Aug 12'),
+      );
+      expect(
+        dueLabel(face, ScheduleAt(DateTime(2026, 8, 8, 9)), today: now),
+        'Overdue yesterday 09:00',
+      );
     });
 
     testWidgets('a state says its name', (tester) async {
@@ -150,9 +172,33 @@ void main() {
       expect(find.text('In progress'), findsOneWidget);
     });
 
-    test('lateness is decided against the day, not the instant', () {
-      expect(isOverdue('2026-08-08', today: now), isTrue);
-      expect(isOverdue('2026-08-09', today: now), isFalse);
+    test('a due day is late once the day is over', () {
+      expect(isOverdue(const ScheduleDay('2026-08-08'), today: now), isTrue);
+      expect(isOverdue(const ScheduleDay('2026-08-09'), today: now), isFalse);
+    });
+
+    test('a due instant is late once it has passed', () {
+      expect(
+        isOverdue(ScheduleAt(DateTime(2026, 8, 9, 11)), today: now),
+        isTrue,
+      );
+      expect(
+        isOverdue(ScheduleAt(DateTime(2026, 8, 9, 13)), today: now),
+        isFalse,
+      );
+    });
+
+    test('a start instant is ahead until it arrives', () {
+      expect(
+        startsLater(ScheduleAt(DateTime(2026, 8, 9, 13)), today: now),
+        isTrue,
+      );
+      expect(
+        startsLater(ScheduleAt(DateTime(2026, 8, 9, 11)), today: now),
+        isFalse,
+      );
+      expect(startsLater(const ScheduleDay('2026-08-09'), today: now), isFalse);
+      expect(startsLater(const ScheduleDay('2026-08-10'), today: now), isTrue);
     });
   });
 
@@ -689,8 +735,8 @@ TaskLine _line({
   priority: priority,
   assigneeKind: null,
   draft: false,
-  dueOn: null,
-  startOn: null,
+  due: null,
+  start: null,
   updatedAt: '2026-08-09T00:00:00Z',
   closedAt: null,
   comments: comments,
