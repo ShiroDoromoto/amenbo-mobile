@@ -47,6 +47,10 @@ Bez reklam. Bez śledzenia. Bez konta.
 
 ## release_notes
 
-Karta Decyzje ma teraz ten sam młotek, którego Amenbo używa na komputerze.
+Wiersze zaczynają się teraz od numeru, a początek i termin mogą mieć godzinę.
 
-- Zmieniła się tylko ikona. Sposób czytania i synchronizacji decyzji pozostaje ten sam
+- Zadania i decyzje na listach zaczynają się od swojego numeru
+- Początek lub termin z godziną ustawiony na komputerze pokazuje tę godzinę według zegara telefonu. Wcześniej wyglądał jak brak daty
+- Decyzje można zawęzić do projektu z menu w prawym górnym rogu
+- Ustawienia otwierają się z prawego górnego rogu na każdej karcie
+- Na iPhonie usunięcie aplikacji usuwa też parowanie

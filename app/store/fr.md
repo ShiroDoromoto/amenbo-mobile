@@ -47,6 +47,10 @@ Pas de publicité. Pas de pistage. Pas de compte.
 
 ## release_notes
 
-L'onglet Décisions porte désormais le même maillet qu'Amenbo sur l'ordinateur.
+Les lignes commencent désormais par leur numéro, et début et échéance peuvent porter une heure.
 
-- Seule l'icône change. La lecture et la synchronisation des décisions restent les mêmes
+- Tâches et décisions des listes commencent par leur numéro
+- Un début ou une échéance fixés à une heure sur l'ordinateur affichent cette heure, à l'horloge du téléphone. Avant, sans date
+- Les décisions se filtrent par projet depuis le menu en haut à droite
+- Les réglages s'ouvrent en haut à droite de chaque onglet
+- Sur iPhone, supprimer l'app supprime aussi l'appairage

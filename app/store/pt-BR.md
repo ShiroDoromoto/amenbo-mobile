@@ -47,6 +47,10 @@ Sem anúncios. Sem rastreamento. Sem conta.
 
 ## release_notes
 
-A aba Decisões agora traz o mesmo martelo que o Amenbo usa no computador.
+As linhas agora começam pelo número, e o início e o prazo podem ter horário.
 
-- Só o ícone mudou. A forma de ler e sincronizar as decisões continua a mesma
+- Tarefas e decisões nas listas começam pelo número
+- Um início ou prazo com horário marcado no computador mostra esse horário no relógio do celular. Antes, aparecia sem data
+- As decisões podem ser filtradas por projeto no menu do canto superior direito
+- As configurações abrem no canto superior direito de todas as abas
+- No iPhone, apagar o app apaga também o pareamento

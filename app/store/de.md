@@ -47,6 +47,10 @@ Keine Werbung. Kein Tracking. Kein Konto.
 
 ## release_notes
 
-Der Reiter Entscheidungen trägt jetzt denselben Richterhammer wie Amenbo auf dem Rechner.
+Zeilen beginnen jetzt mit ihrer Nummer, und Beginn und Fälligkeit können eine Uhrzeit tragen.
 
-- Geändert hat sich nur das Symbol. Am Lesen und am Abgleich der Entscheidungen ändert sich nichts
+- Aufgaben und Entscheidungen in den Listen beginnen mit ihrer Nummer
+- Ein Beginn oder eine Fälligkeit mit Uhrzeit vom Rechner zeigt diese Uhrzeit nach der Uhr des Telefons. Bisher erschien kein Datum
+- Entscheidungen lassen sich oben rechts im Menü auf ein Projekt eingrenzen
+- Die Einstellungen öffnen sich auf jedem Reiter oben rechts
+- Auf dem iPhone löscht das Entfernen der App auch die Kopplung

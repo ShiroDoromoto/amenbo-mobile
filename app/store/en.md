@@ -47,6 +47,10 @@ No ads. No tracking. No account.
 
 ## release_notes
 
-The decisions tab now carries the same gavel Amenbo uses on the computer.
+Rows now lead with their number, and a start or due can carry a time.
 
-- Only the icon changed. How decisions are read and synced is the same as before
+- Tasks and decisions in the lists begin with their number
+- A start or due set to an hour on the computer shows that hour on the phone's clock. Before, it showed no date
+- Decisions can be narrowed to one project from the menu at the top right
+- Settings opens from the top right of every tab
+- On iPhone, deleting the app removes its pairing too

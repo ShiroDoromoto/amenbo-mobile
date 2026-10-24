@@ -47,6 +47,10 @@ Nessuna pubblicità. Nessun tracciamento. Nessun account.
 
 ## release_notes
 
-La scheda Decisioni ora porta lo stesso martelletto che Amenbo usa sul computer.
+Le righe ora iniziano con il loro numero, e inizio e scadenza possono avere un orario.
 
-- È cambiata solo l'icona. Il modo di leggere e sincronizzare le decisioni resta lo stesso
+- Attività e decisioni nelle liste iniziano con il loro numero
+- Un inizio o una scadenza con orario fissati sul computer mostrano quell'ora secondo l'orologio del telefono. Prima apparivano senza data
+- Le decisioni si filtrano per progetto dal menu in alto a destra
+- Le impostazioni si aprono in alto a destra in ogni scheda
+- Su iPhone, eliminare l'app elimina anche l'abbinamento

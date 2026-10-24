@@ -47,6 +47,10 @@ Tanpa iklan. Tanpa pelacakan. Tanpa akun.
 
 ## release_notes
 
-Tab Keputusan kini memakai palu sidang yang sama seperti Amenbo di komputer.
+Baris kini diawali nomornya, dan mulai serta tenggat bisa memuat jam.
 
-- Hanya ikonnya yang berubah. Cara membaca dan menyinkronkan keputusan tetap sama
+- Tugas dan keputusan di daftar diawali nomornya
+- Mulai atau tenggat yang diatur dengan jam di komputer kini tampil pada jam itu, menurut jam ponsel. Sebelumnya tampil tanpa tanggal
+- Keputusan bisa disaring per proyek dari menu di kanan atas
+- Pengaturan bisa dibuka dari kanan atas di setiap tab
+- Di iPhone, menghapus aplikasi juga menghapus pemasangannya
