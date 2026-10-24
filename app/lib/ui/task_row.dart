@@ -48,9 +48,9 @@ String? stallReason(TimeFace face, TaskLine line, {required DateTime today}) {
   final undecided = line.undecided;
   if (undecided != null) return words.stallUndecided(decisionRef(undecided));
   if (line.draft) return words.stallDraft;
-  final start = line.startOn;
-  if (start != null && start.compareTo(isoDay(today)) > 0) {
-    return words.stallStarts(dayLabel(face, start, now: today));
+  final start = line.start;
+  if (start != null && startsLater(start, today: today)) {
+    return words.stallStarts(scheduleLabel(face, start, now: today));
   }
   return null;
 }
@@ -110,8 +110,8 @@ class TaskRow extends StatelessWidget {
       // strongest thing, so it leads, and nothing else on the line is drawn as loudly.
       if (reason != null)
         StallMark(reason)
-      else if (line.dueOn != null)
-        DueMark(line.dueOn!, today: today),
+      else if (line.due != null)
+        DueMark(line.due!, today: today),
       if (projectName != null)
         // The first thing to be pushed off when the line will not fit: which project a task is in
         // is worth knowing, and never worth as much as why it is stuck or when it is due.
@@ -136,8 +136,8 @@ class TaskRow extends StatelessWidget {
         priority: line.priority,
         assigneeKind: line.assigneeKind,
         comments: line.comments,
-        due: reason == null && line.dueOn != null
-            ? dueLabel(face, line.dueOn!, today: today)
+        due: reason == null && line.due != null
+            ? dueLabel(face, line.due!, today: today)
             : null,
         stallReason: reason,
         project: projectName,

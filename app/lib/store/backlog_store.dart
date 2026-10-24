@@ -138,7 +138,7 @@ class BacklogStore {
 
   /// Bumped whenever the tables below change shape. The rows in `record` survive it, so a bump
   /// costs a rebuild on the device and no traffic.
-  static const schemaVersion = 2;
+  static const schemaVersion = 3;
 
   void _migrate() {
     db.execute('PRAGMA journal_mode = WAL');
@@ -318,6 +318,8 @@ class BacklogStore {
           'draft': _flag(row['draft']),
           'due_on': row['due_on'] as String?,
           'start_on': row['start_on'] as String?,
+          'due_at': row['due_at'] as String?,
+          'start_at': row['start_at'] as String?,
           'created_at': _text(row['created_at']),
           'updated_at': _text(row['updated_at']),
           'status_changed_at': row['status_changed_at'] as String?,
@@ -530,6 +532,8 @@ CREATE TABLE task (
   draft             INTEGER NOT NULL,
   due_on            TEXT,
   start_on          TEXT,
+  due_at            TEXT,
+  start_at          TEXT,
   created_at        TEXT    NOT NULL,
   updated_at        TEXT    NOT NULL,
   status_changed_at TEXT,

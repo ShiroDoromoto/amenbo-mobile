@@ -443,6 +443,8 @@ Map<String, Object?> _task({
   'draft': 0,
   'due_on': dueOn,
   'start_on': null,
+  'due_at': null,
+  'start_at': null,
   'created_at': createdAt,
   'updated_at': updatedAt,
   'status_changed_at': updatedAt,

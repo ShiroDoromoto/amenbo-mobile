@@ -295,6 +295,38 @@ void main() {
       expect(find.textContaining('Starts'), findsOneWidget);
     });
 
+    testWidgets('a start instant still ahead is a reason too, with its hour', (
+      tester,
+    ) async {
+      store.applyPage([
+        BacklogChange.put(
+          'task',
+          1,
+          task(id: 1, startAt: amenboStamp(DateTime(2026, 8, 9, 15))),
+        ),
+      ]);
+
+      await tester.pumpWidget(screen());
+
+      final line = store.inState(TaskState.todo, today: today).single;
+      expect(stallReason(face, line, today: today), 'Starts 15:00');
+      expect(find.text(stallReason(face, line, today: today)!), findsOneWidget);
+    });
+
+    testWidgets('a due instant shows on the row with its hour', (tester) async {
+      store.applyPage([
+        BacklogChange.put(
+          'task',
+          1,
+          task(id: 1, dueAt: amenboStamp(DateTime(2026, 8, 9, 18))),
+        ),
+      ]);
+
+      await tester.pumpWidget(screen());
+
+      expect(find.text('Due 18:00'), findsOneWidget);
+    });
+
     testWidgets('only the rows in progress carry a time', (tester) async {
       const moved = '2026-08-01T00:00:00Z';
       store.applyPage([
