@@ -40,23 +40,23 @@ here=$(cd "$(dirname "$0")" && pwd)
 # shellcheck source=../step-lib.sh source-path=SCRIPTDIR
 . "$here/../step-lib.sh"
 
-[ "$#" = 0 ] || die "bump-version.sh takes no arguments; its inputs come from AMENBO_INPUT"
+[ "$#" = 0 ] || die "bump-version.sh は引数を受け取りません。入力は AMENBO_INPUT から読みます：$*"
 
 worktree=$(input_dir worktree)
 name=$(input_required バージョン)
-[[ "$name" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || die "the version name in the input is not <major>.<minor>.<patch>: \"$name\""
+[[ "$name" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || die "入力のバージョン名が <major>.<minor>.<patch> の形ではありません：\"$name\""
 
 pubspec="$worktree/app/pubspec.yaml"
 about="$worktree/app/lib/about_screen.dart"
-[ -f "$pubspec" ] || die "no app/pubspec.yaml in $worktree"
-[ -f "$about" ] || die "no app/lib/about_screen.dart in $worktree"
+[ -f "$pubspec" ] || die "${worktree} に app/pubspec.yaml がありません"
+[ -f "$about" ] || die "${worktree} に app/lib/about_screen.dart がありません"
 
 # The one line of a file that matches a pattern, or the step stops.
 only_line() {
     local found
     found=$(grep -E "$2" "$1" || true)
     [ -n "$found" ] && [ "$(printf '%s\n' "$found" | wc -l | tr -d ' ')" = 1 ] ||
-        die "expected one line matching /$2/ in $1"
+        die "${1} で /$2/ に合う行が1行ではありません"
     printf '%s\n' "$found"
 }
 
@@ -83,18 +83,18 @@ lower_than() {
     return 1
 }
 ! lower_than "$name" "$current_name" ||
-    die "the version name $name is lower than the checkout's $current_name"
+    die "バージョン名 $name が、チェックアウトの ${current_name} より小さいです"
 
 # What one store's `state` prints: the file the override names, or the command itself.
 state_of() {
     local store="$1" override="$2" text
     if [ -n "$override" ]; then
-        [ -r "$override" ] || die "cannot read the stand-in for $store state: $override"
+        [ -r "$override" ] || die "${store} state の代わりのファイルを読めません：$override"
         cat "$override"
         return
     fi
-    command -v uv >/dev/null || die "uv is not installed, and $store state runs with it"
-    text=$(uv run --quiet "$here/$store" state) || die "$store state failed"
+    command -v uv >/dev/null || die "uv が入っていません。$store state は uv で動かします"
+    text=$(uv run --quiet "$here/$store" state) || die "$store state が失敗しました"
     printf '%s\n' "$text"
 }
 
@@ -107,18 +107,18 @@ appstore_numbers() {
             "  build "*)
                 n=${line#  build }
                 n=${n%%  *}
-                [[ "$n" =~ ^[0-9]+$ ]] || die "appstore.py state shows a build that is not a number: \"$n\""
+                [[ "$n" =~ ^[0-9]+$ ]] || die "appstore.py state に、数字でないビルドがあります：\"$n\""
                 echo "$n"
                 ;;
             "  version "*)
                 n=${line##*build=}
                 [ "$n" = None ] && continue
-                [[ "$n" =~ ^[0-9]+$ ]] || die "appstore.py state shows a version carrying a build that is not a number: \"$n\""
+                [[ "$n" =~ ^[0-9]+$ ]] || die "appstore.py state に、ビルドが数字でないバージョンがあります：\"$n\""
                 echo "$n"
                 ;;
         esac
     done
-    [ "$seen" = 1 ] || die "appstore.py state printed no app line, so its output could not be read"
+    [ "$seen" = 1 ] || die "appstore.py state の出力に app の行が無いので、出力を読めませんでした"
 }
 
 # The versionCodes Play holds, one per line.
@@ -135,10 +135,10 @@ play_numbers() {
                 ;;
             *) continue ;;
         esac
-        [[ "$list" =~ ^\[[0-9\'\",\ ]*\]$ ]] || die "play.py state shows a list of versionCodes it could not read: \"$list\""
+        [[ "$list" =~ ^\[[0-9\'\",\ ]*\]$ ]] || die "play.py state に、読めない versionCode のリストがあります：\"$list\""
         grep -oE '[0-9]+' <<< "$list" || true
     done
-    [ "$seen" = 1 ] || die "play.py state printed no bundles line, so its output could not be read"
+    [ "$seen" = 1 ] || die "play.py state の出力に bundles の行が無いので、出力を読めませんでした"
 }
 
 # The largest of the numbers on stdin, or nothing.
@@ -150,22 +150,22 @@ appstore_max=$(appstore_numbers <<< "$appstore_state" | largest)
 play_max=$(play_numbers <<< "$play_state" | largest)
 
 taken=$(printf '%s\n%s\n' "$appstore_max" "$play_max" | grep -E '^[0-9]+$' | largest || true)
-[ -n "$taken" ] || die "neither store shows a build number, so there is nothing to count up from"
+[ -n "$taken" ] || die "どちらのストアにもビルド番号が無いので、次の番号を決められません"
 number=$((10#$taken + 1))
 
 [ "$((10#$current_number))" -le "$number" ] ||
-    die "the checkout's build number $current_number is already past the stores' next one, $number"
+    die "チェックアウトのビルド番号 $current_number が、ストアの次の番号 $number をもう越えています"
 
 # Replace the one line matching a pattern in a file, keeping the file itself (and its mode).
 replace_line() {
     local file="$1" re="$2" line="$3" written got
-    written=$(mktemp) || die "could not make a temporary file"
+    written=$(mktemp) || die "一時ファイルを作れませんでした"
     RE="$re" LINE="$line" awk '$0 ~ ENVIRON["RE"] { print ENVIRON["LINE"]; next } { print }' "$file" > "$written" ||
-        die "could not rewrite $file"
-    cat "$written" > "$file" || die "could not write $file"
+        die "${file} を書き換えられませんでした"
+    cat "$written" > "$file" || die "${file} に書けませんでした"
     rm -f "$written"
     got=$(only_line "$file" "$re") || exit 1
-    [ "$got" = "$line" ] || die "$file does not read \"$line\" after writing it"
+    [ "$got" = "$line" ] || die "書き込んだあとの $file に \"$line\" の行がありません"
 }
 
 replace_line "$pubspec" "$pubspec_re" "version: $name+$number"
@@ -173,4 +173,4 @@ replace_line "$about" "$app_version_re" "const appVersion = '$name';"
 replace_line "$about" "$app_build_re" "const appBuild = '$number';"
 
 leave 完了 "$(jq -n --arg v "$name" --arg b "$number" '{"バージョン": $v, "ビルド番号": $b}')" \
-    "set the version to $name+$number in $worktree (was $current_name+$current_number; the largest build number App Store Connect holds is ${appstore_max:-none}, Play ${play_max:-none})"
+    "${worktree} のバージョンを ${name}+${number} にしました（前は ${current_name}+${current_number}。App Store Connect にある最大のビルド番号は ${appstore_max:-なし}、Play は ${play_max:-なし}）"
