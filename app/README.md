@@ -635,8 +635,8 @@ uv run app/tool/release/play.py state
 `BUMP_APPSTORE_STATE`・`BUMP_PLAY_STATE` に `state` の出力を書いたファイルを渡すと、ストアに触らずに
 解析を確かめられる。スクリプトのステップが共通で使う関数（入力を読む・出口を書く）は
 `tool/step-lib.sh` にある。リリース以外のステップも使うので、`tool/release/` の外に置いてある。
-GitHub Actions の run を待つステップが共通で使う関数（リポジトリを決める・dispatch した run を探す・
-run を待つ・結果を読む）は `tool/ci-lib.sh` にある。
+GitHub Actions の run を待つステップが共通で使う関数（リポジトリを決める・コミットの push の run を探す・
+dispatch した run を探す・run を待つ・結果を読む）は `tool/ci-lib.sh` にある。
 
 **ストアへ出す AAB と ipa を焼くのは `tool/release/build-signed.sh`。** `flutter clean` のあと
 `flutter build appbundle --release --flavor store` と `flutter build ipa --flavor store` を打ち、
@@ -828,6 +828,33 @@ Amenbo のスクリプトのステップとして動く。引数は省略でき�
 `CI_WAIT_LIMIT` を過ぎた、はエラーの出口で止まる。待ち方の環境変数は `main-ci.sh` の表と同じ。
 `gh` は PATH で引くので、偽の `gh` を PATH の先頭に置き、`CI_POLL_SECONDS=0` で回せば、GitHub に
 触らずに出口の分かれ方を確かめられる。
+
+**マージコミットの main の CI を待ち、結果で出口を分けるのは `tool/watch-main-ci.sh`。** 短いハッシュは
+`gh api repos/<リポジトリ>/commits/<コミット>` で全桁にしてから、`gh run list --commit <全桁> --event push`
+でそのコミットの push の run を探す。`CI_PUSH_LIMIT`（既定 300 秒）のあいだ `CI_APPEAR_SECONDS` ごとに
+探し、見つかればそれを待つ。見つからなければ `gh workflow run <workflow> --ref main` で dispatch し、
+`main-ci.sh` と同じく dispatch した run を探して待つ。`ci.yml` の dispatch にはコミットを指す入力が
+無いので、dispatch した run が組むのはその時点の main の先端で、マージコミットより先に進んでいることが
+ある。報告には、push の run か dispatch した run か、run が組んだコミット（`headSha`）を書く。判定は
+`main-ci.sh` と同じく `all green` ジョブで読み、無ければ run の conclusion で読む。再実行はしない。
+
+Amenbo のスクリプトのステップとして動く。引数は省略できるリポジトリ（`OWNER/REPO`）と workflow
+（`.github/workflows` のファイル名）の2つまで。リポジトリを空にして workflow だけ渡せる。入力は
+`AMENBO_INPUT` の `ins` の `コミット`（マージコミットのハッシュ。7〜40 桁）と、省略できる `リポジトリ`・
+`workflow`。リポジトリは、引数・`リポジトリ`・`CI_REPO`・スクリプトが置かれたチェックアウトの
+`gh repo view` の順に決める。workflow は、引数・`workflow`・`ci.yml` の順に決める。出口は2つ:
+
+| 出口 | いつ | 渡すもの |
+|---|---|---|
+| `完了` | run が緑 | `コミット`（入力のまま。報告に run の URL） |
+| `main が赤` | run が赤 | `赤の証拠`（マージコミットとその親、push か dispatch か、run が組んだコミット、run の id と URL、落ちたジョブ、`gh run view --log-failed` の出力を書いたファイル） |
+
+赤がマージ自身のものか、ほかのマージのものか、一時的なものかの見分けは呼ぶ側の仕事。引数が3つ以上・
+`コミット` が無いかハッシュでない・リポジトリや workflow の形が違う・GitHub がコミットを知らない・
+dispatch の失敗・dispatch した run が現れない・run を続けて読めない・`CI_WAIT_LIMIT` を過ぎた・判定の
+無いまま終わった、はエラーの出口で止まる。待ち方の環境変数は `main-ci.sh` の表のものと
+`CI_PUSH_LIMIT`。偽の `gh` を PATH の先頭に置き、`CI_POLL_SECONDS=0 CI_APPEAR_SECONDS=0 CI_PUSH_LIMIT=0`
+で回せば、GitHub に触らずに出口の分かれ方を確かめられる。
 
 ## 実機の画面を、誰も端末を持たずに読む
 
