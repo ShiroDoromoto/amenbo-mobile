@@ -773,6 +773,30 @@ JSON のオブジェクトであればよい）。リポジトリは、スクリ
 `gh` は PATH で引くので、偽の `gh` を PATH の先頭に置けば、GitHub に触らずに出口の分かれ方を
 確かめられる。
 
+**worktree のブランチの PR を作り、auto-merge を入れるのは `tool/open-pr.sh`。** main は取り込まない。
+何をするかは、ブランチに既にある PR で分かれる:
+
+- 開いている PR がある → ブランチを `git push --force-with-lease` するだけ。auto-merge には触らない
+- マージ済みで、そのあとのコミットが無い → 何もしない
+- PR が無い・マージ済みや閉じた PR のあとにコミットがある → main に無いコミット（マージコミットは
+  数えない）が2つ以上なら、ブランチが origin/main から分かれた点（`git merge-base`）の上に1つへ畳む
+  （メッセージは一番古いコミットのもの）。push して `gh pr create --fill --base main` で PR を作り、
+  `gh pr merge --merge --auto` で auto-merge を入れる
+
+Amenbo のスクリプトのステップとして動く。引数は省略できるリポジトリ（`OWNER/REPO`）1つ。入力は
+`AMENBO_INPUT` の `ins` の `worktree`（PR を作るチェックアウト）と、省略できる `リポジトリ`
+（`OWNER/REPO`）。リポジトリは、引数・`リポジトリ`・`CI_REPO`・worktree の `gh repo view` の順に
+決め、`gh` はすべてそこへ向ける。出口は1つ:
+
+| 出口 | いつ | 渡すもの |
+|---|---|---|
+| `完了` | PR を作った・開いている PR へ push した・マージ済みで足すものが無い | `PR`（PR の番号。報告に URL） |
+
+引数が2つ以上・`worktree` が無い・git のチェックアウトでない・main の上やブランチに乗っていない・
+コミットしていない変更がある・origin/main が無い・main に無いコミットが無い・fetch や push や `gh` の
+失敗は、エラーの出口で止まる。`git` と `gh` は PATH で引くので、偽の `gh` を PATH の先頭に置き、
+手元の bare リポジトリを origin にした使い捨ての clone で回せば、GitHub に触らずに確かめられる。
+
 ## 実機の画面を、誰も端末を持たずに読む
 
 ```
