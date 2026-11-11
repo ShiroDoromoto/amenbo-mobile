@@ -25,7 +25,7 @@
 : "${CI_APPEAR_SECONDS:=5}" "${CI_APPEAR_LIMIT:=60}" "${CI_POLL_SECONDS:=30}" "${CI_MISS_LIMIT:=3}"
 : "${CI_RERUN_LIMIT:=600}" "${CI_WAIT_LIMIT:=}" "${CI_PUSH_LIMIT:=300}"
 
-command -v gh >/dev/null || die "gh is not installed, and the step reads GitHub Actions with it"
+command -v gh >/dev/null || die "gh が入っていません。ステップは GitHub Actions を gh で読みます"
 
 # resolve_repo [OWNER/REPO]: set repo to the repository named, else CI_REPO, else the repository of
 # the current folder as gh sees it.
@@ -33,9 +33,9 @@ resolve_repo() {
     repo=${1:-${CI_REPO:-}}
     if [ -z "$repo" ]; then
         repo=$(gh repo view --json nameWithOwner --jq .nameWithOwner) ||
-            die "no repository: run in a checkout of it, or set CI_REPO=OWNER/REPO"
+            die "リポジトリが決まりません。そのチェックアウトの中で回すか、CI_REPO=OWNER/REPO を渡してください"
     fi
-    [[ "$repo" =~ ^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$ ]] || die "not a repository in the form OWNER/REPO: \"$repo\""
+    [[ "$repo" =~ ^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$ ]] || die "OWNER/REPO の形のリポジトリではありません：\"$repo\""
 }
 
 # An ISO-8601 UTC stamp, taken before a dispatch, for dispatched_run's not-before.
@@ -50,19 +50,19 @@ dispatched_run() {
     while :; do
         row=$(gh run list -R "$repo" --workflow "$workflow" --branch "$ref" --event workflow_dispatch \
             --limit 1 --json databaseId,createdAt --jq '.[0] // empty | "\(.databaseId) \(.createdAt)"') ||
-            die "could not list the runs of $workflow on $ref in $repo"
+            die "${repo} の $ref の $workflow の run を一覧できませんでした"
         id=${row%% *}
         created=${row##* }
         if [ -n "$row" ] && [ ! "$created" \< "$not_before" ]; then
-            [[ "$id" =~ ^[0-9]+$ ]] || die "the newest run of $workflow on $ref has no id: \"$row\""
-            echo "dispatched run of $workflow on $ref: $id (created $created)" >&2
+            [[ "$id" =~ ^[0-9]+$ ]] || die "$ref の $workflow のいちばん新しい run に id がありません：\"$row\""
+            echo "$ref の $workflow を dispatch した run：${id}（${created} に作成）" >&2
             echo "$id"
             return 0
         fi
         tries=$((tries + 1))
         [ "$tries" -lt "$CI_APPEAR_LIMIT" ] ||
-            die "no run of $workflow on $ref appeared in $repo after $((CI_APPEAR_LIMIT * CI_APPEAR_SECONDS))s"
-        [ "$tries" = 1 ] && echo "waiting for the dispatched run of $workflow on $ref to appear" >&2
+            die "$((CI_APPEAR_LIMIT * CI_APPEAR_SECONDS)) 秒待っても、${repo} の $ref に $workflow の run が現れませんでした"
+        [ "$tries" = 1 ] && echo "$ref の $workflow を dispatch した run が現れるのを待ちます" >&2
         sleep "$CI_APPEAR_SECONDS"
     done
 }
@@ -76,18 +76,18 @@ push_run() {
     while :; do
         id=$(gh run list -R "$repo" --workflow "$workflow" --commit "$sha" --event push \
             --limit 1 --json databaseId --jq '.[0].databaseId // empty') ||
-            die "could not list the push runs of $workflow for $sha in $repo"
+            die "${repo} のコミット $sha の $workflow の push の run を一覧できませんでした"
         if [ -n "$id" ]; then
-            [[ "$id" =~ ^[0-9]+$ ]] || die "the push run of $workflow for $sha has no id: \"$id\""
-            echo "push run of $workflow for $sha: $id" >&2
+            [[ "$id" =~ ^[0-9]+$ ]] || die "コミット $sha の $workflow の push の run に id がありません：\"$id\""
+            echo "コミット $sha の $workflow の push の run：$id" >&2
             echo "$id"
             return 0
         fi
         [ $((SECONDS - started)) -lt "$CI_PUSH_LIMIT" ] || {
-            echo "no push run of $workflow for $sha appeared in $repo after ${CI_PUSH_LIMIT}s" >&2
+            echo "${CI_PUSH_LIMIT} 秒待っても、${repo} にコミット $sha の $workflow の push の run が現れませんでした" >&2
             return 0
         }
-        [ -n "$said" ] || echo "waiting for the push run of $workflow for $sha to appear" >&2
+        [ -n "$said" ] || echo "コミット $sha の $workflow の push の run が現れるのを待ちます" >&2
         said=1
         sleep "$CI_APPEAR_SECONDS"
     done
@@ -101,20 +101,20 @@ push_run() {
 # that outlasts CI_WAIT_LIMIT stop the step.
 watch_run() {
     local id="$1" miss=0 started=$SECONDS restart_since="" said="" state status open line
-    echo "waiting for run $id in $repo" >&2
+    echo "${repo} の run $id が終わるのを待ちます" >&2
     while :; do
         if ! state=$(gh run view "$id" -R "$repo" --json status,conclusion,url,jobs 2>&1); then
             miss=$((miss + 1))
             [ "$miss" -lt "$CI_MISS_LIMIT" ] ||
-                die "could not read run $id in $repo $CI_MISS_LIMIT times in a row; the wait is broken: $state"
+                die "${repo} の run $id を $CI_MISS_LIMIT 回続けて読めなかったので、待つのをやめます：$state"
             sleep "$CI_POLL_SECONDS"
             continue
         fi
         miss=0
-        jq -e 'type == "object"' <<< "$state" >/dev/null 2>&1 || die "gh gave no run for $id in $repo: $state"
+        jq -e 'type == "object"' <<< "$state" >/dev/null 2>&1 || die "gh が ${repo} の run $id を返しませんでした：$state"
         status=$(jq -r '.status // ""' <<< "$state")
         open=$(jq '[(.jobs // [])[] | select((.conclusion // "") == "")] | length' <<< "$state")
-        line="run $id: $status, $open job(s) without a conclusion"
+        line="run ${id}：${status}、結果の出ていないジョブ $open 個"
         [ "$line" = "$said" ] || echo "$line" >&2
         said=$line
         if [ "$status" = completed ]; then
@@ -124,12 +124,12 @@ watch_run() {
             fi
             [ -n "$restart_since" ] || restart_since=$SECONDS
             [ $((SECONDS - restart_since)) -lt "$CI_RERUN_LIMIT" ] ||
-                die "run $id read completed for ${CI_RERUN_LIMIT}s while a job it carries had no conclusion: $(run_url "$id")"
+                die "run $id は completed のまま、結果の出ていないジョブが ${CI_RERUN_LIMIT} 秒残りました：$(run_url "$id")"
         else
             restart_since=""
         fi
         if [ -n "$CI_WAIT_LIMIT" ] && [ $((SECONDS - started)) -ge "$CI_WAIT_LIMIT" ]; then
-            die "run $id was not over after ${CI_WAIT_LIMIT}s: $(run_url "$id")"
+            die "run $id は ${CI_WAIT_LIMIT} 秒たっても終わりませんでした：$(run_url "$id")"
         fi
         sleep "$CI_POLL_SECONDS"
     done
@@ -144,7 +144,7 @@ run_verdict() {
     conclusion=$(jq -r --arg j "$job" '[(.jobs // [])[] | select(.name == $j) | .conclusion][0] // ""' <<< "$run_state")
     [ -n "$conclusion" ] || conclusion=$(jq -r '.conclusion // ""' <<< "$run_state")
     case "$conclusion" in
-        "") die "the run ended without a verdict: $(run_url)" ;;
+        "") die "run が緑とも赤とも決まらないまま終わりました：$(run_url)" ;;
         success | skipped) echo green ;;
         *) echo red ;;
     esac

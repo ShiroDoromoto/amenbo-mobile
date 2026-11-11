@@ -12,18 +12,18 @@
 
 die() { echo "✗ $*" >&2; exit 1; }
 
-command -v jq >/dev/null || die "jq is not installed, and the step reads and writes its JSON with it"
+command -v jq >/dev/null || die "jq が入っていません。ステップは JSON を jq で読み書きします"
 
 [ -n "${AMENBO_INPUT:-}" ] && [ -n "${AMENBO_OUTPUT:-}" ] ||
-    die "run this as a script step: AMENBO_INPUT and AMENBO_OUTPUT are not set"
-[ -r "$AMENBO_INPUT" ] || die "cannot read the input file $AMENBO_INPUT"
-jq -e 'type == "object"' "$AMENBO_INPUT" >/dev/null 2>&1 || die "the input file $AMENBO_INPUT is not a JSON object"
+    die "AMENBO_INPUT と AMENBO_OUTPUT がありません。スクリプトのステップとして回してください"
+[ -r "$AMENBO_INPUT" ] || die "入力のファイル $AMENBO_INPUT を読めません"
+jq -e 'type == "object"' "$AMENBO_INPUT" >/dev/null 2>&1 || die "入力のファイル $AMENBO_INPUT が JSON のオブジェクトではありません"
 
 # Both paths are made absolute, so a step that moves to another folder still reads and writes them.
 AMENBO_INPUT=$(cd "$(dirname "$AMENBO_INPUT")" && pwd)/$(basename "$AMENBO_INPUT")
 # shellcheck disable=SC2034 # read by the steps that source this file
-out_dir=$(cd "$(dirname "$AMENBO_OUTPUT")" 2>/dev/null && pwd) || die "no folder for the output file: $AMENBO_OUTPUT"
-[ -w "$out_dir" ] || die "cannot write beside the output file: $out_dir"
+out_dir=$(cd "$(dirname "$AMENBO_OUTPUT")" 2>/dev/null && pwd) || die "出力のファイルを置くフォルダがありません：$AMENBO_OUTPUT"
+[ -w "$out_dir" ] || die "出力のファイルを置くフォルダに書けません：$out_dir"
 AMENBO_OUTPUT=$out_dir/$(basename "$AMENBO_OUTPUT")
 
 # One input of the step, by its name, or nothing. A string is given as it is; anything else as JSON.
@@ -32,8 +32,8 @@ input() { jq -r --arg k "$1" '.ins[$k] // empty | if type == "string" then . els
 # One input that must be there, or the step stops.
 input_required() {
     local value
-    value=$(input "$1") || die "could not read \"$1\" from $AMENBO_INPUT"
-    [ -n "$value" ] || die "no \"$1\" in the input"
+    value=$(input "$1") || die "$AMENBO_INPUT から「$1」を読めませんでした"
+    [ -n "$value" ] || die "入力に「$1」がありません"
     printf '%s\n' "$value"
 }
 
@@ -41,7 +41,7 @@ input_required() {
 input_dir() {
     local dir
     dir=$(input_required "$1") || exit 1
-    [ -d "$dir" ] || die "\"$1\" in the input is not a folder: \"$dir\""
+    [ -d "$dir" ] || die "入力の「$1」がフォルダではありません：\"$dir\""
     printf '%s\n' "$dir"
 }
 
@@ -49,6 +49,6 @@ input_dir() {
 leave() {
     jq -n --arg exit "$1" --argjson outs "$2" --arg report "$3" \
         '{version: 1, exit: $exit, outs: $outs, report: $report}' > "$AMENBO_OUTPUT" ||
-        die "could not write $AMENBO_OUTPUT"
+        die "$AMENBO_OUTPUT を書けませんでした"
     exit 0
 }

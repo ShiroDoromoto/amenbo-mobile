@@ -47,55 +47,55 @@ here=$(cd "$(dirname "$0")" && pwd)
 # shellcheck source=gate-lib.sh source-path=SCRIPTDIR
 . "$here/gate-lib.sh"
 
-[ "$#" = 0 ] || die "check-and-commit.sh takes no arguments; its inputs come from AMENBO_INPUT"
+[ "$#" = 0 ] || die "check-and-commit.sh は引数を受け取りません。入力は AMENBO_INPUT から読みます：$*"
 
 worktree=$(input_dir worktree)
 message=$(input_required メッセージ)
 
-root=$(git -C "$worktree" rev-parse --show-toplevel 2>/dev/null) || die "$worktree is not in a git checkout"
+root=$(git -C "$worktree" rev-parse --show-toplevel 2>/dev/null) || die "$worktree は git のチェックアウトではありません"
 cd "$root"
 
 branch=$(git branch --show-current)
-[ -n "$branch" ] || die "the checkout $root is on no branch"
-[ "$branch" != main ] || die "the checkout $root is on main, and changes are committed on a branch of their own"
-git rev-parse -q --verify origin/main >/dev/null || die "the checkout $root has no origin/main to count its commits from"
+[ -n "$branch" ] || die "worktree $root がどのブランチにもいません"
+[ "$branch" != main ] || die "worktree $root は main にいます。変更は main ではなく、自分のブランチにコミットします"
+git rev-parse -q --verify origin/main >/dev/null || die "worktree $root に origin/main がないので、ブランチのコミットを数えられません"
 
 [ -n "$(git status --porcelain)" ] ||
-    leave 変更が無い '{}' "$branch in $root has no change to commit; the gate was not run"
+    leave 変更が無い '{}' "${root} の $branch にはコミットする変更がありません。ゲートは回していません"
 
 gate_log=ゲートの出力.txt
 if ! run_gate "$root" "$out_dir/$gate_log"; then
     leave ゲートが赤 "$(jq -n --arg f "$gate_log" '{"ゲートの出力": $f}')" \
-        "the gate failed on $branch in $root ($gate_failed), and nothing was committed; the output of each failed check is in $gate_log"
+        "${root} の $branch でゲートが赤でした（${gate_failed}）。何もコミットしていません。落ちたチェックの出力は $gate_log にあります"
 fi
 rm -f "$out_dir/$gate_log"
 
-base=$(git merge-base origin/main HEAD) || die "$branch shares no history with origin/main"
+base=$(git merge-base origin/main HEAD) || die "$branch と origin/main に共通の履歴がありません"
 head=$(git rev-parse HEAD)
 own=$(git rev-list --no-merges --count "$base..HEAD")
 
-git add -A || die "could not stage the changes in $root"
+git add -A || die "$root の変更をステージできませんでした"
 git diff --cached --quiet "$base" &&
-    die "the changes in $root undo everything $branch carries since origin/main, which leaves nothing to commit"
+    die "$root の変更は、$branch が origin/main から積んだものをすべて打ち消すので、コミットするものが残りません"
 
-[ "$head" = "$base" ] || git reset -q --soft "$base" || die "could not fold the commits of $branch"
+[ "$head" = "$base" ] || git reset -q --soft "$base" || die "$branch のコミットをまとめられませんでした"
 
-msg_file=$(mktemp) || die "could not make a temporary file"
+msg_file=$(mktemp) || die "一時ファイルを作れませんでした"
 printf '%s\n' "$message" > "$msg_file"
 commit_log=コミットの出力.txt
 if ! git commit -q -F "$msg_file" > "$out_dir/$commit_log" 2>&1; then
     rm -f "$msg_file"
-    git reset -q --soft "$head" || die "the commit was refused, and $branch could not be put back at $head"
+    git reset -q --soft "$head" || die "コミットが断られ、$branch を $head に戻すこともできませんでした"
     leave コミットが断られた "$(jq -n --arg f "$commit_log" '{"コミットの出力": $f}')" \
-        "the gate passed, and git commit on $branch in $root failed; $branch is back at $head with the changes staged, and what git printed is in $commit_log"
+        "ゲートは通りましたが、${root} の $branch で git commit が失敗しました。$branch は $head に戻し、変更はステージしたままです。git の出力は $commit_log にあります"
 fi
 rm -f "$msg_file" "$out_dir/$commit_log"
 
 sha=$(git rev-parse HEAD)
 if [ "$own" = 0 ]; then
-    how="a new commit"
+    how="新しいコミット1個"
 else
-    how="the $own commit(s) it carried and the new changes folded into one"
+    how="積んでいたコミット $own 個と新しい変更を1個にまとめたコミット"
 fi
 leave 完了 "$(jq -n --arg c "$sha" '{"コミット": $c}')" \
-    "the gate passed, and $branch in $root now carries $how on $(git rev-parse --short "$base"): $(git rev-parse --short "$sha")"
+    "ゲートが通り、${root} の $branch は $(git rev-parse --short "$base") の上に、${how}を積みました：$(git rev-parse --short "$sha")"
