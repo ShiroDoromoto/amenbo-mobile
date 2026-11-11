@@ -626,6 +626,16 @@ uv run app/tool/release/play.py state
   **版もトラックも動かさない**ので、マークだけ変わったときにビルドを出し直さずに済む
 - ゲートには入れない。ネットワークと本物の口座が要るので、掲載の画を撮る道具と同じ扱い
 
+**ビルド番号は、両ストアが受け付けた最大の番号 +1 にする**（`tool/release/bump-version.sh`）。
+`appstore.py state` と `play.py state` を読んで最大の番号を出し、受け取ったバージョン名と合わせて
+`pubspec.yaml` の `version:` と `lib/about_screen.dart` の `appVersion`・`appBuild` に書く。
+コミットはしない。Amenbo のスクリプトのステップとして動き、入力は `AMENBO_INPUT` の `ins` の
+`worktree`（書き換えるチェックアウト）と `バージョン`（`<major>.<minor>.<patch>`）。出口は `完了` だけで、
+`バージョン` と `ビルド番号` を渡す。minor か patch かはスクリプトでは決めない。
+`BUMP_APPSTORE_STATE`・`BUMP_PLAY_STATE` に `state` の出力を書いたファイルを渡すと、ストアに触らずに
+解析を確かめられる。スクリプトのステップが共通で使う関数（入力を読む・出口を書く）は
+`tool/release/step-lib.sh` にある。
+
 ## ストアの掲載文
 
 **19言語ぶんが `store/` に、言語ごと1ファイルで置いてある。** 出すときはそこから写して貼る。
