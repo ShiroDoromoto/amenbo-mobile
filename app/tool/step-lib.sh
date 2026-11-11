@@ -19,9 +19,12 @@ command -v jq >/dev/null || die "jq is not installed, and the step reads and wri
 [ -r "$AMENBO_INPUT" ] || die "cannot read the input file $AMENBO_INPUT"
 jq -e 'type == "object"' "$AMENBO_INPUT" >/dev/null 2>&1 || die "the input file $AMENBO_INPUT is not a JSON object"
 
+# Both paths are made absolute, so a step that moves to another folder still reads and writes them.
+AMENBO_INPUT=$(cd "$(dirname "$AMENBO_INPUT")" && pwd)/$(basename "$AMENBO_INPUT")
 # shellcheck disable=SC2034 # read by the steps that source this file
-out_dir=$(dirname "$AMENBO_OUTPUT")
-[ -d "$out_dir" ] && [ -w "$out_dir" ] || die "cannot write beside the output file: $out_dir"
+out_dir=$(cd "$(dirname "$AMENBO_OUTPUT")" 2>/dev/null && pwd) || die "no folder for the output file: $AMENBO_OUTPUT"
+[ -w "$out_dir" ] || die "cannot write beside the output file: $out_dir"
+AMENBO_OUTPUT=$out_dir/$(basename "$AMENBO_OUTPUT")
 
 # One input of the step, by its name, or nothing. A string is given as it is; anything else as JSON.
 input() { jq -r --arg k "$1" '.ins[$k] // empty | if type == "string" then . else tojson end' "$AMENBO_INPUT"; }

@@ -37,8 +37,8 @@
 set -euo pipefail
 
 here=$(cd "$(dirname "$0")" && pwd)
-# shellcheck source=step-lib.sh source-path=SCRIPTDIR
-. "$here/step-lib.sh"
+# shellcheck source=../step-lib.sh source-path=SCRIPTDIR
+. "$here/../step-lib.sh"
 
 [ "$#" = 0 ] || die "bump-version.sh takes no arguments; its inputs come from AMENBO_INPUT"
 
