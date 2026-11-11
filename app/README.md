@@ -636,6 +636,39 @@ uv run app/tool/release/play.py state
 解析を確かめられる。スクリプトのステップが共通で使う関数（入力を読む・出口を書く）は
 `tool/step-lib.sh` にある。リリース以外のステップも使うので、`tool/release/` の外に置いてある。
 
+**ストアへ出す AAB と ipa を焼くのは `tool/release/build-signed.sh`。** `flutter clean` のあと
+`flutter build appbundle --release --flavor store` と `flutter build ipa --flavor store` を打ち、
+**できたファイルを読んで確かめる**——指示どおりに焼いたつもりでも、debug の鍵や別の版で焼けていれば
+ここで止まる:
+
+- 置き場：AAB は `build/app/outputs/bundle/storeRelease/app-store-release.aab`、ipa は
+  `build/ios/ipa/` の下の1つ。どちらも、この回に書かれたものか（時刻）を見る
+- 署名：AAB が署名されていて、`CN=Android Debug` ではない（`keytool -printcert -jarfile`）。
+  ipa の中の `.app` が `Apple Distribution` で署名されている（`codesign -dv`）
+- 版と識別子：AAB の `versionName`・`versionCode`・`package`（base の manifest を `aapt2 dump badging`
+  で読む）と、ipa の `Info.plist` の `CFBundleShortVersionString`・`CFBundleVersion`・`CFBundleIdentifier`
+  が、受け取ったバージョン名・ビルド番号と `work.amenbo.viewer` に合う
+
+全部が合えば、実機へ入れる分（`flutter build ios --release --flavor store` と
+`flutter build apk --release --flavor store`）も焼く。コミットも upload もしない。
+**チェックアウトに `android/key.properties` が無ければ、焼く前に止まる**（上の「署名」のとおり、
+無いと debug の鍵に落ちるため）。中身は読まず、鍵のパスも出力に書かない。
+
+Amenbo のスクリプトのステップとして動き、引数は取らない。入力は `AMENBO_INPUT` の `ins` の
+`worktree`（焼くチェックアウト）、`バージョン`、`ビルド番号`（`bump-version.sh` が渡す2つ）。
+`pubspec.yaml` の `version:` がこの2つと違えば止まる。出口は2つ:
+
+| 出口 | いつ | 渡すもの |
+|---|---|---|
+| `完了` | 焼けて、検査が全部通り、実機用も焼いた | `AAB` と `ipa`（どちらも絶対パス） |
+| `検査で落ちた` | 焼けたが、検査のどれかが通らない。実機用は焼かない | `検査の結果`（通らなかった検査を1行に1つ書いたファイル） |
+
+焼くのに失敗したときはエラーの出口で止まり、`flutter` の出力は output.json の隣の `焼いた出力.txt`
+に残る。`BUILD_FLUTTER`・`BUILD_AAPT2`・`BUILD_KEYTOOL`・`BUILD_CODESIGN` にコマンドを渡すと、
+`flutter`・`aapt2`・`keytool`・`codesign` の代わりにそれを回すので、焼かずに出口の分かれ方を確かめられる。
+`aapt2` は渡さなければ Android SDK（`ANDROID_HOME`、`ANDROID_SDK_ROOT`、`~/Library/Android/sdk` の順）の
+`build-tools` のいちばん新しいものを使う。
+
 ## ストアの掲載文
 
 **19言語ぶんが `store/` に、言語ごと1ファイルで置いてある。** 出すときはそこから写して貼る。
