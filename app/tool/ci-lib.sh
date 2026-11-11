@@ -1,7 +1,8 @@
 # shellcheck shell=bash
 # ci-lib.sh — sourced helpers shared by the script steps that wait on a GitHub Actions run: finding
-# the repository, finding the run a dispatch started, waiting for a run to end, and reading how it
-# ended. Not executable on its own, and sourced after step-lib.sh (it stops the step with `die`).
+# the repository, finding the push run of a commit or the run a dispatch started, waiting for a run
+# to end, and reading how it ended. Not executable on its own, and sourced after step-lib.sh (it stops
+# the step with `die`).
 #
 # Everything here only reads what GitHub says. Whether a red run is the change's own failure, another
 # change's, or a flaky runner is a judgement, so a red run is written down (write_red_run) and handed
@@ -12,6 +13,7 @@
 #   CI_REPO            OWNER/REPO to point `gh` at, when resolve_repo is given none
 #   CI_APPEAR_SECONDS  between two looks for a dispatched run to appear (5)
 #   CI_APPEAR_LIMIT    looks before giving up on it appearing (60)
+#   CI_PUSH_LIMIT      how long to look for a commit's push run before calling it missing (300)
 #   CI_POLL_SECONDS    between two reads of a run being waited on (30)
 #   CI_MISS_LIMIT      reads in a row that may fail before the wait is called broken (3)
 #   CI_RERUN_LIMIT     how long a run may read completed while a job it carries has no conclusion (600)
@@ -21,7 +23,7 @@
 # out without reaching GitHub.
 
 : "${CI_APPEAR_SECONDS:=5}" "${CI_APPEAR_LIMIT:=60}" "${CI_POLL_SECONDS:=30}" "${CI_MISS_LIMIT:=3}"
-: "${CI_RERUN_LIMIT:=600}" "${CI_WAIT_LIMIT:=}"
+: "${CI_RERUN_LIMIT:=600}" "${CI_WAIT_LIMIT:=}" "${CI_PUSH_LIMIT:=300}"
 
 command -v gh >/dev/null || die "gh is not installed, and the step reads GitHub Actions with it"
 
@@ -61,6 +63,32 @@ dispatched_run() {
         [ "$tries" -lt "$CI_APPEAR_LIMIT" ] ||
             die "no run of $workflow on $ref appeared in $repo after $((CI_APPEAR_LIMIT * CI_APPEAR_SECONDS))s"
         [ "$tries" = 1 ] && echo "waiting for the dispatched run of $workflow on $ref to appear" >&2
+        sleep "$CI_APPEAR_SECONDS"
+    done
+}
+
+# push_run <workflow> <full sha>: print the id of the newest push run of the workflow for the commit,
+# looking again every CI_APPEAR_SECONDS until CI_PUSH_LIMIT has passed. A push is listed a while after
+# it lands, so a run that is not there yet is looked for again; when none shows up, print nothing, and
+# what to do without one is the caller's.
+push_run() {
+    local workflow="$1" sha="$2" started=$SECONDS said="" id
+    while :; do
+        id=$(gh run list -R "$repo" --workflow "$workflow" --commit "$sha" --event push \
+            --limit 1 --json databaseId --jq '.[0].databaseId // empty') ||
+            die "could not list the push runs of $workflow for $sha in $repo"
+        if [ -n "$id" ]; then
+            [[ "$id" =~ ^[0-9]+$ ]] || die "the push run of $workflow for $sha has no id: \"$id\""
+            echo "push run of $workflow for $sha: $id" >&2
+            echo "$id"
+            return 0
+        fi
+        [ $((SECONDS - started)) -lt "$CI_PUSH_LIMIT" ] || {
+            echo "no push run of $workflow for $sha appeared in $repo after ${CI_PUSH_LIMIT}s" >&2
+            return 0
+        }
+        [ -n "$said" ] || echo "waiting for the push run of $workflow for $sha to appear" >&2
+        said=1
         sleep "$CI_APPEAR_SECONDS"
     done
 }
