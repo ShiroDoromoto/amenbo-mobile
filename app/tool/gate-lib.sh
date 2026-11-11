@@ -21,14 +21,14 @@
 run_gate() {
     local root="$1" log="$2" name cmd out status
     gate_failed=
-    : > "$log" || die "could not write the gate's log $log"
-    out=$(mktemp) || die "could not make a temporary file"
+    : > "$log" || die "ゲートのログ $log を書けませんでした"
+    out=$(mktemp) || die "一時ファイルを作れませんでした"
     for name in format test; do
         case "$name" in
             format) cmd=${GATE_FORMAT:-cd app && dart format --output=none --set-exit-if-changed .} ;;
             test) cmd=${GATE_TEST:-make test} ;;
         esac
-        echo "==> gate: $name" >&2
+        echo "==> ゲート：$name" >&2
         status=0
         (cd "$root" && bash -c "$cmd") > "$out" 2>&1 || status=$?
         [ "$status" = 0 ] && continue
@@ -37,7 +37,7 @@ run_gate() {
             printf '==> %s failed (exit %s): %s\n' "$name" "$status" "$cmd"
             cat "$out"
             printf '\n'
-        } >> "$log" || die "could not write the gate's log $log"
+        } >> "$log" || die "ゲートのログ $log を書けませんでした"
     done
     rm -f "$out"
     [ -z "$gate_failed" ]

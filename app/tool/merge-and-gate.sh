@@ -44,56 +44,56 @@ here=$(cd "$(dirname "$0")" && pwd)
 # shellcheck source=gate-lib.sh source-path=SCRIPTDIR
 . "$here/gate-lib.sh"
 
-[ "$#" = 0 ] || die "merge-and-gate.sh takes no arguments; its inputs come from AMENBO_INPUT"
+[ "$#" = 0 ] || die "merge-and-gate.sh は引数を受け取りません。入力は AMENBO_INPUT から読みます：$*"
 
 worktree=$(input_dir worktree)
 
-root=$(git -C "$worktree" rev-parse --show-toplevel 2>/dev/null) || die "$worktree is not in a git checkout"
+root=$(git -C "$worktree" rev-parse --show-toplevel 2>/dev/null) || die "$worktree は git のチェックアウトではありません"
 cd "$root"
 
 branch=$(git branch --show-current)
-[ -n "$branch" ] || die "the checkout $root is on no branch"
-[ "$branch" != main ] || die "the checkout $root is on main, and origin/main is merged into a branch of its own"
+[ -n "$branch" ] || die "worktree $root がどのブランチにもいません"
+[ "$branch" != main ] || die "worktree $root は main にいます。origin/main は main ではなく、自分のブランチにマージします"
 ! git rev-parse -q --verify MERGE_HEAD >/dev/null ||
-    die "the checkout $root already has a merge in progress; resolve and commit it, or abort it, first"
+    die "worktree $root ではマージが途中です。先に解決してコミットするか、中止してください"
 [ -z "$(git status --porcelain)" ] ||
-    die "the checkout $root has uncommitted changes; commit them before merging origin/main"
+    die "worktree $root にコミットしていない変更があります。コミットしてから origin/main をマージしてください"
 
-git fetch -q origin main || die "could not fetch main from origin into $root"
-git rev-parse -q --verify origin/main >/dev/null || die "the checkout $root has no origin/main to merge"
+git fetch -q origin main || die "$root に origin の main を fetch できませんでした"
+git rev-parse -q --verify origin/main >/dev/null || die "worktree $root にマージする origin/main がありません"
 main=$(git rev-parse --short origin/main)
 
 if git merge-base --is-ancestor origin/main HEAD; then
-    merged="$branch already holds origin/main ($main), so nothing was merged"
+    merged="$branch は origin/main（${main}）を既に含んでいるので、マージしていません"
 else
-    merge_log=$(mktemp) || die "could not make a temporary file"
+    merge_log=$(mktemp) || die "一時ファイルを作れませんでした"
     if ! git merge -q --no-edit origin/main > "$merge_log" 2>&1; then
         conflicts=$(git diff --name-only --diff-filter=U)
         if [ -z "$conflicts" ]; then
             cat "$merge_log" >&2
             rm -f "$merge_log"
             if git rev-parse -q --verify MERGE_HEAD >/dev/null; then
-                git merge --abort || die "could not merge origin/main ($main) into $branch in $root, and could not abort the merge either; what git printed is above"
+                git merge --abort || die "${root} の $branch に origin/main（${main}）をマージできず、マージを中止することもできませんでした。git の出力は上にあります"
             fi
-            die "could not merge origin/main ($main) into $branch in $root, with no conflict to resolve (a hook may have refused the merge commit); the merge was aborted, and what git printed is above"
+            die "${root} の $branch に origin/main（${main}）をマージできませんでしたが、解決する衝突はありません（フックがマージコミットを断ったのかもしれません）。マージは中止しました。git の出力は上にあります"
         fi
         rm -f "$merge_log"
         conflict_list=衝突したファイル.txt
-        printf '%s\n' "$conflicts" > "$out_dir/$conflict_list" || die "could not write $out_dir/$conflict_list"
+        printf '%s\n' "$conflicts" > "$out_dir/$conflict_list" || die "$out_dir/$conflict_list を書けませんでした"
         count=$(printf '%s\n' "$conflicts" | wc -l | tr -d ' ')
         leave 衝突した "$(jq -n --arg f "$conflict_list" '{"衝突したファイル": $f}')" \
-            "merging origin/main ($main) into $branch in $root stopped on $count conflicted file(s), and the merge is left in progress; the gate was not run, and the paths are in $conflict_list"
+            "${root} の $branch に origin/main（${main}）をマージしたところ、$count 個のファイルが衝突して止まりました。マージは途中のまま残しています。ゲートは回していません。衝突したパスは $conflict_list にあります"
     fi
     rm -f "$merge_log"
-    merged="origin/main ($main) was merged into $branch as $(git rev-parse --short HEAD)"
+    merged="origin/main（${main}）を $branch にマージしました（$(git rev-parse --short HEAD)）"
 fi
 
 gate_log=ゲートの出力.txt
 if ! run_gate "$root" "$out_dir/$gate_log"; then
     leave ゲートが赤 "$(jq -n --arg f "$gate_log" '{"ゲートの出力": $f}')" \
-        "$merged in $root, and the gate failed ($gate_failed); the output of each failed check is in $gate_log"
+        "${root} で、${merged}。ゲートが赤でした（${gate_failed}）。落ちたチェックの出力は $gate_log にあります"
 fi
 rm -f "$out_dir/$gate_log"
 
 leave 完了 "$(jq -n --arg c "$(git rev-parse HEAD)" '{"コミット": $c}')" \
-    "$merged in $root, and the gate passed"
+    "${root} で、${merged}。ゲートは通りました"

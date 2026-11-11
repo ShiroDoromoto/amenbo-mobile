@@ -29,7 +29,7 @@ here=$(cd "$(dirname "$0")" && pwd)
 # shellcheck source=ci-lib.sh source-path=SCRIPTDIR
 . "$here/ci-lib.sh"
 
-[ "$#" = 0 ] || die "main-ci.sh takes no arguments; it reads what it needs from the checkout it sits in"
+[ "$#" = 0 ] || die "main-ci.sh は引数を受け取りません。要るものは、自分の置かれたチェックアウトから読みます：$*"
 
 # A script step starts in no particular folder, and gh reads the repository from the one it is in.
 cd "$here"
@@ -37,17 +37,17 @@ resolve_repo
 
 workflow=ci.yml
 stamp=$(now_utc)
-gh workflow run "$workflow" -R "$repo" --ref main >&2 || die "could not dispatch $workflow on main in $repo"
+gh workflow run "$workflow" -R "$repo" --ref main >&2 || die "$workflow を ${repo} の main で dispatch できませんでした"
 id=$(dispatched_run "$workflow" main "$stamp")
 
 watch_run "$id"
 url=$(run_url "$id")
 verdict=$(run_verdict "all green")
 if [ "$verdict" = green ]; then
-    leave 完了 '{}' "$workflow on main is green: $url"
+    leave 完了 '{}' "main の $workflow は緑です：$url"
 fi
 
 evidence=赤の証拠.txt
-write_red_run "$id" > "$out_dir/$evidence" || die "could not write $out_dir/$evidence"
+write_red_run "$id" > "$out_dir/$evidence" || die "$out_dir/$evidence を書けませんでした"
 leave "main が赤" "$(jq -n --arg f "$evidence" '{"赤の証拠": $f}')" \
-    "$workflow on main is red, run $id ($(failed_jobs)): $url; the run's failed log is in $evidence"
+    "main の $workflow は赤です（run ${id}、$(failed_jobs)）。落ちたログは $evidence にあります：$url"
