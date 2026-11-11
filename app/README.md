@@ -635,6 +635,8 @@ uv run app/tool/release/play.py state
 `BUMP_APPSTORE_STATE`・`BUMP_PLAY_STATE` に `state` の出力を書いたファイルを渡すと、ストアに触らずに
 解析を確かめられる。スクリプトのステップが共通で使う関数（入力を読む・出口を書く）は
 `tool/step-lib.sh` にある。リリース以外のステップも使うので、`tool/release/` の外に置いてある。
+GitHub Actions の run を待つステップが共通で使う関数（リポジトリを決める・dispatch した run を探す・
+run を待つ・結果を読む）は `tool/ci-lib.sh` にある。
 
 **ストアへ出す AAB と ipa を焼くのは `tool/release/build-signed.sh`。** `flutter clean` のあと
 `flutter build appbundle --release --flavor store` と `flutter build ipa --flavor store` を打ち、
@@ -737,6 +739,39 @@ merge コミットはブランチに残る。main の上・ブランチに乗っ
 merge が途中のチェックアウトでは止まる（エラーの出口）。fetch の失敗と、衝突以外の理由で merge が
 失敗したとき（フックがマージコミットを止めたなど）も止まり、merge は中断する。衝突の解き方と赤の
 直し方は呼ぶ側の仕事。`GATE_FORMAT`・`GATE_TEST` は `check-and-commit.sh` と同じく使える。
+
+**main の CI を回して結果を読むのは `tool/main-ci.sh`。** `gh workflow run ci.yml --ref main` で
+`ci.yml` を dispatch し、dispatch の前の時刻より後にできた `workflow_dispatch` の run を探して、
+終わるまで待つ。手で回した run は3層とも立て、`run_id` で concurrency の組を分けるので、main の
+push の run を打ち切らず、打ち切られもしない。判定は `all green` ジョブの結果で読む（success と
+skipped は緑、それ以外は赤）。run にそのジョブが無ければ run の conclusion で読む。
+run が completed でも、結果の無いジョブが残っているあいだ（再実行の直後）は待ち続ける。
+再実行はしない。赤が main 自身のものか一時的なものかは呼ぶ側が見分ける。
+
+Amenbo のスクリプトのステップとして動き、引数は取らない。入力も読まない（`AMENBO_INPUT` は
+JSON のオブジェクトであればよい）。リポジトリは、スクリプトが置かれたチェックアウトのもの
+（`gh repo view`）。出口は2つ:
+
+| 出口 | いつ | 渡すもの |
+|---|---|---|
+| `完了` | run が緑 | なし（報告に run の URL） |
+| `main が赤` | run が赤 | `赤の証拠`（run の id と URL、落ちたジョブ、`gh run view --log-failed` の出力を書いたファイル） |
+
+引数を渡した・dispatch の失敗・run が現れない・run を続けて読めない・completed のまま結果の無い
+ジョブが `CI_RERUN_LIMIT` を過ぎても残る・run が `CI_WAIT_LIMIT` を過ぎても終わらない・判定の無いまま
+終わった、はエラーの出口で止まる。待ち方は環境変数で変えられる（数字は秒）:
+
+| 変数 | 既定 | 意味 |
+|---|---|---|
+| `CI_REPO` | なし | `OWNER/REPO`。チェックアウトのものではなく、これを見る |
+| `CI_APPEAR_SECONDS`・`CI_APPEAR_LIMIT` | 5・60 | dispatch した run を探す間隔と回数 |
+| `CI_POLL_SECONDS` | 30 | run を読む間隔 |
+| `CI_MISS_LIMIT` | 3 | 続けて読めなかったら止まる回数 |
+| `CI_RERUN_LIMIT` | 600 | completed なのに結果の無いジョブが残るのを待つ長さ |
+| `CI_WAIT_LIMIT` | なし | run を待つ長さの上限 |
+
+`gh` は PATH で引くので、偽の `gh` を PATH の先頭に置けば、GitHub に触らずに出口の分かれ方を
+確かめられる。
 
 ## 実機の画面を、誰も端末を持たずに読む
 
